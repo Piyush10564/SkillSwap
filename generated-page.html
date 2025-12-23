@@ -1,0 +1,899 @@
+<html lang="en"><head>
+  <meta charset="UTF-8">
+  <title>SkillSwap – Dashboard</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://code.iconify.design/3/3.1.0/iconify.min.js"></script>
+</head>
+<body class="min-h-screen bg-slate-50 text-slate-900 antialiased">
+  <div id="app" class="flex min-h-screen flex-col lg:flex-row text-sm">
+    <!-- Sidebar -->
+    <aside class="hidden lg:flex lg:w-64 xl:w-72 flex-col border-r border-slate-200 bg-white/80 backdrop-blur">
+      <!-- Logo -->
+      <div class="flex items-center gap-2 border-b border-slate-200 px-6 py-5">
+        <div class="h-8 w-8 rounded-2xl bg-gradient-to-tr from-indigo-500 via-sky-500 to-violet-500 shadow-sm flex items-center justify-center">
+          <span class="text-xs font-semibold tracking-tight text-white">SS</span>
+        </div>
+        <div class="flex flex-col">
+          <span class="text-base font-semibold tracking-tight text-slate-900">SkillSwap</span>
+          <span class="text-[0.7rem] text-slate-500">Exchange what you know</span>
+        </div>
+      </div>
+
+      <!-- Main Nav -->
+      <nav class="flex-1 overflow-y-auto px-3 py-4 space-y-6">
+        <div>
+          <div class="px-3 pb-2 text-[0.75rem] font-medium uppercase tracking-wide text-slate-400">
+            Overview
+          </div>
+          <ul class="space-y-1">
+            <li>
+              <button data-page="dashboard" class="nav-link flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-xs font-medium text-slate-700 hover:bg-slate-100">
+                <span class="iconify" data-icon="lucide:layout-dashboard" data-width="16" data-height="16" style="stroke-width:1.5"></span>
+                <span>Dashboard</span>
+              </button>
+            </li>
+            <li>
+              <button data-page="discover" class="nav-link flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-xs font-medium text-slate-700 hover:bg-slate-100">
+                <span class="iconify" data-icon="lucide:compass" data-width="16" data-height="16" style="stroke-width:1.5"></span>
+                <span>Discover Skills</span>
+              </button>
+            </li>
+            <li>
+              <button data-page="skills" class="nav-link flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-xs font-medium text-slate-700 hover:bg-slate-100">
+                <span class="iconify" data-icon="lucide:badges" data-width="16" data-height="16" style="stroke-width:1.5"></span>
+                <span>My Skills</span>
+              </button>
+            </li>
+          </ul>
+        </div>
+
+        <div>
+          <div class="px-3 pb-2 text-[0.75rem] font-medium uppercase tracking-wide text-slate-400">
+            Collaboration
+          </div>
+          <ul class="space-y-1">
+            <li>
+              <button data-page="messages" class="nav-link flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-xs font-medium text-slate-700 hover:bg-slate-100">
+                <span class="iconify" data-icon="lucide:messages-square" data-width="16" data-height="16" style="stroke-width:1.5"></span>
+                <span>Messages</span>
+                <span class="ml-auto inline-flex h-5 min-w-[1.25rem] items-center justify-center rounded-full bg-indigo-50 px-1.5 text-[0.7rem] font-medium text-indigo-600">3</span>
+              </button>
+            </li>
+          </ul>
+        </div>
+
+        <div>
+          <div class="px-3 pb-2 text-[0.75rem] font-medium uppercase tracking-wide text-slate-400">
+            Account
+          </div>
+          <ul class="space-y-1">
+            <li>
+              <button data-page="profile" class="nav-link flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-xs font-medium text-slate-700 hover:bg-slate-100">
+                <span class="iconify" data-icon="lucide:user-round" data-width="16" data-height="16" style="stroke-width:1.5"></span>
+                <span>Profile</span>
+              </button>
+            </li>
+          </ul>
+        </div>
+      </nav>
+
+      <!-- Sidebar User -->
+      <div class="border-t border-slate-200 px-4 py-4">
+        <div class="flex items-center gap-3 rounded-xl bg-slate-50/80 px-3 py-2.5">
+          <div class="h-8 w-8 rounded-full bg-gradient-to-tr from-indigo-500 to-violet-500 flex items-center justify-center text-[0.75rem] font-semibold tracking-tight text-white">AL</div>
+          <div class="flex-1">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-semibold text-slate-900">Alex Lee</span>
+              <span class="h-1.5 w-1.5 rounded-full bg-emerald-500"></span>
+            </div>
+            <span class="text-[0.7rem] text-slate-500">Full-stack • UTC+1</span>
+          </div>
+          <button class="rounded-full p-1 text-slate-400 hover:bg-slate-100 hover:text-slate-700">
+            <span class="iconify" data-icon="lucide:log-out" data-width="14" data-height="14" style="stroke-width:1.5"></span>
+          </button>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Mobile Topbar -->
+    <header class="flex items-center justify-between border-b border-slate-200 bg-white/90 px-4 py-3 lg:hidden">
+      <div class="flex items-center gap-2">
+        <button id="mobile-nav-toggle" class="rounded-full p-1.5 text-slate-600 hover:bg-slate-100">
+          <span class="iconify" data-icon="lucide:menu" data-width="18" data-height="18" style="stroke-width:1.5"></span>
+        </button>
+        <div class="flex items-center gap-2">
+          <div class="h-7 w-7 rounded-2xl bg-gradient-to-tr from-indigo-500 via-sky-500 to-violet-500 flex items-center justify-center shadow-sm">
+            <span class="text-[0.6rem] font-semibold tracking-tight text-white">SS</span>
+          </div>
+          <span class="text-sm font-semibold tracking-tight text-slate-900">SkillSwap</span>
+        </div>
+      </div>
+      <div class="flex items-center gap-3">
+        <button class="rounded-full p-1.5 text-slate-500 hover:bg-slate-100">
+          <span class="iconify" data-icon="lucide:bell" data-width="18" data-height="18" style="stroke-width:1.5"></span>
+        </button>
+        <button class="h-7 w-7 rounded-full bg-slate-200"></button>
+      </div>
+    </header>
+
+    <!-- Mobile Drawer -->
+    <div id="mobile-drawer" class="fixed inset-0 z-40 hidden lg:hidden">
+      <div class="absolute inset-0 bg-slate-900/40"></div>
+      <div class="absolute inset-y-0 left-0 w-64 max-w-[75%] bg-white shadow-xl flex flex-col">
+        <div class="flex items-center justify-between border-b border-slate-200 px-4 py-3">
+          <div class="flex items-center gap-2">
+            <div class="h-7 w-7 rounded-2xl bg-gradient-to-tr from-indigo-500 via-sky-500 to-violet-500 flex items-center justify-center shadow-sm">
+              <span class="text-[0.6rem] font-semibold tracking-tight text-white">SS</span>
+            </div>
+            <span class="text-sm font-semibold tracking-tight text-slate-900">SkillSwap</span>
+          </div>
+          <button id="mobile-nav-close" class="rounded-full p-1.5 text-slate-500 hover:bg-slate-100">
+            <span class="iconify" data-icon="lucide:x" data-width="16" data-height="16" style="stroke-width:1.5"></span>
+          </button>
+        </div>
+        <nav class="flex-1 overflow-y-auto px-2 py-4 space-y-5">
+          <div>
+            <div class="px-3 pb-2 text-[0.75rem] font-medium uppercase tracking-wide text-slate-400">
+              Overview
+            </div>
+            <ul class="space-y-1">
+              <li>
+                <button data-page="dashboard" class="nav-link flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-xs font-medium text-slate-700 hover:bg-slate-100">
+                  <span class="iconify" data-icon="lucide:layout-dashboard" data-width="16" data-height="16" style="stroke-width:1.5"></span>
+                  <span>Dashboard</span>
+                </button>
+              </li>
+              <li>
+                <button data-page="discover" class="nav-link flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-xs font-medium text-slate-700 hover:bg-slate-100">
+                  <span class="iconify" data-icon="lucide:compass" data-width="16" data-height="16" style="stroke-width:1.5"></span>
+                  <span>Discover Skills</span>
+                </button>
+              </li>
+              <li>
+                <button data-page="skills" class="nav-link flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-xs font-medium text-slate-700 hover:bg-slate-100">
+                  <span class="iconify" data-icon="lucide:badges" data-width="16" data-height="16" style="stroke-width:1.5"></span>
+                  <span>My Skills</span>
+                </button>
+              </li>
+            </ul>
+          </div>
+
+          <div>
+            <div class="px-3 pb-2 text-[0.75rem] font-medium uppercase tracking-wide text-slate-400">
+              Collaboration
+            </div>
+            <ul class="space-y-1">
+              <li>
+                <button data-page="messages" class="nav-link flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-xs font-medium text-slate-700 hover:bg-slate-100">
+                  <span class="iconify" data-icon="lucide:messages-square" data-width="16" data-height="16" style="stroke-width:1.5"></span>
+                  <span>Messages</span>
+                  <span class="ml-auto inline-flex h-5 min-w-[1.25rem] items-center justify-center rounded-full bg-indigo-50 px-1.5 text-[0.7rem] font-medium text-indigo-600">3</span>
+                </button>
+              </li>
+            </ul>
+          </div>
+
+          <div>
+            <div class="px-3 pb-2 text-[0.75rem] font-medium uppercase tracking-wide text-slate-400">
+              Account
+            </div>
+            <ul class="space-y-1">
+              <li>
+                <button data-page="profile" class="nav-link flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-xs font-medium text-slate-700 hover:bg-slate-100">
+                  <span class="iconify" data-icon="lucide:user-round" data-width="16" data-height="16" style="stroke-width:1.5"></span>
+                  <span>Profile</span>
+                </button>
+              </li>
+            </ul>
+          </div>
+        </nav>
+        <div class="border-t border-slate-200 px-4 py-3">
+          <div class="flex items-center gap-3 rounded-xl bg-slate-50/80 px-3 py-2.5">
+            <div class="h-8 w-8 rounded-full bg-gradient-to-tr from-indigo-500 to-violet-500 flex items-center justify-center text-[0.75rem] font-semibold tracking-tight text-white">AL</div>
+            <div class="flex-1">
+              <div class="flex items-center justify-between">
+                <span class="text-xs font-semibold text-slate-900">Alex Lee</span>
+                <span class="h-1.5 w-1.5 rounded-full bg-emerald-500"></span>
+              </div>
+              <span class="text-[0.7rem] text-slate-500">Full-stack • UTC+1</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main Content Wrapper -->
+    <div class="flex-1 flex flex-col">
+      <!-- Header -->
+      <div class="hidden lg:flex items-center justify-between border-b border-slate-200 bg-white/80 px-6 py-4 backdrop-blur">
+        <div class="flex-1 max-w-xl">
+          <div class="relative">
+            <span class="iconify absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" data-icon="lucide:search" data-width="16" data-height="16" style="stroke-width:1.5"></span>
+            <input type="text" placeholder="Search skills, people, or sessions..." class="w-full rounded-full border border-slate-200 bg-slate-50/70 pl-8 pr-3 py-1.5 text-xs text-slate-800 placeholder:text-slate-400 focus:border-indigo-400 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-200">
+          </div>
+        </div>
+        <div class="flex items-center gap-3">
+          <button class="relative rounded-full p-1.5 text-slate-500 hover:bg-slate-100">
+            <span class="iconify" data-icon="lucide:bell" data-width="18" data-height="18" style="stroke-width:1.5"></span>
+            <span class="absolute right-1 top-1 inline-flex h-3 w-3 items-center justify-center rounded-full bg-rose-500 ring-2 ring-white">
+              <span class="h-1.5 w-1.5 rounded-full bg-rose-100/80"></span>
+            </span>
+          </button>
+          <button class="rounded-full border border-slate-200 bg-white px-2 py-1 text-[0.7rem] text-slate-600 hover:bg-slate-50">
+            <span class="iconify inline-block mr-1" data-icon="lucide:sparkles" data-width="14" data-height="14" style="stroke-width:1.5"></span>
+            Upgrade
+          </button>
+          <div class="h-8 w-8 rounded-full bg-slate-200"></div>
+        </div>
+      </div>
+
+      <!-- Page Container -->
+      <main class="flex-1 overflow-y-auto">
+        <div class="mx-auto flex w-full max-w-6xl flex-col gap-6 px-4 py-5 sm:px-6 lg:px-8">
+
+          <!-- Auth Section (Login/Signup) -->
+          <section id="auth-section" class="hidden">
+            <div class="grid gap-6 lg:grid-cols-2 lg:items-center">
+              <!-- Hero / Description -->
+              <div class="order-2 lg:order-1 space-y-4">
+                <div class="inline-flex items-center gap-2 rounded-full bg-indigo-50 px-2 py-1 text-[0.7rem] font-medium text-indigo-700">
+                  <span class="iconify" data-icon="lucide:swap-horizontal" data-width="14" data-height="14" style="stroke-width:1.5"></span>
+                  Exchange skills, not invoices
+                </div>
+                <h1 class="text-2xl lg:text-3xl font-semibold tracking-tight text-slate-900">
+                  Learn anything by teaching what you already know.
+                </h1>
+                <p class="text-sm text-slate-600">
+                  SkillSwap matches you with people who want to learn the skills you can teach, and who can teach you what you want to learn in return.
+                </p>
+                <div class="flex flex-wrap gap-2 text-[0.7rem] text-slate-500">
+                  <span class="inline-flex items-center gap-1 rounded-full bg-white/80 px-2 py-1 shadow-sm">
+                    <span class="iconify" data-icon="lucide:globe-2" data-width="12" data-height="12" style="stroke-width:1.5"></span>
+                    Global timezone-aware matching
+                  </span>
+                  <span class="inline-flex items-center gap-1 rounded-full bg-white/80 px-2 py-1 shadow-sm">
+                    <span class="iconify" data-icon="lucide:video" data-width="12" data-height="12" style="stroke-width:1.5"></span>
+                    1:1 calls or async tasks
+                  </span>
+                  <span class="inline-flex items-center gap-1 rounded-full bg-white/80 px-2 py-1 shadow-sm">
+                    <span class="iconify" data-icon="lucide:shield-check" data-width="12" data-height="12" style="stroke-width:1.5"></span>
+                    Safe, community-led reviews
+                  </span>
+                </div>
+                <div class="relative mt-4">
+                  <div class="pointer-events-none absolute inset-x-10 -bottom-6 h-24 rounded-full bg-gradient-to-tr from-indigo-400/40 to-violet-500/30 blur-3xl"></div>
+                  <div class="relative grid max-w-md grid-cols-3 gap-3 rounded-3xl border border-slate-200 bg-white/80 p-3 shadow-sm">
+                    <div class="space-y-0.5">
+                      <div class="text-[0.7rem] text-slate-500">Members</div>
+                      <div class="text-sm font-semibold text-slate-900">12,430</div>
+                    </div>
+                    <div class="space-y-0.5">
+                      <div class="text-[0.7rem] text-slate-500">Skills shared</div>
+                      <div class="text-sm font-semibold text-slate-900">4,980+</div>
+                    </div>
+                    <div class="space-y-0.5">
+                      <div class="text-[0.7rem] text-slate-500">Sessions / week</div>
+                      <div class="text-sm font-semibold text-slate-900">1,120</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Auth Card -->
+              <div class="order-1 lg:order-2">
+                <div class="mx-auto max-w-sm rounded-3xl border border-slate-200 bg-white p-5 shadow-md shadow-slate-200/60">
+                  <!-- Tabs -->
+                  <div class="mb-4 flex rounded-full bg-slate-50 p-0.5 text-[0.7rem]">
+                    <button id="auth-tab-login" class="flex-1 rounded-full bg-white py-1.5 text-center font-medium text-slate-900 shadow-sm">
+                      Login
+                    </button>
+                    <button id="auth-tab-signup" class="flex-1 rounded-full py-1.5 text-center font-medium text-slate-500">
+                      Sign up
+                    </button>
+                  </div>
+
+                  <!-- Login Form -->
+                  <form id="login-form" class="space-y-3">
+                    <div class="space-y-1">
+                      <label class="block text-[0.75rem] font-medium text-slate-700">Email</label>
+                      <div class="relative">
+                        <span class="iconify absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" data-icon="lucide:mail" data-width="14" data-height="14" style="stroke-width:1.5"></span>
+                        <input type="email" class="w-full rounded-xl border border-slate-200 bg-slate-50/70 pl-7 pr-3 py-1.5 text-xs placeholder:text-slate-400 focus:border-indigo-400 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-200" placeholder="you@example.com">
+                      </div>
+                    </div>
+                    <div class="space-y-1">
+                      <label class="block text-[0.75rem] font-medium text-slate-700">Password</label>
+                      <div class="relative">
+                        <span class="iconify absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" data-icon="lucide:lock" data-width="14" data-height="14" style="stroke-width:1.5"></span>
+                        <input type="password" class="w-full rounded-xl border border-slate-200 bg-slate-50/70 pl-7 pr-9 py-1.5 text-xs placeholder:text-slate-400 focus:border-indigo-400 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-200" placeholder="••••••••">
+                        <button type="button" class="absolute right-2 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600">
+                          <span class="iconify" data-icon="lucide:eye" data-width="14" data-height="14" style="stroke-width:1.5"></span>
+                        </button>
+                      </div>
+                    </div>
+                    <div class="flex items-center justify-between">
+                      <div class="flex items-center gap-1.5">
+                        <div class="relative inline-flex h-3 w-3 items-center justify-center rounded border border-slate-300 bg-white">
+                          <input type="checkbox" class="peer absolute inset-0 cursor-pointer opacity-0">
+                          <span class="pointer-events-none h-2 w-2 scale-0 rounded-sm bg-indigo-500 transition peer-checked:scale-100"></span>
+                        </div>
+                        <span class="text-[0.7rem] text-slate-600">Remember me</span>
+                      </div>
+                      <button type="button" class="text-[0.7rem] font-medium text-indigo-600 hover:text-indigo-700">
+                        Forgot password?
+                      </button>
+                    </div>
+                    <button type="submit" class="flex w-full items-center justify-center rounded-full bg-gradient-to-tr from-indigo-500 via-sky-500 to-violet-500 py-1.5 text-xs font-medium text-white shadow-sm shadow-indigo-300 hover:brightness-105">
+                      <span>Login</span>
+                    </button>
+                    <button type="button" class="flex w-full items-center justify-center gap-2 rounded-full border border-slate-200 bg-white py-1.5 text-xs font-medium text-slate-700 hover:bg-slate-50">
+                      <span class="iconify" data-icon="lucide:chrome" data-width="14" data-height="14" style="stroke-width:1.5"></span>
+                      <span>Login with Google</span>
+                    </button>
+                  </form>
+
+                  <!-- Signup Form -->
+                  <form id="signup-form" class="hidden space-y-3">
+                    <div class="space-y-1">
+                      <label class="block text-[0.75rem] font-medium text-slate-700">Full name</label>
+                      <input type="text" class="w-full rounded-xl border border-slate-200 bg-slate-50/70 px-3 py-1.5 text-xs placeholder:text-slate-400 focus:border-indigo-400 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-200" placeholder="Alex Lee">
+                    </div>
+                    <div class="space-y-1">
+                      <label class="block text-[0.75rem] font-medium text-slate-700">Email</label>
+                      <input type="email" class="w-full rounded-xl border border-slate-200 bg-slate-50/70 px-3 py-1.5 text-xs placeholder:text-slate-400 focus:border-indigo-400 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-200" placeholder="you@example.com">
+                    </div>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                      <div class="space-y-1">
+                        <label class="block text-[0.75rem] font-medium text-slate-700">Password</label>
+                        <input type="password" class="w-full rounded-xl border border-slate-200 bg-slate-50/70 px-3 py-1.5 text-xs placeholder:text-slate-400 focus:border-indigo-400 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-200" placeholder="••••••••">
+                      </div>
+                      <div class="space-y-1">
+                        <label class="block text-[0.75rem] font-medium text-slate-700">Confirm password</label>
+                        <input type="password" class="w-full rounded-xl border border-slate-200 bg-slate-50/70 px-3 py-1.5 text-xs placeholder:text-slate-400 focus:border-indigo-400 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-200" placeholder="••••••••">
+                      </div>
+                    </div>
+                    <div class="space-y-1">
+                      <label class="block text-[0.75rem] font-medium text-slate-700">I want to</label>
+                      <div class="flex gap-1 rounded-full bg-slate-50 p-0.5 text-[0.7rem]">
+                        <button type="button" class="role-pill flex-1 rounded-full bg-white py-1 text-center font-medium text-slate-900 shadow-sm" data-role="teach">Teach</button>
+                        <button type="button" class="role-pill flex-1 rounded-full py-1 text-center font-medium text-slate-600" data-role="learn">Learn</button>
+                        <button type="button" class="role-pill flex-1 rounded-full py-1 text-center font-medium text-slate-600" data-role="both">Both</button>
+                      </div>
+                    </div>
+                    <button type="submit" class="flex w-full items-center justify-center rounded-full bg-gradient-to-tr from-indigo-500 via-sky-500 to-violet-500 py-1.5 text-xs font-medium text-white shadow-sm shadow-indigo-300 hover:brightness-105">
+                      <span>Create account</span>
+                    </button>
+                    <p class="text-[0.7rem] text-slate-500">
+                      By signing up, you agree to our <span class="font-medium text-slate-700">Terms</span> and <span class="font-medium text-slate-700">Privacy Policy</span>.
+                    </p>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- Dashboard Page -->
+          <section id="page-dashboard" class="page-section">
+            <div class="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+              <div class="space-y-1">
+                <h2 class="text-xl md:text-2xl font-semibold tracking-tight text-slate-900">
+                  Welcome back, Alex
+                </h2>
+                <p class="text-sm text-slate-600">
+                  Trade what you know for what you want to learn. Here’s what’s happening in your skill circle today.
+                </p>
+              </div>
+              <div class="flex flex-wrap items-center gap-2">
+                <button data-page="skills" class="inline-flex items-center gap-1.5 rounded-full border border-slate-200 bg-white px-3 py-1 text-[0.75rem] font-medium text-slate-700 hover:bg-slate-50">
+                  <span class="iconify" data-icon="lucide:plus" data-width="14" data-height="14" style="stroke-width:1.5"></span>
+                  Add skill
+                </button>
+                <button data-page="discover" class="inline-flex items-center gap-1.5 rounded-full bg-gradient-to-tr from-indigo-500 via-sky-500 to-violet-500 px-3 py-1 text-[0.75rem] font-medium text-white shadow-sm shadow-indigo-300 hover:brightness-105">
+                  <span class="iconify" data-icon="lucide:rabbit" data-width="14" data-height="14" style="stroke-width:1.5"></span>
+                  Find a swap
+                </button>
+              </div>
+            </div>
+
+            <div class="mt-4 grid gap-4 lg:grid-cols-[2fr,1.1fr]">
+              <!-- Left Column -->
+              <div class="space-y-4">
+                <!-- Skills Overview -->
+                <div class="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
+                  <div class="flex items-center justify-between gap-2">
+                    <div>
+                      <h3 class="text-sm font-semibold tracking-tight text-slate-900">Your skills overview</h3>
+                      <p class="text-[0.75rem] text-slate-500">Keep your skills up to date to improve your matches.</p>
+                    </div>
+                    <button data-page="skills" class="inline-flex items-center gap-1 rounded-full border border-slate-200 bg-slate-50 px-2 py-0.5 text-[0.7rem] text-slate-700 hover:bg-slate-100">
+                      <span class="iconify" data-icon="lucide:settings-2" data-width="12" data-height="12" style="stroke-width:1.5"></span>
+                      Manage
+                    </button>
+                  </div>
+                  <div class="mt-3 grid gap-3 sm:grid-cols-2">
+                    <div class="rounded-xl bg-slate-50/80 p-3">
+                      <div class="flex items-center justify-between">
+                        <span class="text-[0.75rem] font-medium text-slate-700">Skills you can teach</span>
+                        <span class="inline-flex h-5 min-w-[1.25rem] items-center justify-center rounded-full bg-emerald-50 px-1.5 text-[0.7rem] font-medium text-emerald-700">4</span>
+                      </div>
+                      <div class="mt-2 flex flex-wrap gap-1">
+                        <span class="inline-flex items-center gap-1 rounded-full bg-emerald-50 px-2 py-0.5 text-[0.7rem] text-emerald-800">
+                          JS mentoring
+                          <span class="text-[0.65rem] text-emerald-700/80">Expert</span>
+                        </span>
+                        <span class="inline-flex items-center gap-1 rounded-full bg-blue-50 px-2 py-0.5 text-[0.7rem] text-blue-800">
+                          React
+                          <span class="text-[0.65rem] text-blue-700/80">Intermediate</span>
+                        </span>
+                        <span class="inline-flex items-center gap-1 rounded-full bg-fuchsia-50 px-2 py-0.5 text-[0.7rem] text-fuchsia-800">
+                          UI critique
+                          <span class="text-[0.65rem] text-fuchsia-700/80">Expert</span>
+                        </span>
+                        <button class="text-[0.7rem] text-slate-500 hover:text-slate-700">
+                          +2 more
+                        </button>
+                      </div>
+                    </div>
+                    <div class="rounded-xl bg-slate-50/80 p-3">
+                      <div class="flex items-center justify-between">
+                        <span class="text-[0.75rem] font-medium text-slate-700">Skills you want to learn</span>
+                        <span class="inline-flex h-5 min-w-[1.25rem] items-center justify-center rounded-full bg-indigo-50 px-1.5 text-[0.7rem] font-medium text-indigo-700">3</span>
+                      </div>
+                      <div class="mt-2 flex flex-wrap gap-1">
+                        <span class="inline-flex items-center gap-1 rounded-full bg-indigo-50 px-2 py-0.5 text-[0.7rem] text-indigo-800">
+                          Advanced Node
+                          <span class="text-[0.65rem] text-indigo-700/80">Intermediate</span>
+                        </span>
+                        <span class="inline-flex items-center gap-1 rounded-full bg-violet-50 px-2 py-0.5 text-[0.7rem] text-violet-800">
+                          Product strategy
+                          <span class="text-[0.65rem] text-violet-700/80">Beginner</span>
+                        </span>
+                        <span class="inline-flex items-center gap-1 rounded-full bg-rose-50 px-2 py-0.5 text-[0.7rem] text-rose-800">
+                          Spanish conversation
+                          <span class="text-[0.65rem] text-rose-700/80">Beginner</span>
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Suggested swaps -->
+                <div class="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
+                  <div class="flex items-center justify-between">
+                    <div>
+                      <h3 class="text-sm font-semibold tracking-tight text-slate-900">Suggested swaps</h3>
+                      <p class="text-[0.75rem] text-slate-500">Based on your skills and timezone.</p>
+                    </div>
+                    <button class="inline-flex items-center gap-1 rounded-full border border-slate-200 bg-slate-50 px-2 py-0.5 text-[0.7rem] text-slate-700 hover:bg-slate-100">
+                      <span class="iconify" data-icon="lucide:refresh-ccw" data-width="12" data-height="12" style="stroke-width:1.5"></span>
+                      Refresh
+                    </button>
+                  </div>
+                  <div class="mt-3 space-y-3">
+                    <!-- Card -->
+                    <div class="flex flex-col gap-3 rounded-xl border border-slate-100 bg-slate-50/60 p-3 sm:flex-row sm:items-center">
+                      <div class="flex flex-1 items-center gap-3">
+                        <div class="h-9 w-9 rounded-full bg-gradient-to-tr from-sky-500 to-indigo-500"></div>
+                        <div class="flex-1">
+                          <div class="flex items-center gap-2">
+                            <span class="text-xs font-semibold text-slate-900">María González</span>
+                            <span class="inline-flex items-center gap-0.5 rounded-full bg-emerald-50 px-1.5 py-0.5 text-[0.65rem] text-emerald-700">
+                              <span class="h-1.5 w-1.5 rounded-full bg-emerald-500"></span>
+                              Online
+                            </span>
+                          </div>
+                          <div class="flex flex-wrap items-center gap-1 text-[0.7rem] text-slate-500">
+                            <span class="iconify" data-icon="lucide:map-pin" data-width="11" data-height="11" style="stroke-width:1.5"></span>
+                            Madrid • UTC+2
+                          </div>
+                        </div>
+                      </div>
+                      <div class="flex-1 space-y-1 sm:max-w-xs">
+                        <div class="flex items-center gap-1 text-[0.7rem] text-slate-600">
+                          <span class="iconify" data-icon="lucide:book-open-check" data-width="12" data-height="12" style="stroke-width:1.5"></span>
+                          Can teach you
+                        </div>
+                        <div class="flex flex-wrap gap-1">
+                          <span class="rounded-full bg-indigo-50 px-2 py-0.5 text-[0.7rem] text-indigo-800">
+                            Conversational Spanish
+                          </span>
+                          <span class="rounded-full bg-violet-50 px-2 py-0.5 text-[0.7rem] text-violet-800">
+                            Public speaking
+                          </span>
+                        </div>
+                        <div class="mt-1 flex items-center gap-1 text-[0.7rem] text-slate-600">
+                          <span class="iconify" data-icon="lucide:graduation-cap" data-width="12" data-height="12" style="stroke-width:1.5"></span>
+                          Wants to learn from you
+                        </div>
+                        <div class="flex flex-wrap gap-1">
+                          <span class="rounded-full bg-emerald-50 px-2 py-0.5 text-[0.7rem] text-emerald-800">
+                            React mentoring
+                          </span>
+                        </div>
+                      </div>
+                      <div class="flex gap-2 sm:flex-col sm:items-end">
+                        <button class="inline-flex items-center justify-center gap-1 rounded-full border border-slate-200 bg-white px-2.5 py-1 text-[0.7rem] font-medium text-slate-800 hover:bg-slate-50">
+                          View profile
+                        </button>
+                        <button data-page="messages" class="inline-flex items-center justify-center gap-1 rounded-full bg-gradient-to-tr from-indigo-500 via-sky-500 to-violet-500 px-2.5 py-1 text-[0.7rem] font-medium text-white shadow-sm shadow-indigo-300 hover:brightness-105">
+                          <span class="iconify" data-icon="lucide:message-circle-more" data-width="12" data-height="12" style="stroke-width:1.5"></span>
+                          Start chat
+                        </button>
+                      </div>
+                    </div>
+
+                    <!-- Another card -->
+                    <div class="flex flex-col gap-3 rounded-xl border border-slate-100 bg-white p-3 sm:flex-row sm:items-center">
+                      <div class="flex flex-1 items-center gap-3">
+                        <div class="h-9 w-9 rounded-full bg-gradient-to-tr from-fuchsia-500 to-violet-500"></div>
+                        <div class="flex-1">
+                          <div class="flex items-center gap-2">
+                            <span class="text-xs font-semibold text-slate-900">Samir Patel</span>
+                            <span class="inline-flex items-center gap-0.5 rounded-full bg-amber-50 px-1.5 py-0.5 text-[0.65rem] text-amber-700">
+                              <span class="h-1.5 w-1.5 rounded-full bg-amber-500"></span>
+                              Evening
+                            </span>
+                          </div>
+                          <div class="flex flex-wrap items-center gap-1 text-[0.7rem] text-slate-500">
+                            <span class="iconify" data-icon="lucide:map-pin" data-width="11" data-height="11" style="stroke-width:1.5"></span>
+                            London • UTC+1
+                          </div>
+                        </div>
+                      </div>
+                      <div class="flex-1 space-y-1 sm:max-w-xs">
+                        <div class="flex items-center gap-1 text-[0.7rem] text-slate-600">
+                          <span class="iconify" data-icon="lucide:book-open-check" data-width="12" data-height="12" style="stroke-width:1.5"></span>
+                          Can teach you
+                        </div>
+                        <div class="flex flex-wrap gap-1">
+                          <span class="rounded-full bg-sky-50 px-2 py-0.5 text-[0.7rem] text-sky-800">
+                            Product discovery
+                          </span>
+                          <span class="rounded-full bg-violet-50 px-2 py-0.5 text-[0.7rem] text-violet-800">
+                            Roadmapping
+                          </span>
+                        </div>
+                        <div class="mt-1 flex items-center gap-1 text-[0.7rem] text-slate-600">
+                          <span class="iconify" data-icon="lucide:graduation-cap" data-width="12" data-height="12" style="stroke-width:1.5"></span>
+                          Wants to learn from you
+                        </div>
+                        <div class="flex flex-wrap gap-1">
+                          <span class="rounded-full bg-emerald-50 px-2 py-0.5 text-[0.7rem] text-emerald-800">
+                            Node.js
+                          </span>
+                        </div>
+                      </div>
+                      <div class="flex gap-2 sm:flex-col sm:items-end">
+                        <button class="inline-flex items-center justify-center gap-1 rounded-full border border-slate-200 bg-white px-2.5 py-1 text-[0.7rem] font-medium text-slate-800 hover:bg-slate-50">
+                          View profile
+                        </button>
+                        <button data-page="messages" class="inline-flex items-center justify-center gap-1 rounded-full bg-gradient-to-tr from-indigo-500 via-sky-500 to-violet-500 px-2.5 py-1 text-[0.7rem] font-medium text-white shadow-sm shadow-indigo-300 hover:brightness-105">
+                          <span class="iconify" data-icon="lucide:message-circle-more" data-width="12" data-height="12" style="stroke-width:1.5"></span>
+                          Start chat
+                        </button>
+                      </div>
+                    </div>
+
+                    <!-- Empty state example (hidden by default) -->
+                    <div class="hidden rounded-xl border border-dashed border-slate-200 bg-slate-50/80 p-4 text-center">
+                      <h4 class="text-xs font-semibold text-slate-800">No suggested swaps yet</h4>
+                      <p class="mt-1 text-[0.7rem] text-slate-500">
+                        Add a few skills you can teach and want to learn, and we’ll start suggesting people who match.
+                      </p>
+                      <button data-page="skills" class="mt-2 inline-flex items-center gap-1 rounded-full bg-white px-3 py-1 text-[0.7rem] font-medium text-indigo-600 shadow-sm hover:bg-slate-50">
+                        <span class="iconify" data-icon="lucide:plus" data-width="12" data-height="12" style="stroke-width:1.5"></span>
+                        Add skills
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Right Column -->
+              <div class="space-y-4">
+                <!-- Upcoming sessions -->
+                <div class="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
+                  <div class="flex items-center justify-between">
+                    <div>
+                      <h3 class="text-sm font-semibold tracking-tight text-slate-900">Upcoming sessions</h3>
+                      <p class="text-[0.75rem] text-slate-500">Your next 7 days.</p>
+                    </div>
+                    <button class="inline-flex items-center gap-1 rounded-full border border-slate-200 bg-slate-50 px-2 py-0.5 text-[0.7rem] text-slate-700 hover:bg-slate-100">
+                      <span class="iconify" data-icon="lucide:calendar" data-width="12" data-height="12" style="stroke-width:1.5"></span>
+                      Calendar
+                    </button>
+                  </div>
+                  <div class="mt-3 space-y-2">
+                    <div class="flex items-center gap-3 rounded-xl bg-slate-50/80 p-2">
+                      <div class="flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-tr from-indigo-500 to-violet-500 text-[0.75rem] font-medium text-white">
+                        TU
+                      </div>
+                      <div class="flex-1">
+                        <div class="flex items-center justify-between">
+                          <span class="text-xs font-semibold text-slate-900">Spanish practice with María</span>
+                          <span class="text-[0.7rem] text-slate-500">Today • 18:30</span>
+                        </div>
+                        <div class="flex flex-wrap items-center gap-1 text-[0.7rem] text-slate-500">
+                          <span class="iconify" data-icon="lucide:video" data-width="11" data-height="11" style="stroke-width:1.5"></span>
+                          1:1 call • 45 min
+                        </div>
+                      </div>
+                    </div>
+                    <div class="flex items-center gap-3 rounded-xl bg-slate-50/80 p-2">
+                      <div class="flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-tr from-sky-500 to-indigo-500 text-[0.75rem] font-medium text-white">
+                        TH
+                      </div>
+                      <div class="flex-1">
+                        <div class="flex items-center justify-between">
+                          <span class="text-xs font-semibold text-slate-900">Node.js review with Samir</span>
+                          <span class="text-[0.7rem] text-slate-500">Thu • 20:00</span>
+                        </div>
+                        <div class="flex flex-wrap items-center gap-1 text-[0.7rem] text-slate-500">
+                          <span class="iconify" data-icon="lucide:messages-square" data-width="11" data-height="11" style="stroke-width:1.5"></span>
+                          Text chat • 60 min
+                        </div>
+                      </div>
+                    </div>
+                    <!-- Empty state (hidden example) -->
+                    <div class="hidden rounded-xl border border-dashed border-slate-200 bg-slate-50/80 p-4 text-center">
+                      <h4 class="text-xs font-semibold text-slate-800">No upcoming sessions</h4>
+                      <p class="mt-1 text-[0.7rem] text-slate-500">
+                        Once you confirm a swap, it will appear here with your local time.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Notifications / Alerts -->
+                <div class="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
+                  <div class="flex items-center justify-between">
+                    <h3 class="text-sm font-semibold tracking-tight text-slate-900">Notifications</h3>
+                    <button class="text-[0.7rem] text-slate-500 hover:text-slate-700">Mark all as read</button>
+                  </div>
+                  <div class="mt-3 space-y-2">
+                    <div class="flex items-start gap-2 rounded-xl bg-slate-50/80 p-2">
+                      <div class="mt-0.5">
+                        <span class="iconify text-indigo-500" data-icon="lucide:sparkles" data-width="14" data-height="14" style="stroke-width:1.5"></span>
+                      </div>
+                      <div class="flex-1">
+                        <div class="flex items-center justify-between">
+                          <p class="text-xs text-slate-900">
+                            New skill match: <span class="font-medium">Product discovery</span> with Samir.
+                          </p>
+                          <span class="text-[0.65rem] text-slate-500">2m</span>
+                        </div>
+                        <button class="mt-1 text-[0.7rem] font-medium text-indigo-600 hover:text-indigo-700">
+                          Review match
+                        </button>
+                      </div>
+                    </div>
+                    <div class="flex items-start gap-2 rounded-xl bg-slate-50/80 p-2">
+                      <div class="mt-0.5">
+                        <span class="iconify text-sky-500" data-icon="lucide:message-circle-more" data-width="14" data-height="14" style="stroke-width:1.5"></span>
+                      </div>
+                      <div class="flex-1">
+                        <div class="flex items-center justify-between">
+                          <p class="text-xs text-slate-900">
+                            New chat request from <span class="font-medium">María</span> for a Spanish swap.
+                          </p>
+                          <span class="text-[0.65rem] text-slate-500">18m</span>
+                        </div>
+                        <div class="mt-1 flex gap-1">
+                          <button class="inline-flex items-center justify-center gap-1 rounded-full bg-indigo-500 px-2.5 py-0.5 text-[0.7rem] font-medium text-white hover:bg-indigo-600">
+                            Accept
+                          </button>
+                          <button class="inline-flex items-center justify-center rounded-full border border-slate-200 bg-white px-2.5 py-0.5 text-[0.7rem] text-slate-700 hover:bg-slate-50">
+                            Later
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                    <!-- Empty notifications state (hidden) -->
+                    <div class="hidden rounded-xl border border-dashed border-slate-200 bg-slate-50/80 p-4 text-center">
+                      <h4 class="text-xs font-semibold text-slate-800">You’re all caught up</h4>
+                      <p class="mt-1 text-[0.7rem] text-slate-500">
+                        We’ll let you know when there’s a new match, message, or session update.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- Skills Management Page -->
+          <section id="page-skills" class="page-section hidden">
+            <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+              <div>
+                <h2 class="text-xl font-semibold tracking-tight text-slate-900">My skills</h2>
+                <p class="text-sm text-slate-600">
+                  Tell SkillSwap what you can teach and what you want to learn.
+                </p>
+              </div>
+              <div class="flex gap-2">
+                <button id="btn-add-skill" class="inline-flex items-center gap-1.5 rounded-full bg-gradient-to-tr from-indigo-500 via-sky-500 to-violet-500 px-3 py-1 text-[0.75rem] font-medium text-white shadow-sm shadow-indigo-300 hover:brightness-105">
+                  <span class="iconify" data-icon="lucide:plus" data-width="14" data-height="14" style="stroke-width:1.5"></span>
+                  Add skill
+                </button>
+              </div>
+            </div>
+
+            <!-- Tabs -->
+            <div class="mt-4 rounded-full bg-slate-100/80 p-0.5 text-[0.75rem] sm:max-w-md">
+              <div class="flex">
+                <button id="skills-tab-offer" class="flex-1 rounded-full bg-white py-1.5 text-center font-medium text-slate-900 shadow-sm">
+                  Skills I offer
+                </button>
+                <button id="skills-tab-learn" class="flex-1 rounded-full py-1.5 text-center font-medium text-slate-600">
+                  Skills I want to learn
+                </button>
+              </div>
+            </div>
+
+            <!-- Offer list -->
+            <div id="skills-offer-list" class="mt-4 space-y-3">
+              <div class="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
+                <h3 class="text-xs font-semibold tracking-tight text-slate-900">Programming</h3>
+                <div class="mt-2 flex flex-wrap gap-2">
+                  <!-- Skill card -->
+                  <div class="flex items-center gap-2 rounded-full border border-slate-100 bg-slate-50/80 px-3 py-1">
+                    <span class="text-[0.75rem] font-medium text-slate-800">JavaScript mentoring</span>
+                    <span class="rounded-full bg-emerald-50 px-1.5 py-0.5 text-[0.65rem] text-emerald-700">Expert</span>
+                    <div class="ml-1 flex items-center gap-1">
+                      <button class="rounded-full p-0.5 text-slate-400 hover:bg-white hover:text-slate-700">
+                        <span class="iconify" data-icon="lucide:pencil" data-width="12" data-height="12" style="stroke-width:1.5"></span>
+                      </button>
+                      <button class="rounded-full p-0.5 text-slate-400 hover:bg-white hover:text-rose-600">
+                        <span class="iconify" data-icon="lucide:trash-2" data-width="12" data-height="12" style="stroke-width:1.5"></span>
+                      </button>
+                    </div>
+                  </div>
+                  <div class="flex items-center gap-2 rounded-full border border-slate-100 bg-slate-50/80 px-3 py-1">
+                    <span class="text-[0.75rem] font-medium text-slate-800">React fundamentals</span>
+                    <span class="rounded-full bg-blue-50 px-1.5 py-0.5 text-[0.65rem] text-blue-700">Intermediate</span>
+                    <div class="ml-1 flex items-center gap-1">
+                      <button class="rounded-full p-0.5 text-slate-400 hover:bg-white hover:text-slate-700">
+                        <span class="iconify" data-icon="lucide:pencil" data-width="12" data-height="12" style="stroke-width:1.5"></span>
+                      </button>
+                      <button class="rounded-full p-0.5 text-slate-400 hover:bg-white hover:text-rose-600">
+                        <span class="iconify" data-icon="lucide:trash-2" data-width="12" data-height="12" style="stroke-width:1.5"></span>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
+                <h3 class="text-xs font-semibold tracking-tight text-slate-900">Design</h3>
+                <div class="mt-2 flex flex-wrap gap-2">
+                  <div class="flex items-center gap-2 rounded-full border border-slate-100 bg-slate-50/80 px-3 py-1">
+                    <span class="text-[0.75rem] font-medium text-slate-800">UI critique</span>
+                    <span class="rounded-full bg-fuchsia-50 px-1.5 py-0.5 text-[0.65rem] text-fuchsia-700">Expert</span>
+                    <div class="ml-1 flex items-center gap-1">
+                      <button class="rounded-full p-0.5 text-slate-400 hover:bg-white hover:text-slate-700">
+                        <span class="iconify" data-icon="lucide:pencil" data-width="12" data-height="12" style="stroke-width:1.5"></span>
+                      </button>
+                      <button class="rounded-full p-0.5 text-slate-400 hover:bg-white hover:text-rose-600">
+                        <span class="iconify" data-icon="lucide:trash-2" data-width="12" data-height="12" style="stroke-width:1.5"></span>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Learn list -->
+            <div id="skills-learn-list" class="mt-4 hidden space-y-3">
+              <div class="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
+                <h3 class="text-xs font-semibold tracking-tight text-slate-900">Programming</h3>
+                <div class="mt-2 flex flex-wrap gap-2">
+                  <div class="flex items-center gap-2 rounded-full border border-slate-100 bg-slate-50/80 px-3 py-1">
+                    <span class="text-[0.75rem] font-medium text-slate-800">Advanced Node.js</span>
+                    <span class="rounded-full bg-indigo-50 px-1.5 py-0.5 text-[0.65rem] text-indigo-700">Intermediate</span>
+                    <div class="ml-1 flex items-center gap-1">
+                      <button class="rounded-full p-0.5 text-slate-400 hover:bg-white hover:text-slate-700">
+                        <span class="iconify" data-icon="lucide:pencil" data-width="12" data-height="12" style="stroke-width:1.5"></span>
+                      </button>
+                      <button class="rounded-full p-0.5 text-slate-400 hover:bg-white hover:text-rose-600">
+                        <span class="iconify" data-icon="lucide:trash-2" data-width="12" data-height="12" style="stroke-width:1.5"></span>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
+                <h3 class="text-xs font-semibold tracking-tight text-slate-900">Language</h3>
+                <div class="mt-2 flex flex-wrap gap-2">
+                  <div class="flex items-center gap-2 rounded-full border border-slate-100 bg-slate-50/80 px-3 py-1">
+                    <span class="text-[0.75rem] font-medium text-slate-800">Spanish conversation</span>
+                    <span class="rounded-full bg-rose-50 px-1.5 py-0.5 text-[0.65rem] text-rose-700">Beginner</span>
+                    <div class="ml-1 flex items-center gap-1">
+                      <button class="rounded-full p-0.5 text-slate-400 hover:bg-white hover:text-slate-700">
+                        <span class="iconify" data-icon="lucide:pencil" data-width="12" data-height="12" style="stroke-width:1.5"></span>
+                      </button>
+                      <button class="rounded-full p-0.5 text-slate-400 hover:bg-white hover:text-rose-600">
+                        <span class="iconify" data-icon="lucide:trash-2" data-width="12" data-height="12" style="stroke-width:1.5"></span>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Empty state (example) -->
+              <div class="hidden rounded-2xl border border-dashed border-slate-200 bg-slate-50/80 p-4 text-center">
+                <h3 class="text-xs font-semibold text-slate-800">No skills added yet</h3>
+                <p class="mt-1 text-[0.7rem] text-slate-500">
+                  Start by adding one skill you’d like to learn. We’ll use it to find your first swap.
+                </p>
+                <button id="btn-add-skill-empty" class="mt-2 inline-flex items-center gap-1 rounded-full bg-white px-3 py-1 text-[0.7rem] font-medium text-indigo-600 shadow-sm hover:bg-slate-50">
+                  <span class="iconify" data-icon="lucide:plus" data-width="12" data-height="12" style="stroke-width:1.5"></span>
+                  Add a learning goal
+                </button>
+              </div>
+            </div>
+          </section>
+
+          <!-- Discover Skills Page -->
+          <section id="page-discover" class="page-section hidden">
+            <div class="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
+              <div>
+                <h2 class="text-xl font-semibold tracking-tight text-slate-900">Discover skills &amp; mentors</h2>
+                <p class="text-sm text-slate-600">
+                  Search people who can teach you what you want, and who want to learn from you.
+                </p>
+              </div>
+              <div class="flex items-center gap-2 text-[0.7rem] text-slate-500">
+                <span class="h-2 w-2 rounded-full bg-emerald-500"></span>
+                212 mentors available now
+              </div>
+            </div>
+
+            <div class="mt-4 grid gap-4 lg:grid-cols-[16rem,1fr]">
+              <!-- Filters (desktop) -->
+              <aside class="hidden rounded-2xl border border-slate-200 bg-white p-4 shadow-sm lg:block">
+                <div class="flex items-center justify-between">
+                  <h3 class="text-xs font-semibold tracking-tight text-slate-900">Filters</h3>
+                  <button class="text-[0.7rem] text-slate-500 hover:text-slate-700">Reset</button>
+                </div>
+                <div class="mt-3 space-y-3">
+                  <div class="space-y-1">
+                    <label class="text-[0.75rem] font-medium text-slate-700">Skill name</label>
+                    <input type="text" class="w-full rounded-xl border border-slate-200 bg-slate-50/70 px-3 py-1.5 text-xs placeholder:text-slate-400 focus:border-indigo-400 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-200" placeholder="e.g. React, Spanish...">
+                  </div>
+                  <div class="space-y-1">
+                    <label class="text-[0.75rem] font-medium text-slate-700">Category</label>
+                    <div class="relative">
+                      <select class="w-full appearance-none rounded-xl border border-slate-200 bg-slate-50/70 px-3 py-1.5 text-xs text-slate-800 focus:border-indigo-400 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-200">
+                        <option>Any</option>
+                        <option>Programming</option>
+                        <option>Design</option>
+                        <option>Language</option>
+                        <option>Business</option>
+                      </select>
+                      <span class="iconify pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-slate-400" data-icon="lucide:chevron-down" data-width="14" data-height="14" style="stroke-width:1.5"></span>
+                    </div>
+                  </div>
+                  <div class="space-y-1">
+                    <label class="text-[0.75rem] font-medium text-slate-700">Level</label>
+                    <div class="flex flex-wrap gap-1 text-[0.7rem]">
+                      <button class="rounded-full bg-slate-100 px-2 py-0.5 text-slate-700">Any</button>
+                      <button class="rounded-full bg-white px-2 py-0.5 text-slate-600 border border-slate-200">Beginner</button>
+                      <button class="rounded-full bg-white px-2 py-0.5 text-slate-600 border border-slate-200">Intermediate</button>
+                      <button class="rounded-full bg-white px-2 py-0.5 text-slate-600 border border-slate-200">Expert</button>
+                    </div>
+                  </div>
+                  <div class="space-y-1">
+                    <label class="text-[0.75rem] font-medium text-slate-700">Mode</label>
+                    <div class="flex flex-wrap gap-1 text-[0.7rem]">
+                      <button class="rounded-full bg-slate-100 px-2 py-0.5 text-slate-700">Any</button>
+                      <button class="rounded-full bg-white px-2 py-0.5 text-slate-600 border border-slate-200">Online</button>
+                      <button class="rounded-full bg-white px-2 py-0.5 text-slate-600 border border-slate-200">Offline</button>
+                    </div>
+                  </div>
+                  <div class="space-y-1">
+                    <label class="text-[0.75rem] font-medium text-slate-700">Timezone</label>
+                    <div class="relative">
+                      <select class="w-full appearance-none rounded-xl border border-slate-200 bg-slate-50/70 px-3 py-1.5 text-xs text-slate-800 focus:border-indigo-400 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-200">
+                        <option>Any</option></select></div></div></div></aside></div></section></div></main></div></div></body></html>
