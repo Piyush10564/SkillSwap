@@ -15,6 +15,7 @@ export default function Layout({ children }) {
     { path: '/discover', icon: 'lucide:compass', label: 'Discover Skills' },
     { path: '/skills', icon: 'lucide:badges', label: 'My Skills' },
     { path: '/messages', icon: 'lucide:messages-square', label: 'Messages' },
+    { path: '/features', icon: 'lucide:sparkles', label: 'Features' },
     { path: '/profile', icon: 'lucide:user-round', label: 'Profile' },
   ];
 

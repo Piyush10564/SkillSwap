@@ -11,12 +11,43 @@ import searchRoutes from './routes/search.js';
 import chatRoutes from './routes/chat.js';
 import notificationsRoutes from './routes/notifications.js';
 import profileRoutes from './routes/profile.js';
+import reviewRoutes from './routes/reviews.js';
+import goalRoutes from './routes/goals.js';
+import badgeRoutes from './routes/badges.js';
+import creditRoutes from './routes/credits.js';
+import noteRoutes from './routes/notes.js';
+import progressRoutes from './routes/progress.js';
 
 const app = express();
 
-// CORS configuration
+// CORS configuration - allow multiple localhost ports for development
+const corsOrigins = [
+  'http://localhost:5173',
+  'http://localhost:5174',
+  'http://localhost:5175',
+  'http://localhost:5176',
+  'http://localhost:3000',
+  'http://127.0.0.1:5173',
+  'http://127.0.0.1:5174',
+];
+
+// In production, use the configured origin only
+if (process.env.NODE_ENV === 'production') {
+  corsOrigins.length = 0; // Clear and use only production origin
+  corsOrigins.push(config.clientOrigin);
+}
+
 app.use(cors({
-  origin: config.clientOrigin,
+  origin: function (origin, callback) {
+    if (!origin || corsOrigins.includes(origin)) {
+      callback(null, true);
+    } else if (process.env.NODE_ENV !== 'production') {
+      // In development, allow requests without origin (like mobile apps)
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
   credentials: true,
 }));
 
@@ -60,6 +91,12 @@ app.use('/api/search', searchRoutes);
 app.use('/api/chat', chatRoutes);
 app.use('/api/notifications', notificationsRoutes);
 app.use('/api/profile', profileRoutes);
+app.use('/api/reviews', reviewRoutes);
+app.use('/api/goals', goalRoutes);
+app.use('/api/badges', badgeRoutes);
+app.use('/api/credits', creditRoutes);
+app.use('/api/notes', noteRoutes);
+app.use('/api/progress', progressRoutes);
 
 // 404 handler
 app.use(notFound);

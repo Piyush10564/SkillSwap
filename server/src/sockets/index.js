@@ -11,9 +11,29 @@ const onlineUsers = new Map();
  * Initialize Socket.IO server
  */
 export const initializeSocket = (httpServer, config) => {
+  // Allow multiple localhost ports for Socket.IO connections
+  const corsOrigins = [
+    'http://localhost:5173',
+    'http://localhost:5174',
+    'http://localhost:5175',
+    'http://localhost:5176',
+    'http://localhost:3000',
+    'http://127.0.0.1:5173',
+    'http://127.0.0.1:5174',
+  ];
+
   const io = new Server(httpServer, {
     cors: {
-      origin: config.clientOrigin,
+      origin: function (origin, callback) {
+        if (!origin || corsOrigins.includes(origin)) {
+          callback(null, true);
+        } else if (process.env.NODE_ENV !== 'production') {
+          // In development, allow requests without origin
+          callback(null, true);
+        } else {
+          callback(new Error('Not allowed by CORS'));
+        }
+      },
       credentials: true,
     },
   });

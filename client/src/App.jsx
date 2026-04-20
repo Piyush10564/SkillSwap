@@ -8,6 +8,7 @@ import Discover from './pages/Discover';
 import Messages from './pages/Messages';
 import Profile from './pages/Profile';
 import About from './pages/About';
+import Features from './pages/Features';
 import Layout from './components/Layout/Layout';
 import './index.css';
 
@@ -95,6 +96,13 @@ function AppRoutes() {
           </Layout>
         </ProtectedRoute>
       } />
+      <Route path="/features" element={
+        <ProtectedRoute>
+          <Layout>
+            <Features />
+          </Layout>
+        </ProtectedRoute>
+      } />
       <Route path="/" element={
         <Navigate to={isAuthenticated ? "/dashboard" : "/auth"} replace />
       } />
@@ -104,7 +112,7 @@ function AppRoutes() {
 
 function App() {
   return (
-    <Router>
+    <Router future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
       <AuthProvider>
         <SocketProvider>
           <AppRoutes />

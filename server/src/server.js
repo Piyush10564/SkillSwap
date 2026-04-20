@@ -4,42 +4,103 @@ import { config } from './config/env.js';
 import { connectDatabase } from './config/database.js';
 import { initializeSocket } from './sockets/index.js';
 
-// Create HTTP server
-const server = http.createServer(app);
+let server = null;
+let io = null;
+let dbConnected = false;
 
-// Initialize Socket.IO
-const io = initializeSocket(server, config);
-
-// Connect to database and start server
-const startServer = async () => {
+const startServer = async (attemptNumber = 1) => {
   try {
-    // Connect to MongoDB
-    await connectDatabase();
+    // Connect to MongoDB only once
+    if (!dbConnected) {
+      await connectDatabase();
+      dbConnected = true;
+    }
 
-    // Start server
-    server.listen(config.port, () => {
-      console.log(`🚀 Server running on port ${config.port}`);
-      console.log(`📡 Environment: ${config.nodeEnv}`);
-      console.log(`🌐 Client origin: ${config.clientOrigin}`);
+    // Close existing server if any
+    if (server) {
+      await new Promise((resolve) => {
+        server.close(resolve);
+      });
+    }
+
+    // Create fresh HTTP server
+    server = http.createServer(app);
+    io = initializeSocket(server, config);
+
+    // Set max listeners
+    server.setMaxListeners(20);
+    if (io) io.setMaxListeners(20);
+
+    // Listen on port
+    await new Promise((resolve, reject) => {
+      server.listen(config.port, '0.0.0.0', () => {
+        console.log(`🚀 Server running on port ${config.port}`);
+        console.log(`📡 Environment: ${config.nodeEnv}`);
+        console.log(`🌐 Client origin: ${config.clientOrigin}`);
+        resolve();
+      });
+
+      server.on('error', (error) => {
+        if (error.code === 'EADDRINUSE') {
+          reject(new Error(`EADDRINUSE`));
+        } else {
+          reject(error);
+        }
+      });
     });
   } catch (error) {
-    console.error('❌ Failed to start server:', error);
-    process.exit(1);
+    if (error.message === 'EADDRINUSE') {
+      console.error(`❌ Port ${config.port} is already in use`);
+      if (attemptNumber < 3) {
+        console.log(`⏳ Waiting 3 seconds before retrying... (Attempt ${attemptNumber}/3)`);
+        await new Promise((resolve) => setTimeout(resolve, 3000));
+        await startServer(attemptNumber + 1);
+      } else {
+        console.error('❌ Failed to start server after 3 attempts');
+        console.error('💡 Run: netstat -ano | findstr :4000 | taskkill /PID <pid> /F');
+        process.exit(1);
+      }
+    } else {
+      console.error('❌ Server error:', error.message);
+      process.exit(1);
+    }
   }
 };
 
-// Handle unhandled promise rejections
-process.on('unhandledRejection', (err) => {
-  console.error('❌ Unhandled Promise Rejection:', err);
-  server.close(() => process.exit(1));
-});
-
-// Handle SIGTERM
+// Handle graceful shutdown
 process.on('SIGTERM', () => {
   console.log('👋 SIGTERM received, shutting down gracefully');
-  server.close(() => {
-    console.log('✅ Process terminated');
-  });
+  if (server) {
+    server.close(() => {
+      console.log('✅ Process terminated');
+      process.exit(0);
+    });
+  } else {
+    process.exit(0);
+  }
 });
 
+process.on('SIGINT', () => {
+  console.log('👋 SIGINT received, shutting down gracefully');
+  if (server) {
+    server.close(() => {
+      console.log('✅ Process terminated');
+      process.exit(0);
+    });
+  } else {
+    process.exit(0);
+  }
+});
+
+// Handle unhandled rejections
+process.on('unhandledRejection', (err) => {
+  console.error('❌ Unhandled Promise Rejection:', err);
+  if (server) {
+    server.close(() => process.exit(1));
+  } else {
+    process.exit(1);
+  }
+});
+
+// Start the server
 startServer();

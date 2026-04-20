@@ -1,0 +1,17 @@
+{
+  "env": {
+    "NODE_ENV": "development"
+  },
+  "watch": ["src"],
+  "ignore": ["node_modules", ".git"],
+  "ext": "js,json",
+  "delay": 1000,
+  "restartable": "rs",
+  "events": {
+    "restart": "echo '🔄 Server restarting...'",
+    "crash": "echo '❌ Server crashed - ensure port 4000 is not in use'"
+  },
+  "exitcrash": true,
+  "legacyWatch": false,
+  "nodeArgs": "--experimental-modules"
+}

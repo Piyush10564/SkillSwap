@@ -66,6 +66,23 @@ const userSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
+  // Review & Rating fields
+  averageRating: {
+    type: Number,
+    default: 0,
+    min: 0,
+    max: 5,
+  },
+  totalReviews: {
+    type: Number,
+    default: 0,
+  },
+  // Credits system
+  credits: {
+    type: Number,
+    default: 0,
+    min: 0,
+  },
 }, {
   timestamps: true,
 });
