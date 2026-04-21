@@ -1,5 +1,8 @@
 import Conversation from '../models/Conversation.js';
 import Message from '../models/Message.js';
+import User from '../models/User.js';
+import Transaction from '../models/Transaction.js';
+import { CREDIT_RULES, TRANSACTION_DESCRIPTIONS } from '../config/creditRules.js';
 
 /**
  * @route   GET /api/chat/conversations
@@ -224,6 +227,108 @@ export const createOrGetConversation = async (req, res, next) => {
 
     res.status(201).json({
       success: true,
+      data: { conversation },
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+/**
+ * @route   POST /api/chat/conversations/:id/end
+ * @desc    End a teaching session and award credits
+ * @access  Private
+ */
+export const endSession = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const { teacherId } = req.body; // ID of the person who taught
+
+    if (!teacherId) {
+      return res.status(400).json({
+        success: false,
+        message: 'teacherId is required',
+      });
+    }
+
+    // Find conversation
+    const conversation = await Conversation.findById(id)
+      .populate('participants', 'credits');
+
+    if (!conversation) {
+      return res.status(404).json({
+        success: false,
+        message: 'Conversation not found',
+      });
+    }
+
+    // Verify user is participant
+    const isParticipant = conversation.participants.some(
+      p => p._id.toString() === req.user._id.toString()
+    );
+
+    if (!isParticipant) {
+      return res.status(403).json({
+        success: false,
+        message: 'Not authorized to end this session',
+      });
+    }
+
+    // Already ended
+    if (conversation.status === 'ended') {
+      return res.status(400).json({
+        success: false,
+        message: 'Session already ended',
+      });
+    }
+
+    // End the session
+    conversation.status = 'ended';
+    conversation.endedAt = new Date();
+
+    // Find teacher (the one who taught)
+    const teacher = await User.findById(teacherId);
+    const learner = conversation.participants.find(
+      p => p._id.toString() !== teacherId
+    );
+
+    if (teacher && teacher._id.toString() !== learner._id.toString()) {
+      // Award credits to teacher
+      teacher.credits += CREDIT_RULES.TEACH_SESSION_COMPLETION;
+      await teacher.save();
+
+      // Create transaction record for teacher
+      await Transaction.create({
+        userId: teacher._id,
+        type: 'earn',
+        credits: CREDIT_RULES.TEACH_SESSION_COMPLETION,
+        sessionId: id,
+        description: TRANSACTION_DESCRIPTIONS.teach,
+        balance: teacher.credits,
+      });
+
+      // Deduct credits from learner
+      if (learner && learner.credits >= CREDIT_RULES.BOOK_SESSION) {
+        learner.credits -= CREDIT_RULES.BOOK_SESSION;
+        await learner.save();
+
+        // Create transaction record for learner
+        await Transaction.create({
+          userId: learner._id,
+          type: 'spend',
+          credits: CREDIT_RULES.BOOK_SESSION,
+          sessionId: id,
+          description: TRANSACTION_DESCRIPTIONS.book_session,
+          balance: learner.credits,
+        });
+      }
+    }
+
+    await conversation.save();
+
+    res.status(200).json({
+      success: true,
+      message: 'Session ended successfully',
       data: { conversation },
     });
   } catch (error) {

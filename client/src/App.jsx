@@ -7,6 +7,7 @@ import Skills from './pages/Skills';
 import Discover from './pages/Discover';
 import Messages from './pages/Messages';
 import Profile from './pages/Profile';
+import Credits from './pages/Credits';
 import About from './pages/About';
 import Features from './pages/Features';
 import Layout from './components/Layout/Layout';
@@ -93,6 +94,13 @@ function AppRoutes() {
         <ProtectedRoute>
           <Layout>
             <Profile />
+          </Layout>
+        </ProtectedRoute>
+      } />
+      <Route path="/credits" element={
+        <ProtectedRoute>
+          <Layout>
+            <Credits />
           </Layout>
         </ProtectedRoute>
       } />

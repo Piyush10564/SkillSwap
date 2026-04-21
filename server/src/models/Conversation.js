@@ -15,6 +15,20 @@ const conversationSchema = new mongoose.Schema({
     of: Number,
     default: {},
   },
+  status: {
+    type: String,
+    enum: ['active', 'ended'],
+    default: 'active',
+  },
+  endedAt: {
+    type: Date,
+    default: null,
+  },
+  skill: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Skill',
+    default: null,
+  },
 }, {
   timestamps: true,
 });

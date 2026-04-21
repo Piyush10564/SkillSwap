@@ -1,4 +1,7 @@
 import Goal from '../models/Goal.js';
+import User from '../models/User.js';
+import Transaction from '../models/Transaction.js';
+import { CREDIT_RULES, TRANSACTION_DESCRIPTIONS } from '../config/creditRules.js';
 
 /**
  * @route   POST /api/goals
@@ -122,6 +125,8 @@ export const updateGoal = async (req, res, next) => {
       });
     }
 
+    const wasCompleted = goal.status === 'completed'; // Track if already completed
+
     // Update fields
     if (progress !== undefined) goal.progress = Math.min(100, Math.max(0, progress));
     if (status) goal.status = status;
@@ -133,6 +138,24 @@ export const updateGoal = async (req, res, next) => {
     if (goal.progress === 100 && goal.status === 'active') {
       goal.status = 'completed';
       goal.completedAt = new Date();
+    }
+
+    // Award credits if goal just became completed (transition from active to completed)
+    if (goal.status === 'completed' && !wasCompleted) {
+      const user = await User.findById(goal.userId);
+      if (user) {
+        user.credits += CREDIT_RULES.GOAL_COMPLETION;
+        await user.save();
+
+        // Create transaction record
+        await Transaction.create({
+          userId: goal.userId,
+          type: 'earn',
+          credits: CREDIT_RULES.GOAL_COMPLETION,
+          description: TRANSACTION_DESCRIPTIONS.goal_completed,
+          balance: user.credits,
+        });
+      }
     }
 
     await goal.save();

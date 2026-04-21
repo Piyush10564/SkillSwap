@@ -7,6 +7,8 @@ export default function Profile() {
   const [isEditing, setIsEditing] = useState(false);
   const [loading, setLoading] = useState(false);
   const [stats, setStats] = useState(null);
+  const [statsLoading, setStatsLoading] = useState(false);
+  const [statsError, setStatsError] = useState(null);
   const [formData, setFormData] = useState({
     name: '',
     bio: '',
@@ -15,6 +17,22 @@ export default function Profile() {
     learningStyle: '',
   });
   const fileInputRef = useRef(null);
+
+  const fetchStats = async () => {
+    try {
+      setStatsLoading(true);
+      setStatsError(null);
+      console.log('Fetching stats...');
+      const response = await profileService.getStats();
+      console.log('Stats response:', response.data);
+      setStats(response.data.data.stats);
+    } catch (error) {
+      console.error('Error fetching stats:', error);
+      setStatsError(error.message || 'Failed to load statistics');
+    } finally {
+      setStatsLoading(false);
+    }
+  };
 
   useEffect(() => {
     if (user) {
@@ -25,18 +43,9 @@ export default function Profile() {
         timezone: user.timezone || 'UTC',
         learningStyle: user.preferences?.learningStyle || 'any',
       });
+      fetchStats();
     }
-    fetchStats();
   }, [user]);
-
-  const fetchStats = async () => {
-    try {
-      const response = await profileService.getStats();
-      setStats(response.data.stats);
-    } catch (error) {
-      console.error('Error fetching stats:', error);
-    }
-  };
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -312,7 +321,19 @@ export default function Profile() {
         <div className="space-y-4">
           <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
             <h3 className="text-base font-semibold text-slate-900 mb-4">Statistics</h3>
-            {stats ? (
+            {statsLoading ? (
+              <div className="text-center py-4 text-sm text-slate-500">Loading stats...</div>
+            ) : statsError ? (
+              <div className="text-center py-4">
+                <p className="text-sm text-red-600 mb-2">Error: {statsError}</p>
+                <button 
+                  onClick={fetchStats}
+                  className="text-xs text-indigo-600 hover:text-indigo-700 font-medium"
+                >
+                  Retry
+                </button>
+              </div>
+            ) : stats ? (
               <div className="space-y-3">
                 <div className="flex items-center justify-between">
                   <span className="text-sm text-slate-600">Skills Offered</span>
@@ -328,7 +349,7 @@ export default function Profile() {
                 </div>
               </div>
             ) : (
-              <div className="text-center py-4 text-sm text-slate-500">Loading stats...</div>
+              <div className="text-center py-4 text-sm text-slate-500">No data available</div>
             )}
           </div>
         </div>

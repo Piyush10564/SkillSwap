@@ -1,5 +1,7 @@
 import Review from '../models/Review.js';
 import User from '../models/User.js';
+import Transaction from '../models/Transaction.js';
+import { CREDIT_RULES, TRANSACTION_DESCRIPTIONS } from '../config/creditRules.js';
 
 /**
  * @route   POST /api/reviews
@@ -47,10 +49,30 @@ export const createReview = async (req, res, next) => {
     const avgRating =
       reviews.reduce((sum, r) => sum + r.rating, 0) / reviews.length;
 
-    await User.findByIdAndUpdate(receiverId, {
-      averageRating: avgRating,
-      totalReviews: reviews.length,
-    });
+    const receiver = await User.findByIdAndUpdate(
+      receiverId,
+      {
+        averageRating: avgRating,
+        totalReviews: reviews.length,
+      },
+      { new: true }
+    );
+
+    // Award bonus credits if positive review (4-5 stars)
+    if (rating >= CREDIT_RULES.POSITIVE_REVIEW_THRESHOLD && receiver) {
+      receiver.credits += CREDIT_RULES.POSITIVE_REVIEW_EARNED;
+      await receiver.save();
+
+      // Create transaction record
+      await Transaction.create({
+        userId: receiverId,
+        type: 'earn',
+        credits: CREDIT_RULES.POSITIVE_REVIEW_EARNED,
+        sessionId,
+        description: TRANSACTION_DESCRIPTIONS.positive_review,
+        balance: receiver.credits,
+      });
+    }
 
     res.status(201).json({
       success: true,

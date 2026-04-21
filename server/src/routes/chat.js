@@ -3,7 +3,8 @@ import {
   getConversations, 
   getMessages, 
   createMessage,
-  createOrGetConversation 
+  createOrGetConversation,
+  endSession
 } from '../controllers/chatController.js';
 import { authenticate } from '../middlewares/auth.js';
 
@@ -16,5 +17,6 @@ router.get('/conversations', getConversations);
 router.post('/conversations', createOrGetConversation);
 router.get('/conversations/:id/messages', getMessages);
 router.post('/conversations/:id/messages', createMessage);
+router.post('/conversations/:id/end', endSession);
 
 export default router;
