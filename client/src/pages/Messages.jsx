@@ -3,6 +3,8 @@ import { useLocation } from 'react-router-dom';
 import { chatService } from '../services/chatService';
 import { useSocket } from '../context/SocketContext';
 import { useAuth } from '../context/AuthContext';
+import NoteEditor from '../components/Notes/NoteEditor';
+import NotesList from '../components/Notes/NotesList';
 
 export default function Messages() {
   const location = useLocation();
@@ -11,6 +13,8 @@ export default function Messages() {
   const [selectedConversation, setSelectedConversation] = useState(null);
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState('');
+  const [notesRefreshToken, setNotesRefreshToken] = useState(0);
+  const [endingSession, setEndingSession] = useState(false);
   const { socket, connected } = useSocket();
   const messagesEndRef = useRef(null);
 
@@ -24,13 +28,15 @@ export default function Messages() {
 
   // Auto-select conversation from navigation state
   useEffect(() => {
-    if (location.state?.conversationId && conversations.length > 0) {
-      const conv = conversations.find(c => c._id === location.state.conversationId);
+    const conversationId = location.state?.conversationId || new URLSearchParams(location.search).get('conversationId');
+
+    if (conversationId && conversations.length > 0) {
+      const conv = conversations.find((c) => c._id === conversationId);
       if (conv) {
         handleSelectConversation(conv);
       }
     }
-  }, [location.state, conversations]);
+  }, [location.state, location.search, conversations]);
 
   // Scroll to bottom when messages change
   useEffect(() => {
@@ -80,6 +86,33 @@ export default function Messages() {
     fetchMessages(conversation._id);
   };
 
+  const handleNoteSaved = () => {
+    setNotesRefreshToken((current) => current + 1);
+  };
+
+  const handleEndSession = async () => {
+    if (!selectedConversation?._id) return;
+    if (endingSession || selectedConversation.status === 'ended') return;
+
+    try {
+      setEndingSession(true);
+      const response = await chatService.endSession(selectedConversation._id);
+      const updatedConversation = response?.data?.conversation || selectedConversation;
+      setSelectedConversation((current) => ({
+        ...current,
+        status: updatedConversation.status || 'ended',
+        endedAt: updatedConversation.endedAt || new Date().toISOString(),
+        startedAt: updatedConversation.startedAt || current?.startedAt,
+      }));
+      await fetchConversations();
+    } catch (error) {
+      console.error('Error ending session:', error);
+      alert(error?.response?.data?.message || 'Failed to end session');
+    } finally {
+      setEndingSession(false);
+    }
+  };
+
   const handleSendMessage = async (e) => {
     e.preventDefault();
     if (!newMessage.trim() || !selectedConversation) return;
@@ -108,9 +141,9 @@ export default function Messages() {
     <div>
       <h2 className="text-xl font-semibold tracking-tight text-slate-900 mb-6">Messages</h2>
 
-      <div className="grid gap-4 lg:grid-cols-[320px,1fr]">
+      <div className="grid gap-4 lg:grid-cols-[320px,minmax(0,1fr),360px]">
         {/* Conversations List */}
-        <div className="rounded-2xl border border-slate-200 bg-white shadow-sm overflow-hidden">
+        <div className="page-surface p-0 overflow-hidden">
           <div className="border-b border-slate-200 px-4 py-3">
             <h3 className="font-semibold text-slate-900 text-sm">Conversations</h3>
           </div>
@@ -161,7 +194,7 @@ export default function Messages() {
         </div>
 
         {/* Messages Thread */}
-        <div className="rounded-2xl border border-slate-200 bg-white shadow-sm flex flex-col h-[600px]">
+        <div className="page-surface p-0 flex flex-col h-[600px]">
           {selectedConversation ? (
             <>
               {/* Header */}
@@ -170,14 +203,30 @@ export default function Messages() {
                   <div className="h-10 w-10 rounded-full bg-gradient-to-tr from-sky-500 to-indigo-500 flex items-center justify-center text-sm font-semibold text-white">
                     {selectedConversation.participant?.name?.substring(0, 2).toUpperCase() || 'U'}
                   </div>
-                  <div>
+                  <div className="min-w-0 flex-1">
                     <h3 className="font-semibold text-slate-900 text-sm">
                       {selectedConversation.participant?.name || 'Unknown User'}
                     </h3>
-                    <p className="text-xs text-slate-500">
-                      {connected ? 'Online' : 'Offline'}
-                    </p>
+                    <div className="flex flex-wrap items-center gap-2 text-xs text-slate-500">
+                      <span>{connected ? 'Online' : 'Offline'}</span>
+                      {selectedConversation.startedAt && selectedConversation.status === 'active' && (
+                        <span className="rounded-full bg-emerald-50 px-2 py-0.5 text-emerald-700">Session active</span>
+                      )}
+                      {selectedConversation.status === 'ended' && (
+                        <span className="rounded-full bg-slate-100 px-2 py-0.5 text-slate-600">Session ended</span>
+                      )}
+                    </div>
                   </div>
+                  {selectedConversation.startedAt && selectedConversation.status === 'active' && (
+                    <button
+                      type="button"
+                      onClick={handleEndSession}
+                      disabled={endingSession}
+                      className="rounded-full bg-rose-600 px-4 py-2 text-xs font-semibold text-white shadow-sm hover:bg-rose-700 disabled:opacity-60"
+                    >
+                      {endingSession ? 'Ending...' : 'End Session'}
+                    </button>
+                  )}
                 </div>
               </div>
 
@@ -242,6 +291,26 @@ export default function Messages() {
           ) : (
             <div className="flex-1 flex items-center justify-center text-slate-500 text-sm">
               Select a conversation to start messaging
+            </div>
+          )}
+        </div>
+
+        {/* Session Notes */}
+        <div className="page-surface p-0 flex flex-col h-[600px] overflow-hidden">
+          {selectedConversation ? (
+            <>
+              <div className="border-b border-slate-200 px-4 py-3">
+                <h3 className="font-semibold text-slate-900 text-sm">Session Notes</h3>
+                <p className="text-xs text-slate-500">Keep learning notes alongside this chat</p>
+              </div>
+              <div className="flex-1 overflow-y-auto p-4 space-y-4">
+                <NoteEditor sessionId={selectedConversation._id} onSuccess={handleNoteSaved} />
+                <NotesList sessionId={selectedConversation._id} refreshToken={notesRefreshToken} />
+              </div>
+            </>
+          ) : (
+            <div className="flex h-full items-center justify-center p-6 text-center text-sm text-slate-500">
+              Open a teaching session to add and review notes here.
             </div>
           )}
         </div>

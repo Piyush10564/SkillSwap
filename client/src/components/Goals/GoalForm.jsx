@@ -68,7 +68,7 @@ export default function GoalForm({ onSuccess }) {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="bg-white rounded-2xl p-6 shadow-md border border-slate-200">
+    <form onSubmit={handleSubmit} className="card-surface p-6">
       <h3 className="text-lg font-semibold text-slate-900 mb-4">Create Learning Goal</h3>
 
       {error && (

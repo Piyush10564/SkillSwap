@@ -1,8 +1,34 @@
 import Conversation from '../models/Conversation.js';
 import Message from '../models/Message.js';
-import User from '../models/User.js';
-import Transaction from '../models/Transaction.js';
+import Request from '../models/Request.js';
 import { CREDIT_RULES, TRANSACTION_DESCRIPTIONS } from '../config/creditRules.js';
+import { awardCreditsToUser, spendCreditsFromUser } from './creditController.js';
+
+const resolveSessionRoles = async (conversation, currentUserId) => {
+  const otherParticipantId = conversation.participants.find(
+    (participant) => participant.toString() !== currentUserId.toString()
+  );
+
+  const acceptedRequest = await Request.findOne({
+    status: 'accepted',
+    $or: [
+      { teacher: currentUserId, learner: otherParticipantId },
+      { teacher: otherParticipantId, learner: currentUserId },
+    ],
+  }).sort({ updatedAt: -1 });
+
+  if (acceptedRequest) {
+    return {
+      teacherId: acceptedRequest.teacher,
+      learnerId: acceptedRequest.learner,
+    };
+  }
+
+  return {
+    teacherId: currentUserId,
+    learnerId: otherParticipantId,
+  };
+};
 
 /**
  * @route   GET /api/chat/conversations
@@ -31,6 +57,10 @@ export const getConversations = async (req, res, next) => {
         lastMessage: conv.lastMessage,
         unreadCount,
         updatedAt: conv.updatedAt,
+        status: conv.status,
+        startedAt: conv.startedAt,
+        teacher: conv.teacher,
+        learner: conv.learner,
       };
     });
 
@@ -235,6 +265,63 @@ export const createOrGetConversation = async (req, res, next) => {
 };
 
 /**
+ * @route   POST /api/chat/conversations/:id/start
+ * @desc    Start a teaching session
+ * @access  Private
+ */
+export const startSession = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+
+    const conversation = await Conversation.findById(id);
+
+    if (!conversation) {
+      return res.status(404).json({
+        success: false,
+        message: 'Conversation not found',
+      });
+    }
+
+    const isParticipant = conversation.participants.some(
+      (participant) => participant.toString() === req.user._id.toString()
+    );
+
+    if (!isParticipant) {
+      return res.status(403).json({
+        success: false,
+        message: 'Not authorized to start this session',
+      });
+    }
+
+    if (conversation.status === 'ended') {
+      return res.status(400).json({
+        success: false,
+        message: 'Session already ended',
+      });
+    }
+
+    const { teacherId, learnerId } = await resolveSessionRoles(conversation, req.user._id);
+
+    conversation.teacher = teacherId;
+    conversation.learner = learnerId;
+
+    if (!conversation.startedAt) {
+      conversation.startedAt = new Date();
+    }
+
+    await conversation.save();
+
+    res.status(200).json({
+      success: true,
+      message: 'Session started successfully',
+      data: { conversation },
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+/**
  * @route   POST /api/chat/conversations/:id/end
  * @desc    End a teaching session and award credits
  * @access  Private
@@ -242,18 +329,12 @@ export const createOrGetConversation = async (req, res, next) => {
 export const endSession = async (req, res, next) => {
   try {
     const { id } = req.params;
-    const { teacherId } = req.body; // ID of the person who taught
-
-    if (!teacherId) {
-      return res.status(400).json({
-        success: false,
-        message: 'teacherId is required',
-      });
-    }
 
     // Find conversation
     const conversation = await Conversation.findById(id)
-      .populate('participants', 'credits');
+      .populate('participants', 'credits')
+      .populate('teacher', 'credits')
+      .populate('learner', 'credits');
 
     if (!conversation) {
       return res.status(404).json({
@@ -282,46 +363,62 @@ export const endSession = async (req, res, next) => {
       });
     }
 
+    if (!conversation.startedAt) {
+      return res.status(400).json({
+        success: false,
+        message: 'Session has not been started',
+      });
+    }
+
     // End the session
     conversation.status = 'ended';
     conversation.endedAt = new Date();
 
-    // Find teacher (the one who taught)
-    const teacher = await User.findById(teacherId);
-    const learner = conversation.participants.find(
-      p => p._id.toString() !== teacherId
-    );
+    let teacherId = conversation.teacher?._id || conversation.teacher;
+    let learnerId = conversation.learner?._id || conversation.learner;
 
-    if (teacher && teacher._id.toString() !== learner._id.toString()) {
-      // Award credits to teacher
-      teacher.credits += CREDIT_RULES.TEACH_SESSION_COMPLETION;
-      await teacher.save();
+    if (!teacherId || !learnerId) {
+      const resolvedRoles = await resolveSessionRoles(conversation, req.user._id);
+      teacherId = teacherId || resolvedRoles.teacherId;
+      learnerId = learnerId || resolvedRoles.learnerId;
 
-      // Create transaction record for teacher
-      await Transaction.create({
-        userId: teacher._id,
-        type: 'earn',
-        credits: CREDIT_RULES.TEACH_SESSION_COMPLETION,
-        sessionId: id,
-        description: TRANSACTION_DESCRIPTIONS.teach,
-        balance: teacher.credits,
+      conversation.teacher = teacherId;
+      conversation.learner = learnerId;
+    }
+
+    if (!teacherId) {
+      return res.status(400).json({
+        success: false,
+        message: 'Session teacher is not set',
       });
+    }
 
-      // Deduct credits from learner
-      if (learner && learner.credits >= CREDIT_RULES.BOOK_SESSION) {
-        learner.credits -= CREDIT_RULES.BOOK_SESSION;
-        await learner.save();
+    const startedAt = new Date(conversation.startedAt);
+    const endedAt = conversation.endedAt;
+    const elapsedMinutes = Math.max(1, Math.ceil((endedAt.getTime() - startedAt.getTime()) / 60000));
+    const earnedCredits = elapsedMinutes * CREDIT_RULES.TEACH_SESSION_PER_MINUTE;
+    const spentCredits = elapsedMinutes * CREDIT_RULES.TEACH_SESSION_PER_MINUTE;
 
-        // Create transaction record for learner
-        await Transaction.create({
-          userId: learner._id,
-          type: 'spend',
-          credits: CREDIT_RULES.BOOK_SESSION,
+    await awardCreditsToUser({
+      userId: teacherId,
+      credits: earnedCredits,
+      sessionId: id,
+      description: `${TRANSACTION_DESCRIPTIONS.teach_session} (${elapsedMinutes} min)`,
+    });
+
+    if (learnerId) {
+      try {
+        await spendCreditsFromUser({
+          userId: learnerId,
+          credits: spentCredits,
           sessionId: id,
-          description: TRANSACTION_DESCRIPTIONS.book_session,
-          balance: learner.credits,
+          description: `Spent on learning session (${elapsedMinutes} min)`,
         });
+      } catch (error) {
+        console.warn('Could not deduct learner credits for session', id, error.message);
       }
+    } else {
+      console.warn('Conversation learner was not set for session', id);
     }
 
     await conversation.save();
@@ -329,7 +426,7 @@ export const endSession = async (req, res, next) => {
     res.status(200).json({
       success: true,
       message: 'Session ended successfully',
-      data: { conversation },
+      data: { conversation, elapsedMinutes, earnedCredits },
     });
   } catch (error) {
     next(error);

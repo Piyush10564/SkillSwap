@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
+    "predev": "lsof -ti:5177 | xargs -n1 kill -9 2>/dev/null || true",
+    "dev": "vite --port 5177 --strictPort",
     "build": "vite build",
     "preview": "vite preview"
   },

@@ -1,7 +1,7 @@
 export default function BadgeCard({ badge, earned = false }) {
   return (
     <div
-      className={`rounded-2xl p-6 text-center transition-transform hover:scale-105 ${
+      className={`card-surface p-6 text-center transition-transform hover:scale-105 ${
         earned
           ? 'bg-gradient-to-br from-yellow-50 to-amber-50 border-2 border-yellow-300 shadow-lg shadow-yellow-200'
           : 'bg-slate-50 border-2 border-slate-200 opacity-50'

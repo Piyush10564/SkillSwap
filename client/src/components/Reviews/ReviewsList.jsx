@@ -54,7 +54,7 @@ export default function ReviewsList({ userId }) {
       )}
 
       {reviews.length === 0 ? (
-        <div className="text-center py-12 bg-slate-50 rounded-2xl">
+        <div className="card-surface p-12 text-center bg-slate-50">
           <p className="text-slate-500">No reviews yet</p>
         </div>
       ) : (

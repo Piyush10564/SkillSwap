@@ -61,7 +61,7 @@ export default function GoalsList({ userId }) {
       )}
 
       {goals.length === 0 ? (
-        <div className="text-center py-12 bg-slate-50 rounded-2xl">
+        <div className="card-surface p-12 text-center bg-slate-50">
           <p className="text-slate-500">No {statusFilter} goals yet</p>
         </div>
       ) : (

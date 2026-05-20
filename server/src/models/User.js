@@ -80,7 +80,7 @@ const userSchema = new mongoose.Schema({
   // Credits system
   credits: {
     type: Number,
-    default: 0,
+    default: 500,
     min: 0,
   },
 }, {

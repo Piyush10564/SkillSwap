@@ -1,8 +1,16 @@
 import { useState, useEffect } from 'react';
 import { noteService } from '../../services/noteService';
 import NoteCard from './NoteCard';
+import { useAuth } from '../../context/AuthContext';
 
-export default function NotesList({ userId }) {
+const getEntityId = (entity) => {
+  if (!entity) return null;
+  if (typeof entity === 'string') return entity;
+  return entity._id || null;
+};
+
+export default function NotesList({ userId, sessionId, refreshToken = 0 }) {
+  const { user } = useAuth();
   const [notes, setNotes] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
@@ -10,14 +18,18 @@ export default function NotesList({ userId }) {
 
   useEffect(() => {
     fetchNotes();
-  }, [userId, pagination.offset]);
+  }, [userId, sessionId, pagination.offset, refreshToken]);
 
   const fetchNotes = async () => {
     try {
       setLoading(true);
-      const response = await noteService.getUserNotes(userId, pagination.limit, pagination.offset);
-      setNotes(response.data);
-      setPagination(response.pagination || { total: response.data?.length || 0, limit: 20, offset: 0 });
+      const response = sessionId
+        ? await noteService.getSessionNotes(sessionId)
+        : await noteService.getUserNotes(userId, pagination.limit, pagination.offset);
+
+      const notesData = response.data || [];
+      setNotes(notesData);
+      setPagination(response.pagination || { total: notesData.length || 0, limit: 20, offset: 0 });
       setError('');
     } catch (err) {
       setError(err.message || 'Failed to load notes');
@@ -59,14 +71,18 @@ export default function NotesList({ userId }) {
       )}
 
       {notes.length === 0 ? (
-        <div className="text-center py-12 bg-slate-50 rounded-2xl">
+        <div className="card-surface p-12 text-center bg-slate-50">
           <p className="text-slate-500">No notes yet</p>
         </div>
       ) : (
         <div className="grid gap-4">
-          {notes.map((note) => (
-            <NoteCard key={note._id} note={note} onDelete={handleDelete} />
-          ))}
+          {notes.map((note) => {
+            const noteOwnerId = getEntityId(note.userId);
+            const currentUserId = user?._id ? String(user._id) : null;
+            const canDelete = currentUserId && noteOwnerId === currentUserId;
+
+            return <NoteCard key={note._id} note={note} onDelete={canDelete ? handleDelete : undefined} />;
+          })}
         </div>
       )}
     </div>

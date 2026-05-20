@@ -30,14 +30,14 @@ export default function CreditCard({ userId }) {
 
   if (loading) {
     return (
-      <div className="bg-gradient-to-br from-indigo-50 to-violet-50 rounded-2xl p-6 border border-indigo-200">
+      <div className="card-surface p-6 bg-gradient-to-br from-indigo-50 to-violet-50 border border-indigo-200">
         <div className="animate-pulse">Loading credits...</div>
       </div>
     );
   }
 
   return (
-    <div className="bg-gradient-to-br from-indigo-500 via-sky-500 to-violet-500 rounded-2xl p-6 shadow-lg text-white">
+    <div className="card-surface p-6 bg-gradient-to-br from-indigo-500 via-sky-500 to-violet-500 shadow-lg text-white">
       <h3 className="text-sm font-medium opacity-90 mb-2">Skill Credits Balance</h3>
       <div className="text-4xl font-bold mb-4">{credits}</div>
 

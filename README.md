@@ -8,6 +8,7 @@ A skill-exchange platform where users can offer skills to teach and list skills 
 - 🎯 **Skills Management**: Add, edit, and delete skills you can teach or want to learn
 - 🔍 **Smart Matching**: Intelligent algorithm matches users based on complementary skills
 - 💬 **Real-time Chat**: Socket.IO powered messaging with typing indicators
+- 📨 **Learning Requests**: Send, receive, accept, reject, or cancel skill-learning requests
 - 🔔 **Notifications**: Real-time notifications for matches and messages
 - 🌍 **Timezone Aware**: Filter matches by timezone for better scheduling
 - 📱 **Responsive Design**: Beautiful UI that works on desktop and mobile
@@ -58,7 +59,7 @@ docker-compose up --build
 ```
 
 4. Access the application:
-- Frontend: http://localhost:5173
+- Frontend: http://localhost:5177
 - Backend API: http://localhost:4000
 - MongoDB: localhost:27017
 
@@ -93,6 +94,8 @@ npm run dev
 
 Server will run on http://localhost:4000
 
+If you see `Port 4000 is already in use`, the server `predev` script will clear the old listener automatically before starting. If a different process is using the port, stop it first and rerun `npm run dev`.
+
 #### Frontend Setup
 
 1. Navigate to client directory:
@@ -110,7 +113,7 @@ npm install
 npm run dev
 ```
 
-Client will run on http://localhost:5173
+Client will run on http://localhost:5177
 
 ## Project Structure
 
@@ -168,6 +171,12 @@ SkillSwap/
 - `GET /api/chat/conversations/:id/messages` - Get messages
 - `POST /api/chat/conversations/:id/messages` - Send message
 
+### Learning Requests
+- `POST /api/requests` - Create a learning request
+- `GET /api/requests/incoming` - View incoming requests for a teacher
+- `GET /api/requests/outgoing` - View outgoing requests for a learner
+- `PATCH /api/requests/:id` - Accept, reject, or cancel a request
+
 ### Notifications
 - `GET /api/notifications` - Get notifications
 - `POST /api/notifications/:id/read` - Mark as read
@@ -198,8 +207,22 @@ PORT=4000
 MONGO_URI=mongodb://localhost:27017/skillswap
 JWT_ACCESS_SECRET=your-secret-key
 JWT_REFRESH_SECRET=your-refresh-secret
-CLIENT_ORIGIN=http://localhost:5173
+CLIENT_ORIGIN=http://localhost:5177
 NODE_ENV=development
+```
+
+## Quick Verification
+
+Run the production client build:
+```bash
+cd client
+npm run build
+```
+
+Run the end-to-end smoke test for signup/login, request creation, and acceptance:
+```bash
+cd ..
+node e2e_test.js
 ```
 
 ## Contributing

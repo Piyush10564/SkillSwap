@@ -10,7 +10,7 @@ export default function NoteCard({ note, onDelete }) {
   };
 
   return (
-    <div className="bg-white rounded-2xl p-6 shadow-md border border-slate-200 hover:shadow-lg transition-shadow">
+    <div className="card-surface p-6 hover:shadow-lg transition-shadow">
       <div className="flex items-start justify-between mb-3">
         <p className="text-xs text-slate-500">{formatDate(note.createdAt)}</p>
         {onDelete && (

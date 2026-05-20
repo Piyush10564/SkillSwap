@@ -31,10 +31,10 @@ export default function Auth() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 flex items-center justify-center px-4">
+    <div className="min-h-screen section-shell flex items-center justify-center px-4 py-10">
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
-          <div className="inline-flex h-12 w-12 rounded-2xl bg-gradient-to-tr from-indigo-500 via-sky-500 to-violet-500 shadow-sm items-center justify-center mb-4">
+          <div className="inline-flex h-12 w-12 rounded-2xl brand-gradient shadow-lg shadow-indigo-500/30 items-center justify-center mb-4">
             <span className="text-lg font-semibold tracking-tight text-white">SS</span>
           </div>
           <h1 className="text-2xl font-semibold tracking-tight text-slate-900 mb-2">
@@ -45,9 +45,9 @@ export default function Auth() {
           </p>
         </div>
 
-        <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-md">
+        <div className="rounded-[2rem] border border-white/70 bg-white/88 p-6 shadow-2xl shadow-slate-900/10 backdrop-blur-xl">
           {/* Tabs */}
-          <div className="mb-6 flex rounded-full bg-slate-50 p-0.5 text-sm">
+          <div className="mb-6 flex rounded-full bg-slate-100/80 p-0.5 text-sm">
             <button
               onClick={() => setIsLogin(true)}
               className={`flex-1 rounded-full py-2 text-center font-medium ${isLogin ? 'bg-white text-slate-900 shadow-sm' : 'text-slate-500'

@@ -53,7 +53,7 @@ export default function GoalCard({ goal, onUpdate }) {
   );
 
   return (
-    <div className="bg-white rounded-2xl p-6 shadow-md border border-slate-200 hover:shadow-lg transition-shadow">
+    <div className="card-surface p-6 hover:shadow-lg transition-shadow">
       <div className="flex items-start justify-between mb-3">
         <div>
           <h4 className="font-semibold text-slate-900 mb-1">{goal.title}</h4>

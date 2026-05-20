@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { profileService } from '../services/profileService';
+import BadgeShowcase from '../components/Badges/BadgeShowcase';
 
 export default function Profile() {
   const { user, setUser } = useAuth();
@@ -171,7 +172,7 @@ export default function Profile() {
 
       <div className="grid gap-6 lg:grid-cols-3">
         {/* Main Profile Card */}
-        <div className="lg:col-span-2 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+        <div className="lg:col-span-2 page-surface p-6">
           {/* Avatar Section */}
           <div className="flex items-center gap-6 mb-6">
             <div className="relative">
@@ -319,7 +320,7 @@ export default function Profile() {
 
         {/* Stats Card */}
         <div className="space-y-4">
-          <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+          <div className="page-surface p-6">
             <h3 className="text-base font-semibold text-slate-900 mb-4">Statistics</h3>
             {statsLoading ? (
               <div className="text-center py-4 text-sm text-slate-500">Loading stats...</div>
@@ -351,6 +352,11 @@ export default function Profile() {
             ) : (
               <div className="text-center py-4 text-sm text-slate-500">No data available</div>
             )}
+          </div>
+
+          <div className="page-surface p-6">
+            <h3 className="text-base font-semibold text-slate-900 mb-4">Badges</h3>
+            <BadgeShowcase userId={user?._id} />
           </div>
         </div>
       </div>

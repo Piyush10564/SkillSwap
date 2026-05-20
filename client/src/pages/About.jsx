@@ -45,7 +45,7 @@ export default function About() {
         <div id="how-it-works" className="mb-16">
           <h2 className="text-3xl font-bold tracking-tight text-slate-900 text-center mb-12">How It Works</h2>
           <div className="grid gap-8 md:grid-cols-3">
-            <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+            <div className="page-surface p-6">
               <div className="h-12 w-12 rounded-xl bg-indigo-50 flex items-center justify-center mb-4">
                 <span className="iconify text-indigo-600" data-icon="lucide:user-plus" data-width="24" data-height="24"></span>
               </div>
@@ -55,7 +55,7 @@ export default function About() {
               </p>
             </div>
 
-            <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+            <div className="page-surface p-6">
               <div className="h-12 w-12 rounded-xl bg-sky-50 flex items-center justify-center mb-4">
                 <span className="iconify text-sky-600" data-icon="lucide:search" data-width="24" data-height="24"></span>
               </div>
@@ -65,7 +65,7 @@ export default function About() {
               </p>
             </div>
 
-            <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+            <div className="page-surface p-6">
               <div className="h-12 w-12 rounded-xl bg-violet-50 flex items-center justify-center mb-4">
                 <span className="iconify text-violet-600" data-icon="lucide:message-circle" data-width="24" data-height="24"></span>
               </div>
@@ -132,7 +132,7 @@ export default function About() {
         </div>
 
         {/* CTA Section */}
-        <div className="rounded-2xl border border-indigo-200 bg-gradient-to-br from-indigo-50 to-violet-50 p-8 md:p-12 text-center">
+        <div className="card-surface p-8 md:p-12 bg-gradient-to-br from-indigo-50 to-violet-50 border border-indigo-200 text-center">
           <h2 className="text-2xl md:text-3xl font-bold tracking-tight text-slate-900 mb-4">
             Ready to start learning?
           </h2>

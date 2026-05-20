@@ -20,4 +20,14 @@ export const chatService = {
     const response = await api.post('/chat/conversations', { participantId });
     return response.data;
   },
+
+  startSession: async (conversationId) => {
+    const response = await api.post(`/chat/conversations/${conversationId}/start`);
+    return response.data;
+  },
+
+  endSession: async (conversationId) => {
+    const response = await api.post(`/chat/conversations/${conversationId}/end`);
+    return response.data;
+  },
 };

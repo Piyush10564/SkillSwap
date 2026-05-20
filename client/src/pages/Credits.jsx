@@ -73,7 +73,7 @@ export default function Credits() {
       {/* Credit Balance Card */}
       <div className="grid gap-6 lg:grid-cols-3">
         <div className="lg:col-span-1">
-          <div className="rounded-2xl border border-slate-200 bg-gradient-to-br from-indigo-500 via-sky-500 to-violet-500 p-8 shadow-lg text-white">
+          <div className="card-surface p-8 bg-gradient-to-br from-indigo-500 via-sky-500 to-violet-500 border border-slate-200 shadow-lg text-white">
             <p className="text-sm font-medium opacity-90 mb-2">Available Balance</p>
             <div className="text-5xl font-bold mb-6">{creditBalance}</div>
 
@@ -86,7 +86,7 @@ export default function Credits() {
 
         {/* How Credits Work */}
         <div className="lg:col-span-2 space-y-4">
-          <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+          <div className="page-surface p-6">
             <h3 className="text-base font-semibold text-slate-900 mb-4">How to Earn Credits</h3>
             <div className="space-y-3">
               <div className="flex items-start gap-3">
@@ -121,7 +121,7 @@ export default function Credits() {
             </div>
           </div>
 
-          <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+          <div className="page-surface p-6">
             <h3 className="text-base font-semibold text-slate-900 mb-4">How to Spend Credits</h3>
             <div className="space-y-3">
               <div className="flex items-start gap-3">
@@ -149,7 +149,7 @@ export default function Credits() {
       </div>
 
       {/* Transaction History */}
-      <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+      <div className="page-surface p-6">
         <div className="flex items-center justify-between mb-6">
           <h3 className="text-base font-semibold text-slate-900">Transaction History</h3>
           <button
@@ -214,7 +214,7 @@ export default function Credits() {
       </div>
 
       {/* Tips */}
-      <div className="rounded-2xl border border-blue-200 bg-blue-50 p-6">
+      <div className="card-surface p-6 border border-blue-200 bg-blue-50">
         <div className="flex gap-4">
           <div className="flex-shrink-0">
             <span className="text-2xl">💡</span>

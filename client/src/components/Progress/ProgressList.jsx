@@ -48,9 +48,9 @@ export default function ProgressList({ userId }) {
       )}
 
       {progress.length === 0 ? (
-        <div className="text-center py-12 bg-slate-50 rounded-2xl">
-          <p className="text-slate-500">Start learning a skill to track progress</p>
-        </div>
+          <div className="card-surface p-12 text-center bg-slate-50">
+            <p className="text-slate-500">No progress tracked yet</p>
+          </div>
       ) : (
         <div className="grid gap-4">
           {progress.map((p) => (

@@ -6,6 +6,16 @@ const conversationSchema = new mongoose.Schema({
     ref: 'User',
     required: true,
   }],
+  teacher: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+    default: null,
+  },
+  learner: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+    default: null,
+  },
   lastMessage: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Message',
@@ -21,6 +31,10 @@ const conversationSchema = new mongoose.Schema({
     default: 'active',
   },
   endedAt: {
+    type: Date,
+    default: null,
+  },
+  startedAt: {
     type: Date,
     default: null,
   },

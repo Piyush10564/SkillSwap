@@ -1,5 +1,56 @@
 import User from '../models/User.js';
 import Transaction from '../models/Transaction.js';
+import { ensureCreditMilestoneBadge } from './badgeController.js';
+
+export const awardCreditsToUser = async ({ userId, credits, sessionId = null, description = 'Earned credits from teaching' }) => {
+  const user = await User.findById(userId);
+
+  if (!user) {
+    throw new Error('User not found');
+  }
+
+  user.credits += credits;
+  await user.save();
+
+  const transaction = await Transaction.create({
+    userId,
+    type: 'earn',
+    credits,
+    sessionId,
+    description,
+    balance: user.credits,
+  });
+
+  await ensureCreditMilestoneBadge(userId, user.credits);
+
+  return { user, transaction };
+};
+
+export const spendCreditsFromUser = async ({ userId, credits, sessionId = null, description = 'Spent credits for learning' }) => {
+  const user = await User.findById(userId);
+
+  if (!user) {
+    throw new Error('User not found');
+  }
+
+  if (user.credits < credits) {
+    throw new Error('Insufficient credits');
+  }
+
+  user.credits -= credits;
+  await user.save();
+
+  const transaction = await Transaction.create({
+    userId,
+    type: 'spend',
+    credits,
+    sessionId,
+    description,
+    balance: user.credits,
+  });
+
+  return { user, transaction };
+};
 
 /**
  * @route   GET /api/credits/:userId
@@ -85,26 +136,11 @@ export const earnCredits = async (req, res, next) => {
       });
     }
 
-    const user = await User.findById(userId);
-    if (!user) {
-      return res.status(404).json({
-        success: false,
-        message: 'User not found',
-      });
-    }
-
-    // Update user credits
-    user.credits += credits;
-    await user.save();
-
-    // Create transaction record
-    const transaction = await Transaction.create({
+    const { transaction } = await awardCreditsToUser({
       userId,
-      type: 'earn',
       credits,
       sessionId: sessionId || null,
       description: description || 'Earned credits from teaching',
-      balance: user.credits,
     });
 
     res.status(201).json({

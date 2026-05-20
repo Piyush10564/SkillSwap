@@ -34,6 +34,7 @@ export const signup = async (req, res, next) => {
       password,
       timezone: timezone || 'UTC',
       location: location || '',
+      credits: 500,
     });
 
     // Generate token

@@ -34,7 +34,7 @@ export default function ProgressCard({ progress }) {
   };
 
   return (
-    <div className="bg-white rounded-2xl p-6 shadow-md border border-slate-200 hover:shadow-lg transition-shadow">
+    <div className="card-surface p-6 hover:shadow-lg transition-shadow">
       <div className="flex items-center justify-between mb-4">
         <div>
           <h4 className="font-semibold text-slate-900">{progress.skillId?.name || 'Unknown Skill'}</h4>

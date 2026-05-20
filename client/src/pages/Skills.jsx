@@ -90,7 +90,7 @@ export default function Skills() {
       {/* Skills List */}
       <div className="mt-6">
         {currentSkills.length === 0 ? (
-          <div className="rounded-2xl border border-dashed border-slate-200 bg-slate-50/80 p-8 text-center">
+          <div className="card-surface p-8 border-dashed text-center bg-slate-50/80">
             <h3 className="text-sm font-semibold text-slate-800">No skills added yet</h3>
             <p className="mt-1 text-xs text-slate-500">
               Start by adding a skill you'd like to {activeTab === 'offer' ? 'teach' : 'learn'}.
@@ -106,7 +106,7 @@ export default function Skills() {
         ) : (
           <div className="space-y-4">
             {currentSkills.map((skill) => (
-              <div key={skill._id} className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
+              <div key={skill._id} className="card-surface p-4">
                 <div className="flex items-start justify-between">
                   <div className="flex-1">
                     <div className="flex items-center gap-2">
@@ -139,7 +139,7 @@ export default function Skills() {
       {/* Add Skill Modal */}
       {showAddModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/40 p-4">
-          <div className="w-full max-w-md rounded-2xl border border-slate-200 bg-white p-6 shadow-xl">
+          <div className="w-full max-w-md card-surface p-6 shadow-xl">
             <h3 className="text-lg font-semibold text-slate-900 mb-4">Add new skill</h3>
             <form onSubmit={handleAddSkill} className="space-y-4">
               <div>

@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { noteService } from '../../services/noteService';
 
-export default function NoteEditor({ userId, onSuccess }) {
+export default function NoteEditor({ sessionId, userId, onSuccess }) {
   const [content, setContent] = useState('');
   const [tags, setTags] = useState('');
   const [loading, setLoading] = useState(false);
@@ -14,6 +14,7 @@ export default function NoteEditor({ userId, onSuccess }) {
 
     try {
       await noteService.createNote({
+        sessionId,
         content,
         tags: tags
           .split(',')
@@ -31,7 +32,7 @@ export default function NoteEditor({ userId, onSuccess }) {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="bg-white rounded-2xl p-6 shadow-md border border-slate-200">
+    <form onSubmit={handleSubmit} className="card-surface p-6">
       <h3 className="text-lg font-semibold text-slate-900 mb-4">Add Learning Notes</h3>
 
       {error && (

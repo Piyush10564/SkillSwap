@@ -42,7 +42,7 @@ export default function Features() {
               <CreditCard userId={user._id} />
             </div>
             <div className="lg:col-span-2">
-              <div className="bg-white rounded-2xl p-6 shadow-md border border-slate-200">
+              <div className="card-surface p-6">
                 <h3 className="font-semibold text-slate-900 mb-4">How Credits Work</h3>
                 <ul className="space-y-3 text-sm text-slate-600">
                   <li className="flex gap-3">
@@ -93,7 +93,7 @@ export default function Features() {
           <h2 className="text-2xl font-bold text-slate-900 mb-4">⭐ Reviews & Ratings</h2>
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             <div className="lg:col-span-1">
-              <div className="bg-white rounded-2xl p-6 shadow-md border border-slate-200">
+              <div className="card-surface p-6">
                 <h3 className="font-semibold text-slate-900 mb-4">Your Rating</h3>
                 <div className="mb-4">
                   <div className="text-5xl font-bold text-yellow-400 mb-2">

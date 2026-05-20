@@ -3,6 +3,38 @@ import UserBadge from '../models/UserBadge.js';
 import User from '../models/User.js';
 import Review from '../models/Review.js';
 
+export const ensureCreditMilestoneBadge = async (userId, credits) => {
+  try {
+    if (credits < 1000) {
+      return null;
+    }
+
+    let badge = await Badge.findOne({ name: '1000 Credits Badge' });
+
+    if (!badge) {
+      badge = await Badge.create({
+        name: '1000 Credits Badge',
+        description: 'Awarded for reaching 1000 credits by teaching others.',
+        icon: '🏆',
+        criteria: {
+          type: 'credits',
+          value: 1000,
+        },
+      });
+    }
+
+    const existingUserBadge = await UserBadge.findOne({ userId, badgeId: badge._id });
+    if (!existingUserBadge) {
+      await UserBadge.create({ userId, badgeId: badge._id });
+    }
+
+    return badge;
+  } catch (error) {
+    console.error('Error ensuring credit milestone badge:', error);
+    return null;
+  }
+};
+
 /**
  * @route   POST /api/badges
  * @desc    Create a new badge (admin only)
@@ -129,6 +161,8 @@ export const checkAndAwardBadges = async (userId) => {
   try {
     const user = await User.findById(userId);
     if (!user) return;
+
+    await ensureCreditMilestoneBadge(userId, user.credits);
 
     const badges = await Badge.find();
 

@@ -4,6 +4,7 @@ import {
   getMessages, 
   createMessage,
   createOrGetConversation,
+  startSession,
   endSession
 } from '../controllers/chatController.js';
 import { authenticate } from '../middlewares/auth.js';
@@ -15,6 +16,7 @@ router.use(authenticate);
 
 router.get('/conversations', getConversations);
 router.post('/conversations', createOrGetConversation);
+router.post('/conversations/:id/start', startSession);
 router.get('/conversations/:id/messages', getMessages);
 router.post('/conversations/:id/messages', createMessage);
 router.post('/conversations/:id/end', endSession);

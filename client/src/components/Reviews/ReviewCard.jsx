@@ -16,7 +16,7 @@ export default function ReviewCard({ review }) {
   };
 
   return (
-    <div className="bg-white rounded-2xl p-6 shadow-md border border-slate-200 hover:shadow-lg transition-shadow">
+    <div className="card-surface p-6 hover:shadow-lg transition-shadow">
       <div className="flex items-start justify-between mb-3">
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-indigo-500 to-violet-500 flex items-center justify-center text-white font-semibold">

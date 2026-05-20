@@ -17,6 +17,7 @@ import badgeRoutes from './routes/badges.js';
 import creditRoutes from './routes/credits.js';
 import noteRoutes from './routes/notes.js';
 import progressRoutes from './routes/progress.js';
+import requestRoutes from './routes/requests.js';
 
 const app = express();
 
@@ -97,6 +98,7 @@ app.use('/api/badges', badgeRoutes);
 app.use('/api/credits', creditRoutes);
 app.use('/api/notes', noteRoutes);
 app.use('/api/progress', progressRoutes);
+app.use('/api/requests', requestRoutes);
 
 // 404 handler
 app.use(notFound);

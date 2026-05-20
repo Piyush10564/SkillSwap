@@ -1,12 +1,14 @@
 import { Link, useLocation } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Footer from '../Footer/Footer';
+import { requestService } from '../../services/requestService';
 
 export default function Layout({ children }) {
   const { user, logout } = useAuth();
   const location = useLocation();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [pendingRequestsCount, setPendingRequestsCount] = useState(0);
 
   const isActive = (path) => location.pathname === path;
 
@@ -14,16 +16,46 @@ export default function Layout({ children }) {
     { path: '/dashboard', icon: 'lucide:layout-dashboard', label: 'Dashboard' },
     { path: '/discover', icon: 'lucide:compass', label: 'Discover Skills' },
     { path: '/skills', icon: 'lucide:badges', label: 'My Skills' },
+    { path: '/requests', icon: 'lucide:inbox', label: 'Requests' },
     { path: '/messages', icon: 'lucide:messages-square', label: 'Messages' },
     { path: '/credits', icon: 'lucide:coins', label: 'Credits' },
     { path: '/features', icon: 'lucide:sparkles', label: 'Features' },
     { path: '/profile', icon: 'lucide:user-round', label: 'Profile' },
   ];
 
+  useEffect(() => {
+    let active = true;
+
+    const loadPendingRequests = async () => {
+      if (!user) {
+        setPendingRequestsCount(0);
+        return;
+      }
+
+      try {
+        const response = await requestService.getIncoming();
+        const pending = (response.data.requests || []).filter((request) => request.status === 'pending');
+        if (active) {
+          setPendingRequestsCount(pending.length);
+        }
+      } catch (error) {
+        if (active) {
+          setPendingRequestsCount(0);
+        }
+      }
+    };
+
+    loadPendingRequests();
+
+    return () => {
+      active = false;
+    };
+  }, [user]);
+
   return (
-    <div className="flex min-h-screen flex-col lg:flex-row text-sm">
+    <div className="flex min-h-screen flex-col lg:flex-row text-sm section-shell">
       {/* Desktop Sidebar */}
-      <aside className="hidden lg:flex lg:w-64 xl:w-72 flex-col border-r border-slate-200 bg-white/80 backdrop-blur">
+      <aside className="hidden lg:flex lg:w-64 xl:w-72 flex-col border-r border-slate-200 bg-white/88 backdrop-blur-xl shadow-[0_0_40px_rgba(15,23,42,0.06)]">
         {/* Logo */}
         <div className="flex items-center gap-2 border-b border-slate-200 px-6 py-5">
           <div className="h-8 w-8 rounded-2xl bg-gradient-to-tr from-indigo-500 via-sky-500 to-violet-500 shadow-sm flex items-center justify-center">
@@ -47,7 +79,12 @@ export default function Layout({ children }) {
                 }`}
             >
               <span className="iconify" data-icon={item.icon} data-width="16" data-height="16" style={{ strokeWidth: '1.5' }}></span>
-              <span>{item.label}</span>
+              <span className="flex-1 text-left">{item.label}</span>
+              {item.path === '/requests' && pendingRequestsCount > 0 && (
+                <span className="rounded-full bg-rose-500 px-2 py-0.5 text-[0.65rem] font-semibold text-white">
+                  {pendingRequestsCount}
+                </span>
+              )}
             </Link>
           ))}
         </nav>
@@ -73,7 +110,7 @@ export default function Layout({ children }) {
       </aside>
 
       {/* Mobile Header */}
-      <header className="flex items-center justify-between border-b border-slate-200 bg-white/90 px-4 py-3 lg:hidden">
+      <header className="flex items-center justify-between border-b border-slate-200 bg-white/90 px-4 py-3 lg:hidden backdrop-blur-xl">
         <div className="flex items-center gap-2">
           <button onClick={() => setMobileMenuOpen(!mobileMenuOpen)} className="rounded-full p-1.5 text-slate-600 hover:bg-slate-100">
             <span className="iconify" data-icon="lucide:menu" data-width="18" data-height="18" style={{ strokeWidth: '1.5' }}></span>
@@ -91,7 +128,7 @@ export default function Layout({ children }) {
       {mobileMenuOpen && (
         <div className="fixed inset-0 z-40 lg:hidden">
           <div onClick={() => setMobileMenuOpen(false)} className="absolute inset-0 bg-slate-900/40"></div>
-          <div className="absolute inset-y-0 left-0 w-64 max-w-[75%] bg-white shadow-xl flex flex-col">
+          <div className="absolute inset-y-0 left-0 w-64 max-w-[75%] bg-white shadow-2xl flex flex-col backdrop-blur-xl">
             <div className="flex items-center justify-between border-b border-slate-200 px-4 py-3">
               <span className="text-sm font-semibold tracking-tight text-slate-900">Menu</span>
               <button onClick={() => setMobileMenuOpen(false)} className="rounded-full p-1.5 text-slate-500 hover:bg-slate-100">
@@ -110,7 +147,12 @@ export default function Layout({ children }) {
                     }`}
                 >
                   <span className="iconify" data-icon={item.icon} data-width="16" data-height="16" style={{ strokeWidth: '1.5' }}></span>
-                  <span>{item.label}</span>
+                  <span className="flex-1 text-left">{item.label}</span>
+                  {item.path === '/requests' && pendingRequestsCount > 0 && (
+                    <span className="rounded-full bg-rose-500 px-2 py-0.5 text-[0.65rem] font-semibold text-white">
+                      {pendingRequestsCount}
+                    </span>
+                  )}
                 </Link>
               ))}
             </nav>
@@ -120,7 +162,7 @@ export default function Layout({ children }) {
 
       {/* Main Content */}
       <div className="flex-1 flex flex-col">
-        <main className="flex-1 overflow-y-auto bg-slate-50">
+        <main className="flex-1 overflow-y-auto section-shell">
           <div className="mx-auto flex w-full max-w-6xl flex-col gap-6 px-4 py-5 sm:px-6 lg:px-8">
             {children}
           </div>

@@ -10,6 +10,7 @@ import Profile from './pages/Profile';
 import Credits from './pages/Credits';
 import About from './pages/About';
 import Features from './pages/Features';
+import Requests from './pages/Requests';
 import Layout from './components/Layout/Layout';
 import './index.css';
 
@@ -108,6 +109,13 @@ function AppRoutes() {
         <ProtectedRoute>
           <Layout>
             <Features />
+          </Layout>
+        </ProtectedRoute>
+      } />
+      <Route path="/requests" element={
+        <ProtectedRoute>
+          <Layout>
+            <Requests />
           </Layout>
         </ProtectedRoute>
       } />
