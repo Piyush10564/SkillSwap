@@ -13,10 +13,13 @@ export default function Messages() {
   const [selectedConversation, setSelectedConversation] = useState(null);
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState('');
+  const [emojiPickerOpen, setEmojiPickerOpen] = useState(false);
   const [notesRefreshToken, setNotesRefreshToken] = useState(0);
   const [endingSession, setEndingSession] = useState(false);
   const { socket, connected } = useSocket();
   const messagesEndRef = useRef(null);
+
+  const emojiOptions = ['😀', '😂', '😊', '😍', '🙌', '👍', '🔥', '🎉', '💡', '🤝'];
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -135,6 +138,11 @@ export default function Messages() {
         console.error('Error sending message:', error);
       }
     }
+  };
+
+  const handleAddEmoji = (emoji) => {
+    setNewMessage((current) => `${current}${emoji}`);
+    setEmojiPickerOpen(false);
   };
 
   return (
@@ -270,21 +278,61 @@ export default function Messages() {
 
               {/* Input */}
               <form onSubmit={handleSendMessage} className="border-t soft-border p-4">
-                <div className="flex gap-2">
-                  <input
-                    type="text"
-                    value={newMessage}
-                    onChange={(e) => setNewMessage(e.target.value)}
-                    placeholder="Type a message..."
-                    className="flex-1 rounded-full border soft-border bg-transparent px-4 py-2 text-sm text-strong placeholder:text-soft focus:border-[color:var(--accent)] focus:bg-transparent focus:outline-none focus:ring-2 focus:ring-[rgba(255,107,74,0.18)] focus-ring"
-                  />
-                  <button
-                    type="submit"
-                    disabled={!newMessage.trim()}
-                    className="rounded-full surface-accent px-6 py-2 text-sm font-medium text-white shadow-sm hover:brightness-105 disabled:opacity-50"
-                  >
-                    Send
-                  </button>
+                <div className="relative">
+                  {emojiPickerOpen && (
+                    <div className="absolute bottom-full left-0 mb-3 z-20 w-[min(100%,18rem)] rounded-2xl border soft-border bg-white p-3 shadow-[0_18px_40px_rgba(15,23,42,0.14)]">
+                      <div className="mb-2 flex items-center justify-between">
+                        <span className="text-xs font-semibold text-strong">
+                          Quick emojis
+                        </span>
+                        <button
+                          type="button"
+                          onClick={() => setEmojiPickerOpen(false)}
+                          className="text-xs font-medium text-soft hover:text-strong"
+                        >
+                          Close
+                        </button>
+                      </div>
+                      <div className="grid grid-cols-5 gap-2">
+                        {emojiOptions.map((emoji) => (
+                          <button
+                            key={emoji}
+                            type="button"
+                            onClick={() => handleAddEmoji(emoji)}
+                            className="rounded-xl border soft-border bg-slate-50 py-2 text-lg hover:bg-white hover-lift"
+                          >
+                            {emoji}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  <div className="flex gap-2">
+                    <button
+                      type="button"
+                      onClick={() => setEmojiPickerOpen((current) => !current)}
+                      className={`inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-full border soft-border bg-white/80 text-lg hover:bg-white focus-ring ${emojiPickerOpen ? 'surface-accent border-transparent text-white' : 'text-strong'}`}
+                      aria-label="Add emoji"
+                    >
+                      😊
+                    </button>
+
+                    <input
+                      type="text"
+                      value={newMessage}
+                      onChange={(e) => setNewMessage(e.target.value)}
+                      placeholder="Type a message..."
+                      className="flex-1 rounded-full border soft-border bg-transparent px-4 py-2 text-sm text-strong placeholder:text-soft focus:border-[color:var(--accent)] focus:bg-transparent focus:outline-none focus:ring-2 focus:ring-[rgba(255,107,74,0.18)] focus-ring"
+                    />
+                    <button
+                      type="submit"
+                      disabled={!newMessage.trim()}
+                      className="rounded-full surface-accent px-6 py-2 text-sm font-medium text-white shadow-sm hover:brightness-105 disabled:opacity-50"
+                    >
+                      Send
+                    </button>
+                  </div>
                 </div>
               </form>
             </>

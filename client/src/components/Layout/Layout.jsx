@@ -8,6 +8,7 @@ export default function Layout({ children }) {
   const { user, logout } = useAuth();
   const location = useLocation();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [sidebarOpen, setSidebarOpen] = useState(true);
   const [pendingRequestsCount, setPendingRequestsCount] = useState(0);
 
   const isActive = (path) => location.pathname === path;
@@ -53,61 +54,63 @@ export default function Layout({ children }) {
   }, [user]);
 
   return (
-    <div className="flex min-h-screen flex-col lg:flex-row text-sm section-shell">
+    <div className="relative flex min-h-screen flex-col lg:flex-row text-sm section-shell">
       {/* Desktop Sidebar */}
-      <aside className="hidden lg:flex lg:w-64 xl:w-72 flex-col border-r soft-border glass-panel shadow-[0_0_40px_rgba(8,21,39,0.08)]">
-        {/* Logo */}
-        <div className="flex items-center gap-2 border-b soft-border px-6 py-5">
-          <div className="h-9 w-9 rounded-2xl brand-gradient shadow-lg shadow-[rgba(255,107,74,0.2)] flex items-center justify-center">
-            <span className="text-xs font-semibold tracking-tight text-white">SS</span>
-          </div>
-          <div className="flex flex-col">
-            <span className="app-section-title text-base font-semibold text-strong">SkillSwap</span>
-            <span className="text-[0.7rem] text-soft">Exchange what you know</span>
-          </div>
-        </div>
-
-        {/* Navigation */}
-        <nav className="flex-1 overflow-y-auto px-3 py-4 space-y-1">
-          {navItems.map((item) => (
-            <Link
-              key={item.path}
-              to={item.path}
-              className={`flex w-full items-center gap-3 rounded-2xl px-3 py-2.5 text-xs font-medium hover-lift ${isActive(item.path)
-                ? 'surface-accent shadow-lg shadow-[rgba(255,107,74,0.16)]'
-                : 'text-strong hover:bg-white/70'
-                }`}
-            >
-              <span className="iconify" data-icon={item.icon} data-width="16" data-height="16" style={{ strokeWidth: '1.5' }}></span>
-              <span className="flex-1 text-left">{item.label}</span>
-              {item.path === '/requests' && pendingRequestsCount > 0 && (
-                <span className="rounded-full bg-rose-500 px-2 py-0.5 text-[0.65rem] font-semibold text-white">
-                  {pendingRequestsCount}
-                </span>
-              )}
-            </Link>
-          ))}
-        </nav>
-
-        {/* User Profile */}
-        <div className="border-t soft-border px-4 py-4">
-          <div className="flex items-center gap-3 rounded-2xl bg-white/70 px-3 py-2.5 border border-white/70 shadow-sm">
-            <div className="h-9 w-9 rounded-full brand-gradient flex items-center justify-center text-[0.75rem] font-semibold tracking-tight text-white">
-              {user?.name?.substring(0, 2).toUpperCase() || 'U'}
+      {sidebarOpen && (
+        <aside className="hidden lg:flex lg:w-64 xl:w-72 flex-col border-r soft-border glass-panel shadow-[0_0_40px_rgba(8,21,39,0.08)]">
+          {/* Logo */}
+          <div className="flex items-center gap-2 border-b soft-border px-6 py-5">
+            <div className="h-9 w-9 rounded-2xl brand-gradient shadow-lg shadow-[rgba(255,107,74,0.2)] flex items-center justify-center">
+              <span className="text-xs font-semibold tracking-tight text-white">SS</span>
             </div>
-            <div className="flex-1">
-              <div className="flex items-center justify-between">
-                <span className="text-xs font-semibold text-strong">{user?.name || 'User'}</span>
-                <span className="h-1.5 w-1.5 rounded-full bg-emerald-500"></span>
+            <div className="flex flex-col">
+              <span className="app-section-title text-base font-semibold text-strong">SkillSwap</span>
+              <span className="text-[0.7rem] text-soft">Exchange what you know</span>
+            </div>
+          </div>
+
+          {/* Navigation */}
+          <nav className="flex-1 overflow-y-auto px-3 py-4 space-y-1">
+            {navItems.map((item) => (
+              <Link
+                key={item.path}
+                to={item.path}
+                className={`flex w-full items-center gap-3 rounded-2xl px-3 py-2.5 text-xs font-medium hover-lift ${isActive(item.path)
+                  ? 'surface-accent shadow-lg shadow-[rgba(255,107,74,0.16)]'
+                  : 'text-strong hover:bg-white/70'
+                  }`}
+              >
+                <span className="iconify" data-icon={item.icon} data-width="16" data-height="16" style={{ strokeWidth: '1.5' }}></span>
+                <span className="flex-1 text-left">{item.label}</span>
+                {item.path === '/requests' && pendingRequestsCount > 0 && (
+                  <span className="rounded-full bg-rose-500 px-2 py-0.5 text-[0.65rem] font-semibold text-white">
+                    {pendingRequestsCount}
+                  </span>
+                )}
+              </Link>
+            ))}
+          </nav>
+
+          {/* User Profile */}
+          <div className="border-t soft-border px-4 py-4">
+            <div className="flex items-center gap-3 rounded-2xl bg-white/70 px-3 py-2.5 border border-white/70 shadow-sm">
+              <div className="h-9 w-9 rounded-full brand-gradient flex items-center justify-center text-[0.75rem] font-semibold tracking-tight text-white">
+                {user?.name?.substring(0, 2).toUpperCase() || 'U'}
               </div>
-              <span className="text-[0.7rem] text-soft">{user?.timezone || 'UTC'}</span>
+              <div className="flex-1">
+                <div className="flex items-center justify-between">
+                  <span className="text-xs font-semibold text-strong">{user?.name || 'User'}</span>
+                  <span className="h-1.5 w-1.5 rounded-full bg-emerald-500"></span>
+                </div>
+                <span className="text-[0.7rem] text-soft">{user?.timezone || 'UTC'}</span>
+              </div>
+              <button onClick={logout} className="rounded-full p-1 text-soft hover:bg-white hover:text-strong focus-ring">
+                <span className="iconify" data-icon="lucide:log-out" data-width="14" data-height="14" style={{ strokeWidth: '1.5' }}></span>
+              </button>
             </div>
-            <button onClick={logout} className="rounded-full p-1 text-soft hover:bg-white hover:text-strong focus-ring">
-              <span className="iconify" data-icon="lucide:log-out" data-width="14" data-height="14" style={{ strokeWidth: '1.5' }}></span>
-            </button>
           </div>
-        </div>
-      </aside>
+        </aside>
+      )}
 
       {/* Mobile Header */}
       <header className="flex items-center justify-between border-b soft-border bg-white/85 px-4 py-3 lg:hidden glass-panel">
@@ -163,7 +166,37 @@ export default function Layout({ children }) {
       {/* Main Content */}
       <div className="flex-1 flex flex-col">
         <main className="flex-1 overflow-y-auto section-shell">
-          <div className="mx-auto flex w-full max-w-6xl flex-col gap-6 px-4 py-5 sm:px-6 lg:px-8">
+          <div className={`mx-auto flex w-full flex-col gap-6 px-4 py-5 sm:px-6 lg:px-8 ${sidebarOpen ? 'max-w-6xl' : 'max-w-[96rem]'}`}>
+              {/* slim vertical toggle centered between sidebar and content (desktop only) */}
+              <button
+                type="button"
+                onClick={() => setSidebarOpen((current) => !current)}
+                className="hidden lg:flex items-center justify-center z-40 focus-ring"
+                aria-label={sidebarOpen ? 'Hide sidebar' : 'Show sidebar'}
+                title={sidebarOpen ? 'Hide sidebar' : 'Show sidebar'}
+                style={{
+                  position: 'absolute',
+                  left: sidebarOpen ? '16rem' : '0.75rem',
+                  top: '50%',
+                  transform: 'translateY(-50%)',
+                  height: '56px',
+                  width: '36px',
+                  borderRadius: '999px',
+                  background: 'linear-gradient(135deg,#0f172a 0%,#1d4ed8 100%)',
+                  boxShadow: '0 8px 20px rgba(15,23,42,0.12)',
+                  border: '1px solid rgba(255,255,255,0.12)',
+                  transition: 'left 220ms ease, transform 160ms ease',
+                  cursor: 'pointer',
+                }}
+              >
+                <span
+                  className="iconify text-white"
+                  data-icon={sidebarOpen ? 'lucide:chevron-left' : 'lucide:chevron-right'}
+                  data-width="18"
+                  data-height="18"
+                  style={{ transform: sidebarOpen ? 'translateX(0)' : 'translateX(0)' }}
+                />
+              </button>
             {children}
           </div>
         </main>
