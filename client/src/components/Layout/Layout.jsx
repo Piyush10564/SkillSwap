@@ -55,15 +55,15 @@ export default function Layout({ children }) {
   return (
     <div className="flex min-h-screen flex-col lg:flex-row text-sm section-shell">
       {/* Desktop Sidebar */}
-      <aside className="hidden lg:flex lg:w-64 xl:w-72 flex-col border-r soft-border bg-white/5 backdrop-blur-xl shadow-[0_0_40px_rgba(15,23,42,0.06)]">
+      <aside className="hidden lg:flex lg:w-64 xl:w-72 flex-col border-r soft-border glass-panel shadow-[0_0_40px_rgba(8,21,39,0.08)]">
         {/* Logo */}
         <div className="flex items-center gap-2 border-b soft-border px-6 py-5">
-          <div className="h-8 w-8 rounded-2xl bg-gradient-to-tr from-indigo-500 via-sky-500 to-violet-500 shadow-sm flex items-center justify-center">
+          <div className="h-9 w-9 rounded-2xl brand-gradient shadow-lg shadow-[rgba(255,107,74,0.2)] flex items-center justify-center">
             <span className="text-xs font-semibold tracking-tight text-white">SS</span>
           </div>
           <div className="flex flex-col">
-            <span className="text-base font-semibold tracking-tight text-slate-900">SkillSwap</span>
-            <span className="text-[0.7rem] text-slate-500">Exchange what you know</span>
+            <span className="app-section-title text-base font-semibold text-strong">SkillSwap</span>
+            <span className="text-[0.7rem] text-soft">Exchange what you know</span>
           </div>
         </div>
 
@@ -73,9 +73,9 @@ export default function Layout({ children }) {
             <Link
               key={item.path}
               to={item.path}
-              className={`flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-xs font-medium ${isActive(item.path)
-                ? 'bg-indigo-50 text-indigo-700'
-                : 'text-slate-700 hover:bg-white/5'
+              className={`flex w-full items-center gap-3 rounded-2xl px-3 py-2.5 text-xs font-medium hover-lift ${isActive(item.path)
+                ? 'surface-accent shadow-lg shadow-[rgba(255,107,74,0.16)]'
+                : 'text-strong hover:bg-white/70'
                 }`}
             >
               <span className="iconify" data-icon={item.icon} data-width="16" data-height="16" style={{ strokeWidth: '1.5' }}></span>
@@ -91,18 +91,18 @@ export default function Layout({ children }) {
 
         {/* User Profile */}
         <div className="border-t soft-border px-4 py-4">
-          <div className="flex items-center gap-3 rounded-xl bg-white/5 px-3 py-2.5">
-            <div className="h-8 w-8 rounded-full bg-gradient-to-tr from-indigo-500 to-violet-500 flex items-center justify-center text-[0.75rem] font-semibold tracking-tight text-white">
+          <div className="flex items-center gap-3 rounded-2xl bg-white/70 px-3 py-2.5 border border-white/70 shadow-sm">
+            <div className="h-9 w-9 rounded-full brand-gradient flex items-center justify-center text-[0.75rem] font-semibold tracking-tight text-white">
               {user?.name?.substring(0, 2).toUpperCase() || 'U'}
             </div>
             <div className="flex-1">
               <div className="flex items-center justify-between">
-                <span className="text-xs font-semibold text-slate-900">{user?.name || 'User'}</span>
+                <span className="text-xs font-semibold text-strong">{user?.name || 'User'}</span>
                 <span className="h-1.5 w-1.5 rounded-full bg-emerald-500"></span>
               </div>
-              <span className="text-[0.7rem] text-slate-500">{user?.timezone || 'UTC'}</span>
+              <span className="text-[0.7rem] text-soft">{user?.timezone || 'UTC'}</span>
             </div>
-            <button onClick={logout} className="rounded-full p-1 text-slate-400 hover:bg-slate-100 hover:text-slate-700">
+            <button onClick={logout} className="rounded-full p-1 text-soft hover:bg-white hover:text-strong focus-ring">
               <span className="iconify" data-icon="lucide:log-out" data-width="14" data-height="14" style={{ strokeWidth: '1.5' }}></span>
             </button>
           </div>
@@ -110,16 +110,16 @@ export default function Layout({ children }) {
       </aside>
 
       {/* Mobile Header */}
-      <header className="flex items-center justify-between border-b border-slate-200 bg-white/90 px-4 py-3 lg:hidden backdrop-blur-xl">
+      <header className="flex items-center justify-between border-b soft-border bg-white/85 px-4 py-3 lg:hidden glass-panel">
         <div className="flex items-center gap-2">
-          <button onClick={() => setMobileMenuOpen(!mobileMenuOpen)} className="rounded-full p-1.5 text-slate-600 hover:bg-slate-100">
+          <button onClick={() => setMobileMenuOpen(!mobileMenuOpen)} className="rounded-full p-1.5 text-strong hover:bg-white/80 focus-ring">
             <span className="iconify" data-icon="lucide:menu" data-width="18" data-height="18" style={{ strokeWidth: '1.5' }}></span>
           </button>
           <div className="flex items-center gap-2">
-            <div className="h-7 w-7 rounded-2xl bg-gradient-to-tr from-indigo-500 via-sky-500 to-violet-500 flex items-center justify-center shadow-sm">
+            <div className="h-7 w-7 rounded-2xl brand-gradient flex items-center justify-center shadow-sm">
               <span className="text-[0.6rem] font-semibold tracking-tight text-white">SS</span>
             </div>
-            <span className="text-sm font-semibold tracking-tight text-slate-900">SkillSwap</span>
+            <span className="app-section-title text-sm font-semibold text-strong">SkillSwap</span>
           </div>
         </div>
       </header>
@@ -127,11 +127,11 @@ export default function Layout({ children }) {
       {/* Mobile Menu */}
       {mobileMenuOpen && (
         <div className="fixed inset-0 z-40 lg:hidden">
-          <div onClick={() => setMobileMenuOpen(false)} className="absolute inset-0 bg-slate-900/40"></div>
-          <div className="absolute inset-y-0 left-0 w-64 max-w-[75%] bg-white shadow-2xl flex flex-col backdrop-blur-xl">
-            <div className="flex items-center justify-between border-b border-slate-200 px-4 py-3">
-              <span className="text-sm font-semibold tracking-tight text-slate-900">Menu</span>
-              <button onClick={() => setMobileMenuOpen(false)} className="rounded-full p-1.5 text-slate-500 hover:bg-slate-100">
+          <div onClick={() => setMobileMenuOpen(false)} className="absolute inset-0 bg-slate-950/45"></div>
+          <div className="absolute inset-y-0 left-0 w-64 max-w-[75%] glass-panel shadow-2xl flex flex-col">
+            <div className="flex items-center justify-between border-b soft-border px-4 py-3">
+              <span className="app-section-title text-sm font-semibold text-strong">Menu</span>
+              <button onClick={() => setMobileMenuOpen(false)} className="rounded-full p-1.5 text-soft hover:bg-white/80 focus-ring">
                 <span className="iconify" data-icon="lucide:x" data-width="16" data-height="16" style={{ strokeWidth: '1.5' }}></span>
               </button>
             </div>
@@ -141,9 +141,9 @@ export default function Layout({ children }) {
                   key={item.path}
                   to={item.path}
                   onClick={() => setMobileMenuOpen(false)}
-                  className={`flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-xs font-medium ${isActive(item.path)
-                    ? 'bg-indigo-50 text-indigo-700'
-                    : 'text-slate-700 hover:bg-slate-100'
+                  className={`flex w-full items-center gap-3 rounded-2xl px-3 py-2.5 text-xs font-medium hover-lift ${isActive(item.path)
+                    ? 'surface-accent shadow-lg shadow-[rgba(255,107,74,0.16)]'
+                    : 'text-strong hover:bg-white/70'
                     }`}
                 >
                   <span className="iconify" data-icon={item.icon} data-width="16" data-height="16" style={{ strokeWidth: '1.5' }}></span>

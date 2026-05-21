@@ -66,8 +66,11 @@ export const uploadAvatar = async (req, res, next) => {
       });
     }
 
-    // Check size (limit to 2MB base64 string)
-    if (avatar.length > 2 * 1024 * 1024) {
+    // Check decoded size (limit to 2MB image payload)
+    const base64Data = avatar.split(',')[1] || '';
+    const decodedSize = Math.ceil((base64Data.length * 3) / 4);
+
+    if (decodedSize > 2 * 1024 * 1024) {
       return res.status(400).json({
         success: false,
         message: 'Image too large. Maximum size is 2MB',

@@ -35,8 +35,8 @@ export default function ProgressList({ userId }) {
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between mb-6">
-        <h2 className="text-2xl font-bold text-slate-900">Learning Progress</h2>
-        <span className="text-sm font-medium text-slate-600 bg-white/5 px-3 py-1 rounded-full">
+        <h2 className="app-section-title text-2xl font-bold text-strong">Learning Progress</h2>
+        <span className="chip chip-soft">
           {progress.length} skills
         </span>
       </div>
@@ -49,7 +49,7 @@ export default function ProgressList({ userId }) {
 
       {progress.length === 0 ? (
           <div className="card-surface p-12 text-center">
-            <p className="text-slate-500">No progress tracked yet</p>
+            <p className="text-soft">No progress tracked yet</p>
           </div>
       ) : (
         <div className="grid gap-4">

@@ -56,8 +56,8 @@ export default function Credits() {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center h-screen">
-        <p className="text-slate-500">Loading credits information...</p>
+      <div className="flex items-center justify-center h-screen section-shell">
+        <p className="text-soft">Loading credits information...</p>
       </div>
     );
   }
@@ -66,14 +66,14 @@ export default function Credits() {
     <div className="space-y-6">
       {/* Header */}
       <div>
-        <h2 className="text-3xl font-bold tracking-tight text-slate-900">Credits & Rewards</h2>
-        <p className="text-sm text-slate-500 mt-1">Manage your skill credits and transaction history</p>
+        <h2 className="app-section-title text-3xl font-bold text-strong">Credits & Rewards</h2>
+        <p className="text-sm text-muted mt-1">Manage your skill credits and transaction history</p>
       </div>
 
       {/* Credit Balance Card */}
       <div className="grid gap-6 lg:grid-cols-3">
         <div className="lg:col-span-1">
-          <div className="card-surface p-8 bg-gradient-to-br from-indigo-500 via-sky-500 to-violet-500 border border-slate-200 shadow-lg text-white">
+          <div className="card-surface p-8 surface-accent border border-white/40 shadow-lg text-white">
             <p className="text-sm font-medium opacity-90 mb-2">Available Balance</p>
             <div className="text-5xl font-bold mb-6">{creditBalance}</div>
 
@@ -87,15 +87,15 @@ export default function Credits() {
         {/* How Credits Work */}
         <div className="lg:col-span-2 space-y-4">
           <div className="page-surface p-6">
-            <h3 className="text-base font-semibold text-slate-900 mb-4">How to Earn Credits</h3>
+            <h3 className="app-section-title text-base font-semibold text-strong mb-4">How to Earn Credits</h3>
             <div className="space-y-3">
               <div className="flex items-start gap-3">
                 <div className="flex-shrink-0 w-8 h-8 bg-emerald-100 rounded-lg flex items-center justify-center">
                   <span className="text-emerald-600 font-semibold">+50</span>
                 </div>
                 <div>
-                  <p className="text-sm font-medium text-slate-900">Complete a Teaching Session</p>
-                  <p className="text-xs text-slate-500">Earn when you finish teaching someone</p>
+                  <p className="text-sm font-medium text-strong">Complete a Teaching Session</p>
+                  <p className="text-xs text-soft">Earn when you finish teaching someone</p>
                 </div>
               </div>
 
@@ -104,8 +104,8 @@ export default function Credits() {
                   <span className="text-emerald-600 font-semibold">+10</span>
                 </div>
                 <div>
-                  <p className="text-sm font-medium text-slate-900">Receive Positive Review</p>
-                  <p className="text-xs text-slate-500">Get a 4-5 star review from someone you taught</p>
+                  <p className="text-sm font-medium text-strong">Receive Positive Review</p>
+                  <p className="text-xs text-soft">Get a 4-5 star review from someone you taught</p>
                 </div>
               </div>
 
@@ -114,23 +114,23 @@ export default function Credits() {
                   <span className="text-emerald-600 font-semibold">+25</span>
                 </div>
                 <div>
-                  <p className="text-sm font-medium text-slate-900">Complete a Learning Goal</p>
-                  <p className="text-xs text-slate-500">Finish a learning goal you set for yourself</p>
+                  <p className="text-sm font-medium text-strong">Complete a Learning Goal</p>
+                  <p className="text-xs text-soft">Finish a learning goal you set for yourself</p>
                 </div>
               </div>
             </div>
           </div>
 
           <div className="page-surface p-6">
-            <h3 className="text-base font-semibold text-slate-900 mb-4">How to Spend Credits</h3>
+            <h3 className="app-section-title text-base font-semibold text-strong mb-4">How to Spend Credits</h3>
             <div className="space-y-3">
               <div className="flex items-start gap-3">
                 <div className="flex-shrink-0 w-8 h-8 bg-red-100 rounded-lg flex items-center justify-center">
                   <span className="text-red-600 font-semibold">-30</span>
                 </div>
                 <div>
-                  <p className="text-sm font-medium text-slate-900">Book a Learning Session</p>
-                  <p className="text-xs text-slate-500">Pay to learn from an expert teacher</p>
+                  <p className="text-sm font-medium text-strong">Book a Learning Session</p>
+                  <p className="text-xs text-soft">Pay to learn from an expert teacher</p>
                 </div>
               </div>
 
@@ -139,8 +139,8 @@ export default function Credits() {
                   <span className="text-red-600 font-semibold">-20</span>
                 </div>
                 <div>
-                  <p className="text-sm font-medium text-slate-900">Request Coaching</p>
-                  <p className="text-xs text-slate-500">Get personalized coaching from an expert</p>
+                  <p className="text-sm font-medium text-strong">Request Coaching</p>
+                  <p className="text-xs text-soft">Get personalized coaching from an expert</p>
                 </div>
               </div>
             </div>
@@ -151,10 +151,10 @@ export default function Credits() {
       {/* Transaction History */}
       <div className="page-surface p-6">
         <div className="flex items-center justify-between mb-6">
-          <h3 className="text-base font-semibold text-slate-900">Transaction History</h3>
+          <h3 className="app-section-title text-base font-semibold text-strong">Transaction History</h3>
           <button
             onClick={fetchCreditsData}
-            className="text-xs text-indigo-600 hover:text-indigo-700 font-medium"
+            className="text-xs text-[color:var(--accent)] hover:brightness-90 font-medium"
           >
             Refresh
           </button>
@@ -168,25 +168,25 @@ export default function Credits() {
 
         {transactions.length === 0 ? (
           <div className="text-center py-12">
-            <p className="text-slate-500 text-sm">No transactions yet</p>
-            <p className="text-slate-400 text-xs mt-1">Complete teaching sessions, goals, and reviews to earn credits</p>
+            <p className="text-soft text-sm">No transactions yet</p>
+            <p className="text-soft text-xs mt-1">Complete teaching sessions, goals, and reviews to earn credits</p>
           </div>
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
-                <tr className="border-b border-slate-200">
-                  <th className="text-left py-3 px-4 font-semibold text-slate-700">Description</th>
-                  <th className="text-left py-3 px-4 font-semibold text-slate-700">Type</th>
-                  <th className="text-right py-3 px-4 font-semibold text-slate-700">Amount</th>
-                  <th className="text-right py-3 px-4 font-semibold text-slate-700">Balance</th>
-                  <th className="text-right py-3 px-4 font-semibold text-slate-700">Date</th>
+                <tr className="border-b soft-border">
+                  <th className="text-left py-3 px-4 font-semibold text-strong">Description</th>
+                  <th className="text-left py-3 px-4 font-semibold text-strong">Type</th>
+                  <th className="text-right py-3 px-4 font-semibold text-strong">Amount</th>
+                  <th className="text-right py-3 px-4 font-semibold text-strong">Balance</th>
+                  <th className="text-right py-3 px-4 font-semibold text-strong">Date</th>
                 </tr>
               </thead>
               <tbody>
                 {transactions.map((transaction) => (
-                  <tr key={transaction._id} className="border-b border-slate-100 hover:bg-slate-50">
-                    <td className="py-3 px-4 text-slate-700">{transaction.description || 'Skill Credits'}</td>
+                  <tr key={transaction._id} className="border-b border-slate-100 hover:bg-white/70">
+                    <td className="py-3 px-4 text-muted">{transaction.description || 'Skill Credits'}</td>
                     <td className="py-3 px-4">
                       <span
                         className={`inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium ${
@@ -201,8 +201,8 @@ export default function Credits() {
                     <td className={`py-3 px-4 text-right font-semibold ${getTransactionColor(transaction.type)}`}>
                       {getTransactionIcon(transaction.type)}{transaction.credits}
                     </td>
-                    <td className="py-3 px-4 text-right text-slate-600 font-medium">{transaction.balance}</td>
-                    <td className="py-3 px-4 text-right text-slate-500 text-xs">
+                    <td className="py-3 px-4 text-right text-muted font-medium">{transaction.balance}</td>
+                    <td className="py-3 px-4 text-right text-soft text-xs">
                       {formatDate(transaction.createdAt)}
                     </td>
                   </tr>
@@ -214,14 +214,14 @@ export default function Credits() {
       </div>
 
       {/* Tips */}
-      <div className="card-surface p-6 border border-blue-200 bg-blue-50">
+      <div className="card-surface p-6 border border-cyan-200 bg-cyan-50/80">
         <div className="flex gap-4">
           <div className="flex-shrink-0">
             <span className="text-2xl">💡</span>
           </div>
           <div>
-            <h4 className="text-sm font-semibold text-blue-900 mb-1">Tips to Earn More Credits</h4>
-            <ul className="text-sm text-blue-800 space-y-1">
+            <h4 className="text-sm font-semibold text-cyan-900 mb-1">Tips to Earn More Credits</h4>
+            <ul className="text-sm text-cyan-800 space-y-1">
               <li>✅ Share your skills regularly to earn consistent credits</li>
               <li>✅ Maintain high ratings to attract more students</li>
               <li>✅ Complete your learning goals to unlock rewards</li>

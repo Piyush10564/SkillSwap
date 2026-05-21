@@ -58,8 +58,8 @@ export default function NotesList({ userId, sessionId, refreshToken = 0 }) {
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between mb-6">
-        <h2 className="text-2xl font-bold text-slate-900">Your Notes</h2>
-        <span className="text-sm font-medium text-slate-600 bg-slate-100 px-3 py-1 rounded-full">
+        <h2 className="app-section-title text-2xl font-bold text-strong">Your Notes</h2>
+        <span className="chip chip-soft">
           {pagination.total} notes
         </span>
       </div>
@@ -72,7 +72,7 @@ export default function NotesList({ userId, sessionId, refreshToken = 0 }) {
 
       {notes.length === 0 ? (
         <div className="card-surface p-12 text-center bg-slate-50">
-          <p className="text-slate-500">No notes yet</p>
+          <p className="text-soft">No notes yet</p>
         </div>
       ) : (
         <div className="grid gap-4">

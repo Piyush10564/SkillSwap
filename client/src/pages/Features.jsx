@@ -17,34 +17,34 @@ export default function Features() {
 
   if (!user) {
     return (
-      <div className="min-h-screen bg-slate-50 flex items-center justify-center">
+      <div className="min-h-screen section-shell flex items-center justify-center">
         <div className="text-center">
-          <p className="text-slate-600 mb-4">Please log in to view features</p>
+          <p className="text-muted mb-4">Please log in to view features</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-slate-50 py-12 px-4">
+    <div className="min-h-screen section-shell py-12 px-4">
       <div className="max-w-6xl mx-auto">
         {/* Header */}
         <div className="mb-12">
-          <h1 className="text-4xl font-bold text-slate-900 mb-2">Enhanced Features</h1>
-          <p className="text-slate-600">Track your learning journey with reviews, goals, badges, and more</p>
+          <h1 className="app-section-title text-4xl font-bold text-strong mb-2">Enhanced Features</h1>
+          <p className="text-muted">Track your learning journey with reviews, goals, badges, and more</p>
         </div>
 
         {/* Credits Section */}
         <div className="mb-12">
-          <h2 className="text-2xl font-bold text-slate-900 mb-4">💰 Credits & Rewards</h2>
+          <h2 className="app-section-title text-2xl font-bold text-strong mb-4">💰 Credits & Rewards</h2>
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             <div className="lg:col-span-1">
               <CreditCard userId={user._id} />
             </div>
             <div className="lg:col-span-2">
               <div className="card-surface p-6">
-                <h3 className="font-semibold text-slate-900 mb-4">How Credits Work</h3>
-                <ul className="space-y-3 text-sm text-slate-600">
+                <h3 className="app-section-title font-semibold text-strong mb-4">How Credits Work</h3>
+                <ul className="space-y-3 text-sm text-muted">
                   <li className="flex gap-3">
                     <span className="text-lg">📈</span>
                     <span><strong>Earn Credits:</strong> Teach and share skills with others</span>
@@ -65,7 +65,7 @@ export default function Features() {
 
         {/* Goals Section */}
         <div className="mb-12">
-          <h2 className="text-2xl font-bold text-slate-900 mb-4">🎯 Learning Goals</h2>
+          <h2 className="app-section-title text-2xl font-bold text-strong mb-4">🎯 Learning Goals</h2>
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             <div className="lg:col-span-1">
               <GoalForm onSuccess={() => window.location.reload()} />
@@ -78,35 +78,35 @@ export default function Features() {
 
         {/* Badges Section */}
         <div className="mb-12">
-          <h2 className="text-2xl font-bold text-slate-900 mb-4">🏅 Achievements & Badges</h2>
+          <h2 className="app-section-title text-2xl font-bold text-strong mb-4">🏅 Achievements & Badges</h2>
           <BadgeShowcase userId={user._id} />
         </div>
 
         {/* Progress Section */}
         <div className="mb-12">
-          <h2 className="text-2xl font-bold text-slate-900 mb-4">📊 Learning Progress</h2>
+          <h2 className="app-section-title text-2xl font-bold text-strong mb-4">📊 Learning Progress</h2>
           <ProgressList userId={user._id} />
         </div>
 
         {/* Reviews Section */}
         <div className="mb-12">
-          <h2 className="text-2xl font-bold text-slate-900 mb-4">⭐ Reviews & Ratings</h2>
+          <h2 className="app-section-title text-2xl font-bold text-strong mb-4">⭐ Reviews & Ratings</h2>
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             <div className="lg:col-span-1">
               <div className="card-surface p-6">
-                <h3 className="font-semibold text-slate-900 mb-4">Your Rating</h3>
+                <h3 className="app-section-title font-semibold text-strong mb-4">Your Rating</h3>
                 <div className="mb-4">
-                  <div className="text-5xl font-bold text-yellow-400 mb-2">
+                  <div className="text-5xl font-bold text-[color:var(--accent-gold)] mb-2">
                     {user.averageRating?.toFixed(1) || 'N/A'}
                   </div>
                   <div className="flex gap-1">
                     {Array.from({ length: 5 }).map((_, i) => (
-                      <span key={i} className={i < Math.round(user.averageRating || 0) ? 'text-yellow-400' : 'text-slate-300'}>
+                      <span key={i} className={i < Math.round(user.averageRating || 0) ? 'text-[color:var(--accent-gold)]' : 'text-slate-300'}>
                         ⭐
                       </span>
                     ))}
                   </div>
-                  <p className="text-sm text-slate-600 mt-2">{user.totalReviews || 0} reviews</p>
+                  <p className="text-sm text-muted mt-2">{user.totalReviews || 0} reviews</p>
                 </div>
               </div>
             </div>
@@ -118,13 +118,13 @@ export default function Features() {
 
         {/* Transaction History */}
         <div className="mb-12">
-          <h2 className="text-2xl font-bold text-slate-900 mb-4">📋 Credit Transactions</h2>
+          <h2 className="app-section-title text-2xl font-bold text-strong mb-4">📋 Credit Transactions</h2>
           <CreditHistory userId={user._id} />
         </div>
 
         {/* Notes Section */}
         <div className="mb-12">
-          <h2 className="text-2xl font-bold text-slate-900 mb-4">📝 Learning Notes</h2>
+          <h2 className="app-section-title text-2xl font-bold text-strong mb-4">📝 Learning Notes</h2>
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             <div className="lg:col-span-1">
               <NoteEditor userId={user._id} onSuccess={() => setNoteRefresh(noteRefresh + 1)} />

@@ -41,8 +41,8 @@ export default function ReviewsList({ userId }) {
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between mb-6">
-        <h2 className="text-2xl font-bold text-slate-900">Reviews</h2>
-        <span className="text-sm font-medium text-slate-600 bg-white/5 px-3 py-1 rounded-full">
+        <h2 className="app-section-title text-2xl font-bold text-strong">Reviews</h2>
+        <span className="chip chip-soft">
           {pagination.total} reviews
         </span>
       </div>
@@ -55,7 +55,7 @@ export default function ReviewsList({ userId }) {
 
       {reviews.length === 0 ? (
         <div className="card-surface p-12 text-center">
-          <p className="text-slate-500">No reviews yet</p>
+          <p className="text-soft">No reviews yet</p>
         </div>
       ) : (
         <>
@@ -75,11 +75,11 @@ export default function ReviewsList({ userId }) {
                   })
                 }
                 disabled={pagination.offset === 0}
-                className="px-4 py-2 rounded-lg border soft-border hover:bg-white/5 disabled:opacity-50"
+                className="px-4 py-2 rounded-lg border soft-border bg-white/70 text-strong hover:bg-white disabled:opacity-50 focus-ring"
               >
                 ← Previous
               </button>
-              <span className="px-4 py-2 text-sm text-slate-600">
+              <span className="px-4 py-2 text-sm text-muted">
                 Page {Math.floor(pagination.offset / pagination.limit) + 1}
               </span>
               <button
@@ -90,7 +90,7 @@ export default function ReviewsList({ userId }) {
                   })
                 }
                 disabled={pagination.offset + pagination.limit >= pagination.total}
-                className="px-4 py-2 rounded-lg border soft-border hover:bg-white/5 disabled:opacity-50"
+                className="px-4 py-2 rounded-lg border soft-border bg-white/70 text-strong hover:bg-white disabled:opacity-50 focus-ring"
               >
                 Next →
               </button>

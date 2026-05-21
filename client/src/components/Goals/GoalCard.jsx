@@ -25,18 +25,18 @@ export default function GoalCard({ goal, onUpdate }) {
   const getStatusColor = (status) => {
     switch (status) {
       case 'completed':
-        return 'bg-green-100 text-green-700';
+        return 'bg-emerald-100 text-emerald-700 border border-emerald-200';
       case 'abandoned':
-        return 'bg-slate-100 text-slate-700';
+        return 'bg-slate-100 text-slate-700 border border-slate-200';
       default:
-        return 'bg-blue-100 text-blue-700';
+        return 'bg-sky-100 text-sky-700 border border-sky-200';
     }
   };
 
   const getProgressColor = (p) => {
     if (p >= 75) return 'from-green-500 to-emerald-500';
-    if (p >= 50) return 'from-indigo-500 to-sky-500';
-    if (p >= 25) return 'from-yellow-500 to-orange-500';
+    if (p >= 50) return 'from-[color:var(--accent-tertiary)] to-[color:var(--accent-secondary)]';
+    if (p >= 25) return 'from-amber-500 to-[color:var(--accent-gold)]';
     return 'from-rose-500 to-pink-500';
   };
 
@@ -53,25 +53,25 @@ export default function GoalCard({ goal, onUpdate }) {
   );
 
   return (
-    <div className="card-surface p-6 hover:shadow-lg transition-shadow">
+    <div className="card-surface p-6 hover-lift">
       <div className="flex items-start justify-between mb-3">
         <div>
-          <h4 className="font-semibold text-slate-900 mb-1">{goal.title}</h4>
-          <p className="text-xs text-slate-500">{goal.description}</p>
+          <h4 className="font-semibold text-strong mb-1">{goal.title}</h4>
+          <p className="text-xs text-soft">{goal.description}</p>
         </div>
         <span className={`px-3 py-1 rounded-full text-xs font-medium ${getStatusColor(goal.status)}`}>
           {goal.status}
         </span>
       </div>
 
-      {goal.description && <p className="text-sm text-slate-600 mb-4">{goal.description}</p>}
+      {goal.description && <p className="text-sm text-muted mb-4">{goal.description}</p>}
 
       <div className="mb-4">
         <div className="flex justify-between items-center mb-2">
-          <span className="text-sm font-medium text-slate-700">Progress</span>
-          <span className="text-sm font-semibold text-slate-900">{progress}%</span>
+          <span className="text-sm font-medium text-strong">Progress</span>
+          <span className="text-sm font-semibold text-strong">{progress}%</span>
         </div>
-        <div className="w-full bg-slate-200 rounded-full h-2 overflow-hidden">
+        <div className="w-full bg-slate-200/80 rounded-full h-2 overflow-hidden">
           <div
             className={`h-full bg-gradient-to-r ${getProgressColor(progress)} transition-all duration-300`}
             style={{ width: `${progress}%` }}
@@ -79,7 +79,7 @@ export default function GoalCard({ goal, onUpdate }) {
         </div>
       </div>
 
-      <div className="flex gap-2 text-xs text-slate-600 mb-4">
+      <div className="flex gap-2 text-xs text-muted mb-4">
         <span>📅 Target: {formatDate(goal.targetDate)}</span>
         {daysLeft > 0 && <span>⏰ {daysLeft} days left</span>}
       </div>
@@ -93,7 +93,7 @@ export default function GoalCard({ goal, onUpdate }) {
           value={progress}
           onChange={handleProgressChange}
           disabled={updating}
-          className="w-full cursor-pointer accent-indigo-500"
+          className="w-full cursor-pointer accent-[color:var(--accent)]"
         />
       )}
     </div>

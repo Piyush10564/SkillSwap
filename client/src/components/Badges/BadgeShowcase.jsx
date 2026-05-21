@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { badgeService } from '../../services/badgeService';
 import BadgeCard from './BadgeCard';
 
-export default function BadgeShowcase({ userId }) {
+export default function BadgeShowcase({ userId, compact = false }) {
   const [allBadges, setAllBadges] = useState([]);
   const [userBadges, setUserBadges] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -40,10 +40,12 @@ export default function BadgeShowcase({ userId }) {
   const earnedBadgeIds = new Set(userBadges.map((ub) => ub.badgeId?._id || ub.badgeId));
 
   return (
-    <div className="space-y-4">
+    <div className={compact ? 'space-y-3' : 'space-y-4'}>
       <div className="flex items-center justify-between mb-6">
-        <h2 className="text-2xl font-bold text-slate-900">Badges</h2>
-        <span className="text-sm font-medium text-slate-600 bg-white/5 px-3 py-1 rounded-full">
+        <h2 className={compact ? 'app-section-title text-lg font-bold text-strong' : 'app-section-title text-2xl font-bold text-strong'}>
+          Badges
+        </h2>
+        <span className="chip chip-soft">
           {userBadges.length} / {allBadges.length}
         </span>
       </div>
@@ -54,19 +56,20 @@ export default function BadgeShowcase({ userId }) {
         </div>
       )}
 
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+      <div className={compact ? 'space-y-3' : 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4'}>
         {allBadges.map((badge) => (
           <BadgeCard
             key={badge._id}
             badge={badge}
             earned={earnedBadgeIds.has(badge._id)}
+            compact={compact}
           />
         ))}
       </div>
 
       {userBadges.length === 0 && (
         <div className="card-surface p-12 text-center">
-          <p className="text-slate-500">No badges yet. Keep going! 🚀</p>
+          <p className="text-soft">No badges yet. Keep going! 🚀</p>
         </div>
       )}
     </div>

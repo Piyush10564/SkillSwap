@@ -20,8 +20,10 @@ const ProtectedRoute = ({ children }) => {
 
   if (loading) {
     return (
-      <div className="flex min-h-screen items-center justify-center">
-        <div className="text-slate-600">Loading...</div>
+      <div className="flex min-h-screen items-center justify-center section-shell">
+        <div className="rounded-full border border-white/70 bg-white/80 px-5 py-3 text-sm font-medium text-strong shadow-lg shadow-[rgba(8,21,39,0.08)]">
+          Loading...
+        </div>
       </div>
     );
   }
@@ -35,8 +37,10 @@ const PublicRoute = ({ children }) => {
 
   if (loading) {
     return (
-      <div className="flex min-h-screen items-center justify-center">
-        <div className="text-slate-600">Loading...</div>
+      <div className="flex min-h-screen items-center justify-center section-shell">
+        <div className="rounded-full border border-white/70 bg-white/80 px-5 py-3 text-sm font-medium text-strong shadow-lg shadow-[rgba(8,21,39,0.08)]">
+          Loading...
+        </div>
       </div>
     );
   }
@@ -49,8 +53,10 @@ function AppRoutes() {
 
   if (loading) {
     return (
-      <div className="flex min-h-screen items-center justify-center">
-        <div className="text-slate-600">Loading...</div>
+      <div className="flex min-h-screen items-center justify-center section-shell">
+        <div className="rounded-full border border-white/70 bg-white/80 px-5 py-3 text-sm font-medium text-strong shadow-lg shadow-[rgba(8,21,39,0.08)]">
+          Loading...
+        </div>
       </div>
     );
   }

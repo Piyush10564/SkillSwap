@@ -69,7 +69,7 @@ export default function GoalForm({ onSuccess }) {
 
   return (
     <form onSubmit={handleSubmit} className="card-surface p-6">
-      <h3 className="text-lg font-semibold text-slate-900 mb-4">Create Learning Goal</h3>
+      <h3 className="app-section-title text-lg font-semibold text-strong mb-4">Create Learning Goal</h3>
 
       {error && (
         <div className="mb-4 p-3 bg-rose-50 border border-rose-200 rounded-lg text-sm text-rose-700">
@@ -78,12 +78,12 @@ export default function GoalForm({ onSuccess }) {
       )}
 
       <div className="mb-4">
-        <label className="block text-sm font-medium text-slate-700 mb-2">Select Skill *</label>
+        <label className="block text-sm font-medium text-strong mb-2">Select Skill *</label>
         <select
           value={skillId}
           onChange={(e) => setSkillId(e.target.value)}
           disabled={loadingSkills}
-          className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-2 text-sm focus:border-indigo-400 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-200 disabled:opacity-50"
+          className="w-full rounded-xl border soft-border bg-white/80 px-4 py-2 text-sm text-strong focus:border-[color:var(--accent)] focus:bg-white focus:outline-none focus:ring-2 focus:ring-[rgba(255,107,74,0.18)] focus-ring disabled:opacity-50"
         >
           <option value="">
             {loadingSkills ? 'Loading skills...' : 'Choose a skill for your goal'}
@@ -102,43 +102,43 @@ export default function GoalForm({ onSuccess }) {
       </div>
 
       <div className="mb-4">
-        <label className="block text-sm font-medium text-slate-700 mb-2">Goal Title *</label>
+        <label className="block text-sm font-medium text-strong mb-2">Goal Title *</label>
         <input
           type="text"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
           placeholder="e.g., Master React Hooks"
           required
-          className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-2 text-sm placeholder:text-slate-400 focus:border-indigo-400 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-200"
+          className="w-full rounded-xl border soft-border bg-white/80 px-4 py-2 text-sm text-strong placeholder:text-soft focus:border-[color:var(--accent)] focus:bg-white focus:outline-none focus:ring-2 focus:ring-[rgba(255,107,74,0.18)] focus-ring"
         />
       </div>
 
       <div className="mb-4">
-        <label className="block text-sm font-medium text-slate-700 mb-2">Description</label>
+        <label className="block text-sm font-medium text-strong mb-2">Description</label>
         <textarea
           value={description}
           onChange={(e) => setDescription(e.target.value)}
           placeholder="What do you want to learn?"
-          className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-2 text-sm placeholder:text-slate-400 focus:border-indigo-400 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-200"
+          className="w-full rounded-xl border soft-border bg-white/80 px-4 py-2 text-sm text-strong placeholder:text-soft focus:border-[color:var(--accent)] focus:bg-white focus:outline-none focus:ring-2 focus:ring-[rgba(255,107,74,0.18)] focus-ring"
           rows={3}
         />
       </div>
 
       <div className="mb-4">
-        <label className="block text-sm font-medium text-slate-700 mb-2">Target Date *</label>
+        <label className="block text-sm font-medium text-strong mb-2">Target Date *</label>
         <input
           type="date"
           value={targetDate}
           onChange={(e) => setTargetDate(e.target.value)}
           required
-          className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-2 text-sm focus:border-indigo-400 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-200"
+          className="w-full rounded-xl border soft-border bg-white/80 px-4 py-2 text-sm text-strong focus:border-[color:var(--accent)] focus:bg-white focus:outline-none focus:ring-2 focus:ring-[rgba(255,107,74,0.18)] focus-ring"
         />
       </div>
 
       <button
         type="submit"
         disabled={loading || loadingSkills || !skillId}
-        className="w-full rounded-full bg-gradient-to-tr from-indigo-500 via-sky-500 to-violet-500 py-2.5 text-sm font-medium text-white shadow-sm shadow-indigo-300 hover:brightness-105 disabled:opacity-50"
+        className="w-full rounded-full surface-accent py-2.5 text-sm font-medium text-white shadow-sm hover:brightness-105 disabled:opacity-50"
       >
         {loading ? 'Creating...' : 'Create Goal'}
       </button>

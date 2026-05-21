@@ -55,12 +55,12 @@ export default function Skills() {
     <div>
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h2 className="text-xl font-semibold tracking-tight text-slate-900">My skills</h2>
-          <p className="text-sm text-slate-600">Tell SkillSwap what you can teach and what you want to learn.</p>
+          <h2 className="app-section-title text-xl font-semibold text-strong">My skills</h2>
+          <p className="text-sm text-muted">Tell SkillSwap what you can teach and what you want to learn.</p>
         </div>
         <button
           onClick={() => setShowAddModal(true)}
-          className="inline-flex items-center gap-1.5 rounded-full bg-gradient-to-tr from-indigo-500 via-sky-500 to-violet-500 px-4 py-2 text-sm font-medium text-white shadow-sm hover:brightness-105"
+          className="inline-flex items-center gap-1.5 rounded-full surface-accent px-4 py-2 text-sm font-medium text-white shadow-sm hover:brightness-105"
         >
           <span className="iconify" data-icon="lucide:plus" data-width="14" data-height="14"></span>
           Add skill
@@ -68,18 +68,18 @@ export default function Skills() {
       </div>
 
       {/* Tabs */}
-      <div className="mt-6 rounded-full bg-white/5 p-0.5 text-sm sm:max-w-md">
+      <div className="mt-6 rounded-full bg-white/70 p-1 text-sm sm:max-w-md border border-white/70">
         <div className="flex">
           <button
             onClick={() => setActiveTab('offer')}
-            className={`flex-1 rounded-full py-2 text-center font-medium ${activeTab === 'offer' ? 'bg-white text-slate-900 shadow-sm' : 'text-slate-600'
+            className={`flex-1 rounded-full py-2 text-center font-medium ${activeTab === 'offer' ? 'bg-white text-strong shadow-sm' : 'text-soft'
               }`}
           >
             Skills I offer ({skills.offer.length})
           </button>
           <button
             onClick={() => setActiveTab('learn')}
-            className={`flex-1 rounded-full py-2 text-center font-medium ${activeTab === 'learn' ? 'bg-white text-slate-900 shadow-sm' : 'text-slate-600'
+            className={`flex-1 rounded-full py-2 text-center font-medium ${activeTab === 'learn' ? 'bg-white text-strong shadow-sm' : 'text-soft'
               }`}
           >
             Skills I want to learn ({skills.learn.length})
@@ -91,13 +91,13 @@ export default function Skills() {
       <div className="mt-6">
         {currentSkills.length === 0 ? (
           <div className="card-surface p-8 border-dashed border soft-border text-center">
-            <h3 className="text-sm font-semibold text-slate-800">No skills added yet</h3>
-            <p className="mt-1 text-xs text-slate-500">
+            <h3 className="text-sm font-semibold text-strong">No skills added yet</h3>
+            <p className="mt-1 text-xs text-soft">
               Start by adding a skill you'd like to {activeTab === 'offer' ? 'teach' : 'learn'}.
             </p>
             <button
               onClick={() => setShowAddModal(true)}
-              className="mt-4 inline-flex items-center gap-1.5 rounded-full bg-transparent px-4 py-2 text-sm font-medium text-indigo-600 shadow-sm hover:bg-white/5"
+              className="mt-4 inline-flex items-center gap-1.5 rounded-full bg-white/70 px-4 py-2 text-sm font-medium text-[color:var(--accent)] shadow-sm hover:bg-white focus-ring"
             >
               <span className="iconify" data-icon="lucide:plus" data-width="14" data-height="14"></span>
               Add skill
@@ -110,22 +110,22 @@ export default function Skills() {
                 <div className="flex items-start justify-between">
                   <div className="flex-1">
                     <div className="flex items-center gap-2">
-                      <h3 className="font-semibold text-slate-900">{skill.name}</h3>
+                      <h3 className="font-semibold text-strong">{skill.name}</h3>
                       <span className={`rounded-full px-2 py-0.5 text-xs ${skill.level === 'Expert' ? 'bg-emerald-50 text-emerald-700' :
-                          skill.level === 'Intermediate' ? 'bg-blue-50 text-blue-700' :
+                          skill.level === 'Intermediate' ? 'bg-cyan-50 text-cyan-700' :
                             'bg-rose-50 text-rose-700'
                         }`}>
                         {skill.level}
                       </span>
                     </div>
-                    <p className="mt-1 text-xs text-slate-500">{skill.category}</p>
+                    <p className="mt-1 text-xs text-soft">{skill.category}</p>
                     {skill.description && (
-                      <p className="mt-2 text-sm text-slate-600">{skill.description}</p>
+                      <p className="mt-2 text-sm text-muted">{skill.description}</p>
                     )}
                   </div>
                   <button
                     onClick={() => handleDeleteSkill(skill._id)}
-                    className="rounded-full p-2 text-slate-400 hover:bg-rose-50 hover:text-rose-600"
+                    className="rounded-full p-2 text-soft hover:bg-rose-50 hover:text-rose-600 focus-ring"
                   >
                     <span className="iconify" data-icon="lucide:trash-2" data-width="16" data-height="16"></span>
                   </button>
@@ -138,27 +138,27 @@ export default function Skills() {
 
       {/* Add Skill Modal */}
       {showAddModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/40 p-4">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/45 p-4">
           <div className="w-full max-w-md card-surface p-6 shadow-xl">
-            <h3 className="text-lg font-semibold text-slate-900 mb-4">Add new skill</h3>
+            <h3 className="app-section-title text-lg font-semibold text-strong mb-4">Add new skill</h3>
             <form onSubmit={handleAddSkill} className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1">Skill name</label>
+                <label className="block text-sm font-medium text-strong mb-1">Skill name</label>
                 <input
                   type="text"
                   value={formData.name}
                   onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                  className="w-full rounded-xl border soft-border bg-transparent px-4 py-2 text-sm focus:border-indigo-400 focus:bg-transparent focus:outline-none focus:ring-2 focus:ring-indigo-200"
+                  className="w-full rounded-xl border soft-border bg-transparent px-4 py-2 text-sm text-strong placeholder:text-soft focus:border-[color:var(--accent)] focus:bg-transparent focus:outline-none focus:ring-2 focus:ring-[rgba(255,107,74,0.18)] focus-ring"
                   placeholder="e.g. React, Spanish, UI Design"
                   required
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1">Category</label>
+                <label className="block text-sm font-medium text-strong mb-1">Category</label>
                 <select
                   value={formData.category}
                   onChange={(e) => setFormData({ ...formData, category: e.target.value })}
-                  className="w-full rounded-xl border soft-border bg-transparent px-4 py-2 text-sm focus:border-indigo-400 focus:bg-transparent focus:outline-none focus:ring-2 focus:ring-indigo-200"
+                  className="w-full rounded-xl border soft-border bg-transparent px-4 py-2 text-sm text-strong focus:border-[color:var(--accent)] focus:bg-transparent focus:outline-none focus:ring-2 focus:ring-[rgba(255,107,74,0.18)] focus-ring"
                 >
                   <option>Programming</option>
                   <option>Design</option>
@@ -169,11 +169,11 @@ export default function Skills() {
                 </select>
               </div>
               <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1">Level</label>
+                <label className="block text-sm font-medium text-strong mb-1">Level</label>
                 <select
                   value={formData.level}
                   onChange={(e) => setFormData({ ...formData, level: e.target.value })}
-                  className="w-full rounded-xl border soft-border bg-transparent px-4 py-2 text-sm focus:border-indigo-400 focus:bg-transparent focus:outline-none focus:ring-2 focus:ring-indigo-200"
+                  className="w-full rounded-xl border soft-border bg-transparent px-4 py-2 text-sm text-strong focus:border-[color:var(--accent)] focus:bg-transparent focus:outline-none focus:ring-2 focus:ring-[rgba(255,107,74,0.18)] focus-ring"
                 >
                   <option>Beginner</option>
                   <option>Intermediate</option>
@@ -181,11 +181,11 @@ export default function Skills() {
                 </select>
               </div>
               <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1">Type</label>
+                <label className="block text-sm font-medium text-strong mb-1">Type</label>
                 <select
                   value={formData.type}
                   onChange={(e) => setFormData({ ...formData, type: e.target.value })}
-                  className="w-full rounded-xl border soft-border bg-transparent px-4 py-2 text-sm focus:border-indigo-400 focus:bg-transparent focus:outline-none focus:ring-2 focus:ring-indigo-200"
+                  className="w-full rounded-xl border soft-border bg-transparent px-4 py-2 text-sm text-strong focus:border-[color:var(--accent)] focus:bg-transparent focus:outline-none focus:ring-2 focus:ring-[rgba(255,107,74,0.18)] focus-ring"
                 >
                   <option value="offer">I can teach this</option>
                   <option value="learn">I want to learn this</option>
@@ -195,13 +195,13 @@ export default function Skills() {
                 <button
                   type="button"
                   onClick={() => setShowAddModal(false)}
-                  className="flex-1 rounded-full border border-slate-200 bg-white px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50"
+                  className="flex-1 rounded-full border soft-border bg-white/80 px-4 py-2 text-sm font-medium text-strong hover:bg-white focus-ring"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="flex-1 rounded-full bg-gradient-to-tr from-indigo-500 via-sky-500 to-violet-500 px-4 py-2 text-sm font-medium text-white shadow-sm hover:brightness-105"
+                  className="flex-1 rounded-full surface-accent px-4 py-2 text-sm font-medium text-white shadow-sm hover:brightness-105"
                 >
                   Add skill
                 </button>

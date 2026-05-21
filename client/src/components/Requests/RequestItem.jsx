@@ -40,42 +40,42 @@ export default function RequestItem({ request, onAction }) {
   };
 
   return (
-    <div className="flex items-start justify-between gap-4 p-4 rounded-xl card-surface">
+    <div className="flex items-start justify-between gap-4 p-4 rounded-xl card-surface hover-lift">
       <div>
         <div className="flex items-center gap-3">
-          <div className="h-10 w-10 rounded-full bg-white/5 flex items-center justify-center text-sm font-semibold">{request.learner?.name?.substring(0,2).toUpperCase() || 'U'}</div>
+          <div className="h-10 w-10 rounded-full brand-gradient flex items-center justify-center text-sm font-semibold text-white">{request.learner?.name?.substring(0,2).toUpperCase() || 'U'}</div>
           <div>
-            <div className="font-medium text-slate-900">{request.learner?.name}</div>
-            <div className="text-xs text-slate-500">{request.skillName || 'General request'}</div>
+            <div className="font-medium text-strong">{request.learner?.name}</div>
+            <div className="text-xs text-soft">{request.skillName || 'General request'}</div>
           </div>
         </div>
-        {request.message && <p className="mt-2 text-sm text-slate-600">{request.message}</p>}
-        <div className="mt-2 text-xs text-slate-400">{new Date(request.createdAt).toLocaleString()}</div>
+        {request.message && <p className="mt-2 text-sm text-muted">{request.message}</p>}
+        <div className="mt-2 text-xs text-soft">{new Date(request.createdAt).toLocaleString()}</div>
       </div>
 
       <div className="flex items-center gap-2">
         {isTeacher && request.status === 'pending' && (
           <>
-            <button onClick={() => onAction(request._id, 'accepted')} className="rounded-full bg-emerald-600 text-white px-3 py-1 text-sm">Accept</button>
-            <button onClick={() => onAction(request._id, 'rejected')} className="rounded-full border soft-border px-3 py-1 text-sm">Ignore</button>
+            <button onClick={() => onAction(request._id, 'accepted')} className="rounded-full bg-emerald-600 text-white px-3 py-1 text-sm shadow-sm hover:brightness-105">Accept</button>
+            <button onClick={() => onAction(request._id, 'rejected')} className="rounded-full border soft-border bg-white/70 px-3 py-1 text-sm text-strong hover:bg-white">Ignore</button>
           </>
         )}
 
         {isLearner && request.status === 'pending' && (
-          <button onClick={() => onAction(request._id, 'cancelled')} className="rounded-full border soft-border px-3 py-1 text-sm">Cancel</button>
+          <button onClick={() => onAction(request._id, 'cancelled')} className="rounded-full border soft-border bg-white/70 px-3 py-1 text-sm text-strong hover:bg-white">Cancel</button>
         )}
 
         {request.status === 'accepted' && otherParticipantId && (
           <button
             onClick={handleStartSession}
             disabled={startingSession}
-            className="rounded-full bg-gradient-to-tr from-indigo-500 via-sky-500 to-violet-500 px-3 py-1 text-sm font-medium text-white shadow-sm hover:brightness-105 disabled:opacity-60"
+            className="rounded-full surface-accent px-3 py-1 text-sm font-medium shadow-sm hover:brightness-105 disabled:opacity-60"
           >
             {startingSession ? 'Opening...' : 'Start Session'}
           </button>
         )}
 
-        <div className="text-xs text-slate-500">{request.status}</div>
+        <div className="text-xs text-soft">{request.status}</div>
       </div>
     </div>
   );

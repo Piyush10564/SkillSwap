@@ -75,26 +75,26 @@ export default function Requests() {
   return (
     <div>
       {toast && (
-        <div className="fixed right-4 top-4 z-50 max-w-sm rounded-2xl border soft-border bg-white/5 px-4 py-3 shadow-xl shadow-slate-200/60 backdrop-blur">
-          <div className="text-sm font-semibold text-slate-900">{toast.title}</div>
-          <div className="mt-1 text-sm text-slate-600">{toast.message}</div>
+        <div className="fixed right-4 top-4 z-50 max-w-sm rounded-2xl border soft-border glass-panel px-4 py-3 shadow-xl shadow-[rgba(8,21,39,0.08)]">
+          <div className="text-sm font-semibold text-strong">{toast.title}</div>
+          <div className="mt-1 text-sm text-muted">{toast.message}</div>
         </div>
       )}
       <div className="flex items-center justify-between">
-        <h2 className="text-lg font-semibold">Requests</h2>
+        <h2 className="app-section-title text-lg font-semibold text-strong">Requests</h2>
         <div className="flex gap-2">
-          <button onClick={() => setTab('incoming')} className={`px-3 py-1 rounded-full ${tab === 'incoming' ? 'bg-slate-800 text-white' : 'bg-transparent border soft-border'}`}>Incoming</button>
-          <button onClick={() => setTab('outgoing')} className={`px-3 py-1 rounded-full ${tab === 'outgoing' ? 'bg-slate-800 text-white' : 'bg-transparent border soft-border'}`}>Outgoing</button>
+          <button onClick={() => setTab('incoming')} className={`px-3 py-1 rounded-full ${tab === 'incoming' ? 'surface-accent text-white' : 'bg-white/70 border soft-border text-strong'}`}>Incoming</button>
+          <button onClick={() => setTab('outgoing')} className={`px-3 py-1 rounded-full ${tab === 'outgoing' ? 'surface-accent text-white' : 'bg-white/70 border soft-border text-strong'}`}>Outgoing</button>
         </div>
       </div>
 
       <div className="mt-4 space-y-3">
-        {loading && <div className="text-slate-500">Loading...</div>}
+        {loading && <div className="text-soft">Loading...</div>}
         {tab === 'incoming' && incoming.length === 0 && !loading && (
-          <div className="card-surface p-6 text-center text-slate-600">No incoming requests</div>
+          <div className="card-surface p-6 text-center text-muted">No incoming requests</div>
         )}
         {tab === 'outgoing' && outgoing.length === 0 && !loading && (
-          <div className="card-surface p-6 text-center text-slate-600">No outgoing requests</div>
+          <div className="card-surface p-6 text-center text-muted">No outgoing requests</div>
         )}
 
         {tab === 'incoming' && incoming.map((r) => (
