@@ -9,6 +9,7 @@ export default function Layout({ children }) {
   const location = useLocation();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [theme, setTheme] = useState('light');
   const [pendingRequestsCount, setPendingRequestsCount] = useState(0);
 
   const isActive = (path) => location.pathname === path;
@@ -52,6 +53,20 @@ export default function Layout({ children }) {
       active = false;
     };
   }, [user]);
+
+  useEffect(() => {
+    const saved = localStorage.getItem('theme');
+    const initial = saved === 'dark' ? 'dark' : 'light';
+    setTheme(initial);
+    document.documentElement.setAttribute('data-theme', initial);
+  }, []);
+
+  const toggleTheme = () => {
+    const next = theme === 'dark' ? 'light' : 'dark';
+    setTheme(next);
+    document.documentElement.setAttribute('data-theme', next);
+    localStorage.setItem('theme', next);
+  };
 
   return (
     <div className="relative flex min-h-screen flex-col lg:flex-row text-sm section-shell">
@@ -195,6 +210,32 @@ export default function Layout({ children }) {
                   data-width="18"
                   data-height="18"
                   style={{ transform: sidebarOpen ? 'translateX(0)' : 'translateX(0)' }}
+                />
+              </button>
+              {/* Theme toggle button (top-right of content area) */}
+              <button
+                type="button"
+                onClick={toggleTheme}
+                className="absolute z-50 hidden sm:flex items-center justify-center focus-ring"
+                style={{
+                  right: '1rem',
+                  top: '1rem',
+                  height: '38px',
+                  width: '38px',
+                  borderRadius: '999px',
+                  background: theme === 'dark' ? 'linear-gradient(135deg,#0f172a,#1d4ed8)' : 'white',
+                  color: theme === 'dark' ? 'white' : 'var(--text-strong)',
+                  border: '1px solid rgba(0,0,0,0.06)',
+                  boxShadow: '0 6px 18px rgba(15,23,42,0.08)',
+                }}
+                aria-label={theme === 'dark' ? 'Switch to light theme' : 'Switch to dark theme'}
+                title={theme === 'dark' ? 'Switch to light theme' : 'Switch to dark theme'}
+              >
+                <span
+                  className="iconify"
+                  data-icon={theme === 'dark' ? 'lucide:sun' : 'lucide:moon'}
+                  data-width="18"
+                  data-height="18"
                 />
               </button>
             {children}

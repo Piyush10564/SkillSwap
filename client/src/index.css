@@ -27,6 +27,178 @@
   --danger: #b42318;
   --shadow-color: 15, 23, 42;
 }
+[data-theme="light"] {
+  --app-bg-top: #f8fafc;
+  --app-bg-mid: #eef2f7;
+  --app-bg-bottom: #f7f9fc;
+  --surface: rgba(255, 255, 255, 0.92);
+  --surface-strong: #ffffff;
+  --surface-soft: #f8fafc;
+  --surface-muted: #edf2f7;
+  --border-soft: rgba(148, 163, 184, 0.26);
+  --border-strong: rgba(100, 116, 139, 0.2);
+  --text-strong: #07111f;
+  --text-muted: #5a6b84;
+  --text-soft: #7f8da3;
+  --accent: #1d4ed8;
+  --accent-secondary: #2563eb;
+  --accent-tertiary: #1e40af;
+  --accent-gold: #b45309;
+  --success: #1f7a57;
+  --warning: #b45309;
+  --danger: #b42318;
+  --shadow-color: 15, 23, 42;
+}
+
+/* Dark theme variables (applied when documentElement has data-theme="dark") */
+[data-theme="dark"] {
+  --app-bg-top: #07101a;
+  --app-bg-mid: #08131b;
+  --app-bg-bottom: #05121a;
+  --surface: rgba(12, 16, 22, 0.96);
+  --surface-strong: #0b1116;
+  --surface-soft: #0f1720;
+  --surface-muted: #0b1218;
+  --border-soft: rgba(255, 255, 255, 0.08);
+  --border-strong: rgba(255, 255, 255, 0.06);
+  --text-strong: #f6fbff;
+  --text-muted: #c9e6ff;
+  --text-soft: #9fb8d6;
+  --accent: #7fb7ff;
+  --accent-secondary: #60a5fa;
+  --accent-tertiary: #3b82f6;
+  --accent-gold: #f5b95b;
+  --success: #34d399;
+  --warning: #f59e0b;
+  --danger: #ef4444;
+  --shadow-color: 0, 0, 0;
+}
+
+/* Ensure explicit surface and text styles for light theme when data-theme="light" is present */
+[data-theme="light"] {
+  body {
+    color: var(--text-strong);
+    background:
+      radial-gradient(circle at top left, rgba(29, 78, 216, 0.08), transparent 24%),
+      radial-gradient(circle at top right, rgba(15, 23, 42, 0.04), transparent 20%),
+      linear-gradient(180deg, #f8fafc 0%, #eef2f7 100%);
+  }
+
+  .page-surface {
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.99) 0%, rgba(248, 250, 252, 0.95) 100%);
+    border: 1px solid var(--border-soft);
+    box-shadow: 0 20px 48px rgba(var(--shadow-color), 0.07);
+  }
+
+  .card-surface {
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.99), rgba(249, 250, 251, 0.96));
+    border: 1px solid rgba(226, 232, 240, 0.95);
+    box-shadow: 0 16px 36px rgba(var(--shadow-color), 0.06);
+  }
+
+  .glass-panel {
+    background: rgba(255, 255, 255, 0.88);
+    border: 1px solid rgba(226, 232, 240, 0.92);
+  }
+}
+
+/* Ensure explicit surface and text styles for dark theme */
+[data-theme="dark"] {
+  body {
+    color: var(--text-strong);
+    background: linear-gradient(180deg, var(--app-bg-top), var(--app-bg-bottom));
+  }
+
+  .page-surface {
+    background: linear-gradient(180deg, rgba(9,12,18,0.92) 0%, rgba(11,23,36,0.9) 100%);
+    border: 1px solid var(--border-soft);
+    box-shadow: 0 20px 48px rgba(var(--shadow-color), 0.2);
+  }
+
+  .card-surface {
+    background: linear-gradient(180deg, rgba(12,16,22,0.95), rgba(10,14,20,0.92));
+    border: 1px solid rgba(255,255,255,0.04);
+    box-shadow: 0 16px 36px rgba(var(--shadow-color), 0.18);
+  }
+
+  .glass-panel {
+    background: rgba(9, 12, 18, 0.88);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+  }
+
+  /* Improve visibility for common UI pieces in dark mode */
+  .app-section-title { color: var(--text-strong); }
+  h1,h2,h3,h4 { color: var(--text-strong); }
+
+  .chip, .chip-soft, .chip-accent {
+    background: rgba(255,255,255,0.03);
+    border-color: rgba(255,255,255,0.04);
+    color: var(--text-muted);
+  }
+
+  .chip-accent {
+    background: rgba(96,165,250,0.06);
+    border-color: rgba(96,165,250,0.12);
+    color: #cfe8ff;
+  }
+
+  input, textarea, select {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.04);
+    color: var(--text-strong);
+  }
+
+  ::placeholder { color: var(--text-soft); }
+
+  .page-surface {
+    /* improved dark banner/card surface for legibility */
+    background: linear-gradient(180deg, rgba(26,30,36,0.98), rgba(20,24,30,0.96));
+    border: 1px solid rgba(255,255,255,0.06);
+    box-shadow: 0 22px 56px rgba(2,6,23,0.45);
+  }
+
+  .surface-accent {
+    background: linear-gradient(135deg, #15324a 0%, #1d4ed8 100%);
+    color: white;
+  }
+
+  .focus-ring:focus-visible {
+    box-shadow: 0 0 0 4px rgba(29,78,216,0.12), 0 0 0 1px rgba(29,78,216,0.22);
+  }
+
+  /* Stronger text and UI contrast for the banner area */
+  .page-surface .app-section-title,
+  .page-surface h1,
+  .page-surface h2,
+  .page-surface h3 {
+    color: var(--text-strong);
+  }
+
+  .page-surface .text-strong,
+  .page-surface .text-muted,
+  .page-surface .text-soft,
+  .page-surface p {
+    color: var(--text-muted);
+  }
+
+  .page-surface .chip,
+  .page-surface .chip-soft,
+  .page-surface .chip-accent {
+    background: rgba(255,255,255,0.03);
+    border-color: rgba(255,255,255,0.06);
+    color: var(--text-strong);
+  }
+
+  /* Ensure icons and nav labels are readable */
+  .iconify, .nav-link, nav a, aside a {
+    color: var(--text-strong) !important;
+    opacity: 0.98;
+  }
+
+  /* Stronger contrast for header/subtitle */
+  .page-surface .text-strong { color: var(--text-strong) !important; }
+  .page-surface .text-muted { color: var(--text-muted) !important; }
+}
 
 html {
   background: var(--app-bg-bottom);
@@ -276,6 +448,12 @@ body::before {
   background-size: 48px 48px;
   mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.16), transparent 72%);
   opacity: 0.45;
+}
+
+/* Light theme: reduce overlay so surfaces stay readable */
+[data-theme="light"] body::before {
+  opacity: 0.08;
+  mask-image: none;
 }
 
 ::selection {
