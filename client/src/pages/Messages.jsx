@@ -144,7 +144,7 @@ export default function Messages() {
       <div className="grid gap-4 lg:grid-cols-[320px,minmax(0,1fr),360px]">
         {/* Conversations List */}
         <div className="page-surface p-0 overflow-hidden">
-          <div className="border-b border-slate-200 px-4 py-3">
+          <div className="border-b soft-border px-4 py-3">
             <h3 className="font-semibold text-slate-900 text-sm">Conversations</h3>
           </div>
           {/* Conversation List */}
@@ -163,7 +163,7 @@ export default function Messages() {
                   <button
                     key={conversation._id}
                     onClick={() => handleSelectConversation(conversation)}
-                    className={`flex w-full items-center gap-3 border-b border-slate-100 p-4 text-left hover:bg-slate-50 ${isSelected ? 'bg-indigo-50' : ''
+                    className={`flex w-full items-center gap-3 border-b soft-border p-4 text-left hover:bg-white/5 ${isSelected ? 'bg-indigo-50' : ''
                       }`}
                   >
                     <div className="h-10 w-10 flex-shrink-0 rounded-full bg-gradient-to-tr from-indigo-500 to-violet-500 flex items-center justify-center text-sm font-semibold text-white">
@@ -198,7 +198,7 @@ export default function Messages() {
           {selectedConversation ? (
             <>
               {/* Header */}
-              <div className="border-b border-slate-200 px-4 py-3">
+              <div className="border-b soft-border px-4 py-3">
                 <div className="flex items-center gap-3">
                   <div className="h-10 w-10 rounded-full bg-gradient-to-tr from-sky-500 to-indigo-500 flex items-center justify-center text-sm font-semibold text-white">
                     {selectedConversation.participant?.name?.substring(0, 2).toUpperCase() || 'U'}
@@ -213,7 +213,7 @@ export default function Messages() {
                         <span className="rounded-full bg-emerald-50 px-2 py-0.5 text-emerald-700">Session active</span>
                       )}
                       {selectedConversation.status === 'ended' && (
-                        <span className="rounded-full bg-slate-100 px-2 py-0.5 text-slate-600">Session ended</span>
+                        <span className="rounded-full bg-white/5 px-2 py-0.5 text-slate-500">Session ended</span>
                       )}
                     </div>
                   </div>
@@ -253,7 +253,7 @@ export default function Messages() {
                       <div
                         className={`max-w-[70%] rounded-2xl px-4 py-2 ${isOwnMessage
                           ? 'bg-gradient-to-tr from-indigo-500 via-sky-500 to-violet-500 text-white'
-                          : 'bg-slate-100 text-slate-900'
+                          : 'bg-white/5 text-slate-900'
                           }`}
                       >
                         <p className="text-sm">{message.content}</p>
@@ -269,14 +269,14 @@ export default function Messages() {
               </div>
 
               {/* Input */}
-              <form onSubmit={handleSendMessage} className="border-t border-slate-200 p-4">
+              <form onSubmit={handleSendMessage} className="border-t soft-border p-4">
                 <div className="flex gap-2">
                   <input
                     type="text"
                     value={newMessage}
                     onChange={(e) => setNewMessage(e.target.value)}
                     placeholder="Type a message..."
-                    className="flex-1 rounded-full border border-slate-200 bg-slate-50/70 px-4 py-2 text-sm focus:border-indigo-400 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-200"
+                    className="flex-1 rounded-full border soft-border bg-transparent px-4 py-2 text-sm focus:border-indigo-400 focus:bg-transparent focus:outline-none focus:ring-2 focus:ring-indigo-200"
                   />
                   <button
                     type="submit"

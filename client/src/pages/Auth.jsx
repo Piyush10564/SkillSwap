@@ -45,9 +45,9 @@ export default function Auth() {
           </p>
         </div>
 
-        <div className="rounded-[2rem] border border-white/70 bg-white/88 p-6 shadow-2xl shadow-slate-900/10 backdrop-blur-xl">
+        <div className="rounded-[2rem] card-surface p-6 shadow-2xl backdrop-blur-xl">
           {/* Tabs */}
-          <div className="mb-6 flex rounded-full bg-slate-100/80 p-0.5 text-sm">
+          <div className="mb-6 flex rounded-full bg-white/5 p-0.5 text-sm">
             <button
               onClick={() => setIsLogin(true)}
               className={`flex-1 rounded-full py-2 text-center font-medium ${isLogin ? 'bg-white text-slate-900 shadow-sm' : 'text-slate-500'
@@ -78,7 +78,7 @@ export default function Auth() {
                   type="text"
                   value={formData.name}
                   onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                  className="w-full rounded-xl border border-slate-200 bg-slate-50/70 px-4 py-2 text-sm placeholder:text-slate-400 focus:border-indigo-400 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-200"
+                  className="w-full rounded-xl border soft-border bg-transparent px-4 py-2 text-sm placeholder:text-slate-400 focus:border-indigo-400 focus:bg-transparent focus:outline-none focus:ring-2 focus:ring-indigo-200"
                   placeholder="Your name"
                   required={!isLogin}
                 />
@@ -87,11 +87,11 @@ export default function Auth() {
 
             <div>
               <label className="block text-sm font-medium text-slate-700 mb-1">Email</label>
-              <input
-                type="email"
-                value={formData.email}
-                onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                className="w-full rounded-xl border border-slate-200 bg-slate-50/70 px-4 py-2 text-sm placeholder:text-slate-400 focus:border-indigo-400 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-200"
+                <input
+                  type="email"
+                  value={formData.email}
+                  onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                  className="w-full rounded-xl border soft-border bg-transparent px-4 py-2 text-sm placeholder:text-slate-400 focus:border-indigo-400 focus:bg-transparent focus:outline-none focus:ring-2 focus:ring-indigo-200"
                 placeholder="you@example.com"
                 required
               />
@@ -99,11 +99,11 @@ export default function Auth() {
 
             <div>
               <label className="block text-sm font-medium text-slate-700 mb-1">Password</label>
-              <input
-                type="password"
-                value={formData.password}
-                onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-                className="w-full rounded-xl border border-slate-200 bg-slate-50/70 px-4 py-2 text-sm placeholder:text-slate-400 focus:border-indigo-400 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-200"
+                <input
+                  type="password"
+                  value={formData.password}
+                  onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+                  className="w-full rounded-xl border soft-border bg-transparent px-4 py-2 text-sm placeholder:text-slate-400 focus:border-indigo-400 focus:bg-transparent focus:outline-none focus:ring-2 focus:ring-indigo-200"
                 placeholder="••••••••"
                 required
               />

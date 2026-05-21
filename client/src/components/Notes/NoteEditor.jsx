@@ -48,7 +48,7 @@ export default function NoteEditor({ sessionId, userId, onSuccess }) {
           onChange={(e) => setContent(e.target.value)}
           placeholder="What did you learn? What should you practice?"
           required
-          className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-2 text-sm placeholder:text-slate-400 focus:border-indigo-400 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-200"
+          className="w-full rounded-xl border soft-border bg-transparent px-4 py-2 text-sm placeholder:text-slate-400 focus:border-indigo-400 focus:bg-transparent focus:outline-none focus:ring-2 focus:ring-indigo-200"
           rows={4}
         />
       </div>
@@ -60,7 +60,7 @@ export default function NoteEditor({ sessionId, userId, onSuccess }) {
           value={tags}
           onChange={(e) => setTags(e.target.value)}
           placeholder="e.g., react, hooks, performance"
-          className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-2 text-sm placeholder:text-slate-400 focus:border-indigo-400 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-200"
+          className="w-full rounded-xl border soft-border bg-transparent px-4 py-2 text-sm placeholder:text-slate-400 focus:border-indigo-400 focus:bg-transparent focus:outline-none focus:ring-2 focus:ring-indigo-200"
         />
         <p className="text-xs text-slate-500 mt-1">Separate tags with commas</p>
       </div>

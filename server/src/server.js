@@ -18,6 +18,16 @@ const startServer = async (attemptNumber = 1) => {
 
     // Close existing server if any
     if (server) {
+      // Close socket.io first to release connections
+      if (io) {
+        try {
+          io.close();
+        } catch (e) {
+          console.error('Error closing Socket.IO:', e.message);
+        }
+        io = null;
+      }
+
       await new Promise((resolve) => {
         server.close(resolve);
       });
@@ -62,6 +72,7 @@ const startServer = async (attemptNumber = 1) => {
       }
     } else {
       console.error('❌ Server error:', error.message);
+      if (io) try { io.close(); } catch (e) {}
       process.exit(1);
     }
   }
@@ -71,6 +82,11 @@ const startServer = async (attemptNumber = 1) => {
 process.on('SIGTERM', () => {
   console.log('👋 SIGTERM received, shutting down gracefully');
   if (server) {
+    if (io) {
+      try { io.close(); } catch (e) {}
+      io = null;
+    }
+
     server.close(() => {
       console.log('✅ Process terminated');
       process.exit(0);
@@ -83,12 +99,40 @@ process.on('SIGTERM', () => {
 process.on('SIGINT', () => {
   console.log('👋 SIGINT received, shutting down gracefully');
   if (server) {
+    if (io) {
+      try { io.close(); } catch (e) {}
+      io = null;
+    }
+
     server.close(() => {
       console.log('✅ Process terminated');
       process.exit(0);
     });
   } else {
     process.exit(0);
+  }
+});
+
+// Handle nodemon restarts (SIGUSR2)
+process.once('SIGUSR2', () => {
+  console.log('👋 SIGUSR2 received (nodemon restart), shutting down gracefully');
+  if (server) {
+    server.close(() => {
+      console.log('✅ Process terminated for restart');
+      process.kill(process.pid, 'SIGUSR2');
+    });
+  } else {
+    process.kill(process.pid, 'SIGUSR2');
+  }
+});
+
+// Catch uncaught exceptions to avoid leaving the port open
+process.on('uncaughtException', (err) => {
+  console.error('❌ Uncaught Exception:', err);
+  if (server) {
+    server.close(() => process.exit(1));
+  } else {
+    process.exit(1);
   }
 });
 

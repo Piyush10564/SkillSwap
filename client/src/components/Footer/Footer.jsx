@@ -22,7 +22,7 @@ export default function Footer() {
   };
 
   return (
-    <footer className="border-t border-slate-200 bg-white/80 backdrop-blur mt-auto">
+    <footer className="border-t soft-border bg-white/5 backdrop-blur mt-auto">
       <div className="mx-auto max-w-6xl px-4 py-8 sm:px-6 lg:px-8">
         <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
           {/* Brand */}
@@ -93,7 +93,7 @@ export default function Footer() {
         </div>
 
         {/* Bottom Bar */}
-        <div className="mt-8 pt-6 border-t border-slate-200">
+        <div className="mt-8 pt-6 border-t soft-border">
           <p className="text-center text-xs text-slate-500">
             © {currentYear} SkillSwap. All rights reserved.
           </p>

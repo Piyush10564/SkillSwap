@@ -114,12 +114,12 @@ export default function Discover() {
             onChange={(e) => setFilters({ ...filters, q: e.target.value })}
             onKeyPress={(e) => e.key === 'Enter' && handleSearch()}
             placeholder="Search skills..."
-            className="rounded-xl border border-slate-200 bg-slate-50/70 px-4 py-2 text-sm focus:border-indigo-400 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-200"
+            className="rounded-xl border soft-border bg-transparent px-4 py-2 text-sm focus:border-indigo-400 focus:bg-transparent focus:outline-none focus:ring-2 focus:ring-indigo-200"
           />
           <select
             value={filters.category}
             onChange={(e) => setFilters({ ...filters, category: e.target.value })}
-            className="rounded-xl border border-slate-200 bg-slate-50/70 px-4 py-2 text-sm focus:border-indigo-400 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-200"
+            className="rounded-xl border soft-border bg-transparent px-4 py-2 text-sm focus:border-indigo-400 focus:bg-transparent focus:outline-none focus:ring-2 focus:ring-indigo-200"
           >
             <option value="">All Categories</option>
             <option>Programming</option>
@@ -132,7 +132,7 @@ export default function Discover() {
           <select
             value={filters.level}
             onChange={(e) => setFilters({ ...filters, level: e.target.value })}
-            className="rounded-xl border border-slate-200 bg-slate-50/70 px-4 py-2 text-sm focus:border-indigo-400 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-200"
+            className="rounded-xl border soft-border bg-transparent px-4 py-2 text-sm focus:border-indigo-400 focus:bg-transparent focus:outline-none focus:ring-2 focus:ring-indigo-200"
           >
             <option value="">All Levels</option>
             <option>Beginner</option>
@@ -151,10 +151,10 @@ export default function Discover() {
 
       {/* Results */}
       <div className="mt-6">
-        {loading ? (
+          {loading ? (
           <div className="text-center py-12 text-slate-500">Searching...</div>
-        ) : skills.length === 0 ? (
-          <div className="card-surface p-12 border-dashed border border-slate-200 bg-slate-50/80 text-center">
+          ) : skills.length === 0 ? (
+          <div className="card-surface p-12 border-dashed soft-border text-center">
             <p className="text-sm text-slate-600">No skills found</p>
             <p className="text-xs text-slate-500 mt-1">Try adjusting your search filters</p>
           </div>
@@ -207,7 +207,7 @@ export default function Discover() {
 
                     <button
                       onClick={() => { setRequestSkill(skill); setShowRequestModal(true); }}
-                      className="inline-flex items-center gap-1 rounded-full border border-slate-200 bg-white px-3 py-2 text-sm text-slate-700 hover:bg-slate-50"
+                      className="inline-flex items-center gap-1 rounded-full border soft-border bg-transparent px-3 py-2 text-sm text-slate-700 hover:bg-white/5"
                     >
                       Request to learn
                     </button>

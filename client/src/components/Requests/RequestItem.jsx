@@ -40,10 +40,10 @@ export default function RequestItem({ request, onAction }) {
   };
 
   return (
-    <div className="flex items-start justify-between gap-4 p-4 rounded-xl border border-slate-100 bg-white">
+    <div className="flex items-start justify-between gap-4 p-4 rounded-xl card-surface">
       <div>
         <div className="flex items-center gap-3">
-          <div className="h-10 w-10 rounded-full bg-slate-100 flex items-center justify-center text-sm font-semibold">{request.learner?.name?.substring(0,2).toUpperCase() || 'U'}</div>
+          <div className="h-10 w-10 rounded-full bg-white/5 flex items-center justify-center text-sm font-semibold">{request.learner?.name?.substring(0,2).toUpperCase() || 'U'}</div>
           <div>
             <div className="font-medium text-slate-900">{request.learner?.name}</div>
             <div className="text-xs text-slate-500">{request.skillName || 'General request'}</div>
@@ -57,12 +57,12 @@ export default function RequestItem({ request, onAction }) {
         {isTeacher && request.status === 'pending' && (
           <>
             <button onClick={() => onAction(request._id, 'accepted')} className="rounded-full bg-emerald-600 text-white px-3 py-1 text-sm">Accept</button>
-            <button onClick={() => onAction(request._id, 'rejected')} className="rounded-full border border-slate-200 px-3 py-1 text-sm">Ignore</button>
+            <button onClick={() => onAction(request._id, 'rejected')} className="rounded-full border soft-border px-3 py-1 text-sm">Ignore</button>
           </>
         )}
 
         {isLearner && request.status === 'pending' && (
-          <button onClick={() => onAction(request._id, 'cancelled')} className="rounded-full border border-slate-200 px-3 py-1 text-sm">Cancel</button>
+          <button onClick={() => onAction(request._id, 'cancelled')} className="rounded-full border soft-border px-3 py-1 text-sm">Cancel</button>
         )}
 
         {request.status === 'accepted' && otherParticipantId && (

@@ -55,9 +55,9 @@ export default function Layout({ children }) {
   return (
     <div className="flex min-h-screen flex-col lg:flex-row text-sm section-shell">
       {/* Desktop Sidebar */}
-      <aside className="hidden lg:flex lg:w-64 xl:w-72 flex-col border-r border-slate-200 bg-white/88 backdrop-blur-xl shadow-[0_0_40px_rgba(15,23,42,0.06)]">
+      <aside className="hidden lg:flex lg:w-64 xl:w-72 flex-col border-r soft-border bg-white/5 backdrop-blur-xl shadow-[0_0_40px_rgba(15,23,42,0.06)]">
         {/* Logo */}
-        <div className="flex items-center gap-2 border-b border-slate-200 px-6 py-5">
+        <div className="flex items-center gap-2 border-b soft-border px-6 py-5">
           <div className="h-8 w-8 rounded-2xl bg-gradient-to-tr from-indigo-500 via-sky-500 to-violet-500 shadow-sm flex items-center justify-center">
             <span className="text-xs font-semibold tracking-tight text-white">SS</span>
           </div>
@@ -75,7 +75,7 @@ export default function Layout({ children }) {
               to={item.path}
               className={`flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-xs font-medium ${isActive(item.path)
                 ? 'bg-indigo-50 text-indigo-700'
-                : 'text-slate-700 hover:bg-slate-100'
+                : 'text-slate-700 hover:bg-white/5'
                 }`}
             >
               <span className="iconify" data-icon={item.icon} data-width="16" data-height="16" style={{ strokeWidth: '1.5' }}></span>
@@ -90,8 +90,8 @@ export default function Layout({ children }) {
         </nav>
 
         {/* User Profile */}
-        <div className="border-t border-slate-200 px-4 py-4">
-          <div className="flex items-center gap-3 rounded-xl bg-slate-50/80 px-3 py-2.5">
+        <div className="border-t soft-border px-4 py-4">
+          <div className="flex items-center gap-3 rounded-xl bg-white/5 px-3 py-2.5">
             <div className="h-8 w-8 rounded-full bg-gradient-to-tr from-indigo-500 to-violet-500 flex items-center justify-center text-[0.75rem] font-semibold tracking-tight text-white">
               {user?.name?.substring(0, 2).toUpperCase() || 'U'}
             </div>

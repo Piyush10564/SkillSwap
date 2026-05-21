@@ -4,7 +4,7 @@ export default function BadgeCard({ badge, earned = false }) {
       className={`card-surface p-6 text-center transition-transform hover:scale-105 ${
         earned
           ? 'bg-gradient-to-br from-yellow-50 to-amber-50 border-2 border-yellow-300 shadow-lg shadow-yellow-200'
-          : 'bg-slate-50 border-2 border-slate-200 opacity-50'
+          : 'bg-white/5 border-2 soft-border opacity-50'
       }`}
     >
       <div className="text-5xl mb-3">{badge.icon || '🏅'}</div>

@@ -6,6 +6,7 @@
   "type": "module",
   "scripts": {
     "start": "node src/server.js",
+    "prestart": "lsof -ti:4000 | xargs kill -9 2>/dev/null || true",
     "predev": "lsof -ti:4000 | xargs kill -9 2>/dev/null || true",
     "dev": "nodemon src/server.js --ignore \"node_modules\" --delay 1000ms",
     "kill-port": "taskkill /F /IM node.exe 2>nul || true",

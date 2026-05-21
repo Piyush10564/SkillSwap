@@ -63,7 +63,7 @@ export default function ReviewForm({ receiverId, sessionId, onSuccess }) {
           value={comment}
           onChange={(e) => setComment(e.target.value)}
           placeholder="Share your experience..."
-          className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm placeholder:text-slate-400 focus:border-indigo-400 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-200"
+          className="w-full rounded-xl border soft-border bg-transparent px-4 py-3 text-sm placeholder:text-slate-400 focus:border-indigo-400 focus:bg-transparent focus:outline-none focus:ring-2 focus:ring-indigo-200"
           rows={4}
         />
       </div>

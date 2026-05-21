@@ -68,7 +68,7 @@ export default function Skills() {
       </div>
 
       {/* Tabs */}
-      <div className="mt-6 rounded-full bg-slate-100/80 p-0.5 text-sm sm:max-w-md">
+      <div className="mt-6 rounded-full bg-white/5 p-0.5 text-sm sm:max-w-md">
         <div className="flex">
           <button
             onClick={() => setActiveTab('offer')}
@@ -90,14 +90,14 @@ export default function Skills() {
       {/* Skills List */}
       <div className="mt-6">
         {currentSkills.length === 0 ? (
-          <div className="card-surface p-8 border-dashed text-center bg-slate-50/80">
+          <div className="card-surface p-8 border-dashed border soft-border text-center">
             <h3 className="text-sm font-semibold text-slate-800">No skills added yet</h3>
             <p className="mt-1 text-xs text-slate-500">
               Start by adding a skill you'd like to {activeTab === 'offer' ? 'teach' : 'learn'}.
             </p>
             <button
               onClick={() => setShowAddModal(true)}
-              className="mt-4 inline-flex items-center gap-1.5 rounded-full bg-white px-4 py-2 text-sm font-medium text-indigo-600 shadow-sm hover:bg-slate-50"
+              className="mt-4 inline-flex items-center gap-1.5 rounded-full bg-transparent px-4 py-2 text-sm font-medium text-indigo-600 shadow-sm hover:bg-white/5"
             >
               <span className="iconify" data-icon="lucide:plus" data-width="14" data-height="14"></span>
               Add skill
@@ -148,7 +148,7 @@ export default function Skills() {
                   type="text"
                   value={formData.name}
                   onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                  className="w-full rounded-xl border border-slate-200 bg-slate-50/70 px-4 py-2 text-sm focus:border-indigo-400 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-200"
+                  className="w-full rounded-xl border soft-border bg-transparent px-4 py-2 text-sm focus:border-indigo-400 focus:bg-transparent focus:outline-none focus:ring-2 focus:ring-indigo-200"
                   placeholder="e.g. React, Spanish, UI Design"
                   required
                 />
@@ -158,7 +158,7 @@ export default function Skills() {
                 <select
                   value={formData.category}
                   onChange={(e) => setFormData({ ...formData, category: e.target.value })}
-                  className="w-full rounded-xl border border-slate-200 bg-slate-50/70 px-4 py-2 text-sm focus:border-indigo-400 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-200"
+                  className="w-full rounded-xl border soft-border bg-transparent px-4 py-2 text-sm focus:border-indigo-400 focus:bg-transparent focus:outline-none focus:ring-2 focus:ring-indigo-200"
                 >
                   <option>Programming</option>
                   <option>Design</option>
@@ -173,7 +173,7 @@ export default function Skills() {
                 <select
                   value={formData.level}
                   onChange={(e) => setFormData({ ...formData, level: e.target.value })}
-                  className="w-full rounded-xl border border-slate-200 bg-slate-50/70 px-4 py-2 text-sm focus:border-indigo-400 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-200"
+                  className="w-full rounded-xl border soft-border bg-transparent px-4 py-2 text-sm focus:border-indigo-400 focus:bg-transparent focus:outline-none focus:ring-2 focus:ring-indigo-200"
                 >
                   <option>Beginner</option>
                   <option>Intermediate</option>
@@ -185,7 +185,7 @@ export default function Skills() {
                 <select
                   value={formData.type}
                   onChange={(e) => setFormData({ ...formData, type: e.target.value })}
-                  className="w-full rounded-xl border border-slate-200 bg-slate-50/70 px-4 py-2 text-sm focus:border-indigo-400 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-200"
+                  className="w-full rounded-xl border soft-border bg-transparent px-4 py-2 text-sm focus:border-indigo-400 focus:bg-transparent focus:outline-none focus:ring-2 focus:ring-indigo-200"
                 >
                   <option value="offer">I can teach this</option>
                   <option value="learn">I want to learn this</option>

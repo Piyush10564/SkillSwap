@@ -75,7 +75,7 @@ export default function Requests() {
   return (
     <div>
       {toast && (
-        <div className="fixed right-4 top-4 z-50 max-w-sm rounded-2xl border border-slate-200 bg-white/95 px-4 py-3 shadow-xl shadow-slate-200/60 backdrop-blur">
+        <div className="fixed right-4 top-4 z-50 max-w-sm rounded-2xl border soft-border bg-white/5 px-4 py-3 shadow-xl shadow-slate-200/60 backdrop-blur">
           <div className="text-sm font-semibold text-slate-900">{toast.title}</div>
           <div className="mt-1 text-sm text-slate-600">{toast.message}</div>
         </div>
@@ -83,8 +83,8 @@ export default function Requests() {
       <div className="flex items-center justify-between">
         <h2 className="text-lg font-semibold">Requests</h2>
         <div className="flex gap-2">
-          <button onClick={() => setTab('incoming')} className={`px-3 py-1 rounded-full ${tab === 'incoming' ? 'bg-slate-800 text-white' : 'bg-white border'}`}>Incoming</button>
-          <button onClick={() => setTab('outgoing')} className={`px-3 py-1 rounded-full ${tab === 'outgoing' ? 'bg-slate-800 text-white' : 'bg-white border'}`}>Outgoing</button>
+          <button onClick={() => setTab('incoming')} className={`px-3 py-1 rounded-full ${tab === 'incoming' ? 'bg-slate-800 text-white' : 'bg-transparent border soft-border'}`}>Incoming</button>
+          <button onClick={() => setTab('outgoing')} className={`px-3 py-1 rounded-full ${tab === 'outgoing' ? 'bg-slate-800 text-white' : 'bg-transparent border soft-border'}`}>Outgoing</button>
         </div>
       </div>
 

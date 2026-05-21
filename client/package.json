@@ -4,6 +4,7 @@
   "type": "module",
   "scripts": {
     "predev": "lsof -ti:5177 | xargs -n1 kill -9 2>/dev/null || true",
+    "start": "npm run dev",
     "dev": "vite --port 5177 --strictPort",
     "build": "vite build",
     "preview": "vite preview"

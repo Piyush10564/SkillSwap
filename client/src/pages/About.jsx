@@ -5,7 +5,7 @@ export default function About() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-indigo-50/30 flex flex-col">
       {/* Hero Section */}
-      <div className="border-b border-slate-200 bg-white/80 backdrop-blur">
+      <div className="border-b soft-border bg-white/5 backdrop-blur">
         <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6 lg:px-8">
           <div className="text-center">
             <div className="inline-flex items-center gap-2 mb-6">
@@ -132,7 +132,7 @@ export default function About() {
         </div>
 
         {/* CTA Section */}
-        <div className="card-surface p-8 md:p-12 bg-gradient-to-br from-indigo-50 to-violet-50 border border-indigo-200 text-center">
+        <div className="card-surface p-8 md:p-12 bg-gradient-to-br from-indigo-50 to-violet-50 border soft-border text-center">
           <h2 className="text-2xl md:text-3xl font-bold tracking-tight text-slate-900 mb-4">
             Ready to start learning?
           </h2>

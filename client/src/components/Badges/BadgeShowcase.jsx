@@ -43,7 +43,7 @@ export default function BadgeShowcase({ userId }) {
     <div className="space-y-4">
       <div className="flex items-center justify-between mb-6">
         <h2 className="text-2xl font-bold text-slate-900">Badges</h2>
-        <span className="text-sm font-medium text-slate-600 bg-slate-100 px-3 py-1 rounded-full">
+        <span className="text-sm font-medium text-slate-600 bg-white/5 px-3 py-1 rounded-full">
           {userBadges.length} / {allBadges.length}
         </span>
       </div>
@@ -65,7 +65,7 @@ export default function BadgeShowcase({ userId }) {
       </div>
 
       {userBadges.length === 0 && (
-        <div className="card-surface p-12 text-center bg-slate-50">
+        <div className="card-surface p-12 text-center">
           <p className="text-slate-500">No badges yet. Keep going! 🚀</p>
         </div>
       )}

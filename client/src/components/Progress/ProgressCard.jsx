@@ -48,7 +48,7 @@ export default function ProgressCard({ progress }) {
           <span className="text-sm font-medium text-slate-700">Progress</span>
           <span className="text-sm font-semibold text-slate-900">{progress.progress}%</span>
         </div>
-        <div className="w-full bg-slate-200 rounded-full h-3 overflow-hidden">
+        <div className="w-full bg-white/5 rounded-full h-3 overflow-hidden">
           <div
             className={`h-full bg-gradient-to-r ${getMilestoneColor(progress.milestone)} transition-all duration-300`}
             style={{ width: `${progress.progress}%` }}
@@ -57,15 +57,15 @@ export default function ProgressCard({ progress }) {
       </div>
 
       <div className="grid grid-cols-3 gap-3 text-center text-xs">
-        <div className="bg-slate-50 rounded-lg p-3">
+        <div className="bg-white/5 rounded-lg p-3">
           <p className="text-slate-600">Sessions</p>
           <p className="font-bold text-slate-900">{progress.completedSessions}</p>
         </div>
-        <div className="bg-slate-50 rounded-lg p-3">
+        <div className="bg-white/5 rounded-lg p-3">
           <p className="text-slate-600">Hours</p>
           <p className="font-bold text-slate-900">{progress.totalHoursLearned}</p>
         </div>
-        <div className="bg-slate-50 rounded-lg p-3">
+        <div className="bg-white/5 rounded-lg p-3">
           <p className="text-slate-600">Level</p>
           <p className="font-bold text-slate-900 capitalize">{progress.milestone}</p>
         </div>

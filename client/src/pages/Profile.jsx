@@ -5,11 +5,13 @@ import BadgeShowcase from '../components/Badges/BadgeShowcase';
 
 export default function Profile() {
   const { user, setUser } = useAuth();
+
   const [isEditing, setIsEditing] = useState(false);
   const [loading, setLoading] = useState(false);
   const [stats, setStats] = useState(null);
   const [statsLoading, setStatsLoading] = useState(false);
   const [statsError, setStatsError] = useState(null);
+
   const [formData, setFormData] = useState({
     name: '',
     bio: '',
@@ -17,15 +19,15 @@ export default function Profile() {
     timezone: '',
     learningStyle: '',
   });
+
   const fileInputRef = useRef(null);
 
   const fetchStats = async () => {
     try {
       setStatsLoading(true);
       setStatsError(null);
-      console.log('Fetching stats...');
+
       const response = await profileService.getStats();
-      console.log('Stats response:', response.data);
       setStats(response.data.data.stats);
     } catch (error) {
       console.error('Error fetching stats:', error);
@@ -44,17 +46,23 @@ export default function Profile() {
         timezone: user.timezone || 'UTC',
         learningStyle: user.preferences?.learningStyle || 'any',
       });
+
       fetchStats();
     }
   }, [user]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
+
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
   };
 
   const handleSave = async () => {
     setLoading(true);
+
     try {
       const updateData = {
         name: formData.name,
@@ -67,14 +75,18 @@ export default function Profile() {
       };
 
       const response = await profileService.updateProfile(updateData);
-      // API returns { success: true, data: { user: {...} } }
+
       if (response.data.success && response.data.data.user) {
         setUser(response.data.data.user);
         setIsEditing(false);
       }
     } catch (error) {
       console.error('Error updating profile:', error);
-      alert(error.response?.data?.message || 'Failed to update profile. Please try again.');
+
+      alert(
+        error.response?.data?.message ||
+          'Failed to update profile. Please try again.'
+      );
     } finally {
       setLoading(false);
     }
@@ -88,6 +100,7 @@ export default function Profile() {
       timezone: user.timezone || 'UTC',
       learningStyle: user.preferences?.learningStyle || 'any',
     });
+
     setIsEditing(false);
   };
 
@@ -97,57 +110,71 @@ export default function Profile() {
 
   const handleAvatarChange = async (e) => {
     const file = e.target.files?.[0];
+
     if (!file) return;
 
-    // Only allow if in edit mode
     if (!isEditing) {
       alert('Please click "Edit Profile" first to update your avatar');
       return;
     }
 
-    // Validate file type
     if (!file.type.startsWith('image/')) {
       alert('Please select an image file');
       return;
     }
 
-    // Validate file size (2MB)
     if (file.size > 2 * 1024 * 1024) {
       alert('Image size must be less than 2MB');
       return;
     }
 
-    // Convert to base64
     const reader = new FileReader();
+
     reader.onloadend = async () => {
       try {
         const response = await profileService.uploadAvatar(reader.result);
-        // API returns { success: true, data: { avatarUrl: "..." } }
+
         if (response.data.success && response.data.data.avatarUrl) {
-          setUser({ ...user, avatarUrl: response.data.data.avatarUrl });
-          // Don't show error - upload was successful
+          setUser({
+            ...user,
+            avatarUrl: response.data.data.avatarUrl,
+          });
         } else {
-          // Only show error if success is false
           alert('Failed to upload avatar. Please try again.');
         }
       } catch (error) {
         console.error('Error uploading avatar:', error);
-        alert(error.response?.data?.message || 'Failed to upload avatar. Please try again.');
+
+        alert(
+          error.response?.data?.message ||
+            'Failed to upload avatar. Please try again.'
+        );
       }
     };
+
     reader.readAsDataURL(file);
   };
 
   return (
     <div>
+      {/* Header */}
       <div className="flex items-center justify-between mb-6">
-        <h2 className="text-xl font-semibold tracking-tight text-slate-900">Profile</h2>
+        <h2 className="text-xl font-semibold tracking-tight text-slate-900">
+          Profile
+        </h2>
+
         {!isEditing ? (
           <button
             onClick={() => setIsEditing(true)}
-            className="inline-flex items-center gap-1.5 rounded-full border border-slate-200 bg-white px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50"
+            className="inline-flex items-center gap-1.5 rounded-full border soft-border bg-transparent px-4 py-2 text-sm font-medium text-slate-700 hover:bg-white/5"
           >
-            <span className="iconify" data-icon="lucide:edit-3" data-width="14" data-height="14"></span>
+            <span
+              className="iconify"
+              data-icon="lucide:edit-3"
+              data-width="14"
+              data-height="14"
+            ></span>
+
             Edit Profile
           </button>
         ) : (
@@ -155,10 +182,11 @@ export default function Profile() {
             <button
               onClick={handleCancel}
               disabled={loading}
-              className="inline-flex items-center gap-1.5 rounded-full border border-slate-200 bg-white px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50 disabled:opacity-50"
+              className="inline-flex items-center gap-1.5 rounded-full border soft-border bg-transparent px-4 py-2 text-sm font-medium text-slate-700 hover:bg-white/5 disabled:opacity-50"
             >
               Cancel
             </button>
+
             <button
               onClick={handleSave}
               disabled={loading}
@@ -177,24 +205,36 @@ export default function Profile() {
           <div className="flex items-center gap-6 mb-6">
             <div className="relative">
               <div
-                className={`h-24 w-24 rounded-full bg-gradient-to-tr from-indigo-500 to-violet-500 flex items-center justify-center text-2xl font-semibold text-white ${isEditing ? 'cursor-pointer' : ''
-                  }`}
+                className={`h-24 w-24 rounded-full bg-gradient-to-tr from-indigo-500 to-violet-500 flex items-center justify-center text-2xl font-semibold text-white ${
+                  isEditing ? 'cursor-pointer' : ''
+                }`}
                 onClick={isEditing ? handleAvatarClick : undefined}
               >
-                {user.avatarUrl ? (
-                  <img src={user.avatarUrl} alt={user.name} className="h-full w-full rounded-full object-cover" />
+                {user?.avatarUrl ? (
+                  <img
+                    src={user.avatarUrl}
+                    alt={user.name}
+                    className="h-full w-full rounded-full object-cover"
+                  />
                 ) : (
-                  user.name?.substring(0, 2).toUpperCase()
+                  user?.name?.substring(0, 2).toUpperCase()
                 )}
               </div>
+
               {isEditing && (
                 <div
                   className="absolute inset-0 flex items-center justify-center rounded-full bg-black/50 opacity-0 hover:opacity-100 transition-opacity cursor-pointer"
                   onClick={handleAvatarClick}
                 >
-                  <span className="iconify text-white" data-icon="lucide:camera" data-width="24" data-height="24"></span>
+                  <span
+                    className="iconify text-white"
+                    data-icon="lucide:camera"
+                    data-width="24"
+                    data-height="24"
+                  ></span>
                 </div>
               )}
+
               <input
                 ref={fileInputRef}
                 type="file"
@@ -204,39 +244,56 @@ export default function Profile() {
                 disabled={!isEditing}
               />
             </div>
+
             <div>
-              <h3 className="text-xl font-semibold text-slate-900">{user.name}</h3>
-              <p className="text-sm text-slate-500">{user.email}</p>
+              <h3 className="text-xl font-semibold text-slate-900">
+                {user?.name}
+              </h3>
+
+              <p className="text-sm text-slate-500">{user?.email}</p>
+
               {isEditing && (
-                <p className="text-xs text-slate-400 mt-1">Click avatar to upload image (max 2MB)</p>
+                <p className="text-xs text-slate-400 mt-1">
+                  Click avatar to upload image (max 2MB)
+                </p>
               )}
             </div>
           </div>
+
           {stats && (
             <p className="text-xs text-slate-500 mt-1">
-              Member since {new Date(stats.memberSince).toLocaleDateString()}
+              Member since{' '}
+              {new Date(stats.memberSince).toLocaleDateString()}
             </p>
           )}
 
-          {/* Profile Fields */}
+          {/* Form Fields */}
           <div className="space-y-4">
+            {/* Name */}
             <div>
-              <label className="block text-sm font-medium text-slate-700 mb-1">Name</label>
+              <label className="block text-sm font-medium text-slate-700 mb-1">
+                Name
+              </label>
+
               {isEditing ? (
                 <input
                   type="text"
                   name="name"
                   value={formData.name}
                   onChange={handleInputChange}
-                  className="w-full rounded-xl border border-slate-200 bg-slate-50/70 px-4 py-2 text-sm focus:border-indigo-400 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-200"
+                  className="w-full rounded-xl border soft-border bg-transparent px-4 py-2 text-sm focus:border-indigo-400 focus:bg-transparent focus:outline-none focus:ring-2 focus:ring-indigo-200"
                 />
               ) : (
                 <p className="text-sm text-slate-600">{user?.name}</p>
               )}
             </div>
 
+            {/* Bio */}
             <div>
-              <label className="block text-sm font-medium text-slate-700 mb-1">Bio</label>
+              <label className="block text-sm font-medium text-slate-700 mb-1">
+                Bio
+              </label>
+
               {isEditing ? (
                 <textarea
                   name="bio"
@@ -244,47 +301,72 @@ export default function Profile() {
                   onChange={handleInputChange}
                   rows={3}
                   maxLength={500}
-                  className="w-full rounded-xl border border-slate-200 bg-slate-50/70 px-4 py-2 text-sm focus:border-indigo-400 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-200"
                   placeholder="Tell others about yourself..."
+                  className="w-full rounded-xl border soft-border bg-transparent px-4 py-2 text-sm focus:border-indigo-400 focus:bg-transparent focus:outline-none focus:ring-2 focus:ring-indigo-200"
                 />
               ) : (
-                <p className="text-sm text-slate-600">{user?.bio || 'No bio added yet'}</p>
+                <p className="text-sm text-slate-600">
+                  {user?.bio || 'No bio added yet'}
+                </p>
               )}
+
               {isEditing && (
-                <p className="text-xs text-slate-500 mt-1">{formData.bio.length}/500 characters</p>
+                <p className="text-xs text-slate-500 mt-1">
+                  {formData.bio.length}/500 characters
+                </p>
               )}
             </div>
 
+            {/* Location + Timezone */}
             <div className="grid gap-4 sm:grid-cols-2">
+              {/* Location */}
               <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1">Location</label>
+                <label className="block text-sm font-medium text-slate-700 mb-1">
+                  Location
+                </label>
+
                 {isEditing ? (
                   <input
                     type="text"
                     name="location"
                     value={formData.location}
                     onChange={handleInputChange}
-                    className="w-full rounded-xl border border-slate-200 bg-slate-50/70 px-4 py-2 text-sm focus:border-indigo-400 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-200"
                     placeholder="City, Country"
+                    className="w-full rounded-xl border soft-border bg-transparent px-4 py-2 text-sm focus:border-indigo-400 focus:bg-transparent focus:outline-none focus:ring-2 focus:ring-indigo-200"
                   />
                 ) : (
-                  <p className="text-sm text-slate-600">{user?.location || 'Not set'}</p>
+                  <p className="text-sm text-slate-600">
+                    {user?.location || 'Not set'}
+                  </p>
                 )}
               </div>
+
+              {/* Timezone */}
               <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1">Timezone</label>
+                <label className="block text-sm font-medium text-slate-700 mb-1">
+                  Timezone
+                </label>
+
                 {isEditing ? (
                   <select
                     name="timezone"
                     value={formData.timezone}
                     onChange={handleInputChange}
-                    className="w-full rounded-xl border border-slate-200 bg-slate-50/70 px-4 py-2 text-sm focus:border-indigo-400 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-200"
+                    className="w-full rounded-xl border soft-border bg-transparent px-4 py-2 text-sm focus:border-indigo-400 focus:bg-transparent focus:outline-none focus:ring-2 focus:ring-indigo-200"
                   >
                     <option value="UTC">UTC</option>
-                    <option value="America/New_York">Eastern Time</option>
-                    <option value="America/Chicago">Central Time</option>
-                    <option value="America/Denver">Mountain Time</option>
-                    <option value="America/Los_Angeles">Pacific Time</option>
+                    <option value="America/New_York">
+                      Eastern Time
+                    </option>
+                    <option value="America/Chicago">
+                      Central Time
+                    </option>
+                    <option value="America/Denver">
+                      Mountain Time
+                    </option>
+                    <option value="America/Los_Angeles">
+                      Pacific Time
+                    </option>
                     <option value="Europe/London">London</option>
                     <option value="Europe/Paris">Paris</option>
                     <option value="Asia/Tokyo">Tokyo</option>
@@ -292,13 +374,19 @@ export default function Profile() {
                     <option value="Australia/Sydney">Sydney</option>
                   </select>
                 ) : (
-                  <p className="text-sm text-slate-600">{user?.timezone || 'UTC'}</p>
+                  <p className="text-sm text-slate-600">
+                    {user?.timezone || 'UTC'}
+                  </p>
                 )}
               </div>
             </div>
 
+            {/* Learning Style */}
             <div>
-              <label className="block text-sm font-medium text-slate-700 mb-1">Learning Style</label>
+              <label className="block text-sm font-medium text-slate-700 mb-1">
+                Learning Style
+              </label>
+
               {isEditing ? (
                 <select
                   name="learningStyle"
@@ -312,22 +400,33 @@ export default function Profile() {
                   <option value="async">Asynchronous</option>
                 </select>
               ) : (
-                <p className="text-sm text-slate-600 capitalize">{user?.preferences?.learningStyle || 'Any'}</p>
+                <p className="text-sm text-slate-600 capitalize">
+                  {user?.preferences?.learningStyle || 'Any'}
+                </p>
               )}
             </div>
           </div>
         </div>
 
-        {/* Stats Card */}
+        {/* Right Sidebar */}
         <div className="space-y-4">
+          {/* Stats */}
           <div className="page-surface p-6">
-            <h3 className="text-base font-semibold text-slate-900 mb-4">Statistics</h3>
+            <h3 className="text-base font-semibold text-slate-900 mb-4">
+              Statistics
+            </h3>
+
             {statsLoading ? (
-              <div className="text-center py-4 text-sm text-slate-500">Loading stats...</div>
+              <div className="text-center py-4 text-sm text-slate-500">
+                Loading stats...
+              </div>
             ) : statsError ? (
               <div className="text-center py-4">
-                <p className="text-sm text-red-600 mb-2">Error: {statsError}</p>
-                <button 
+                <p className="text-sm text-red-600 mb-2">
+                  Error: {statsError}
+                </p>
+
+                <button
                   onClick={fetchStats}
                   className="text-xs text-indigo-600 hover:text-indigo-700 font-medium"
                 >
@@ -337,25 +436,48 @@ export default function Profile() {
             ) : stats ? (
               <div className="space-y-3">
                 <div className="flex items-center justify-between">
-                  <span className="text-sm text-slate-600">Skills Offered</span>
-                  <span className="text-lg font-semibold text-indigo-600">{stats.skillsOffered}</span>
+                  <span className="text-sm text-slate-600">
+                    Skills Offered
+                  </span>
+
+                  <span className="text-lg font-semibold text-indigo-600">
+                    {stats.skillsOffered}
+                  </span>
                 </div>
+
                 <div className="flex items-center justify-between">
-                  <span className="text-sm text-slate-600">Skills Learning</span>
-                  <span className="text-lg font-semibold text-emerald-600">{stats.skillsLearning}</span>
+                  <span className="text-sm text-slate-600">
+                    Skills Learning
+                  </span>
+
+                  <span className="text-lg font-semibold text-emerald-600">
+                    {stats.skillsLearning}
+                  </span>
                 </div>
+
                 <div className="flex items-center justify-between pt-3 border-t border-slate-200">
-                  <span className="text-sm font-medium text-slate-700">Total Skills</span>
-                  <span className="text-xl font-bold text-slate-900">{stats.totalSkills}</span>
+                  <span className="text-sm font-medium text-slate-700">
+                    Total Skills
+                  </span>
+
+                  <span className="text-xl font-bold text-slate-900">
+                    {stats.totalSkills}
+                  </span>
                 </div>
               </div>
             ) : (
-              <div className="text-center py-4 text-sm text-slate-500">No data available</div>
+              <div className="text-center py-4 text-sm text-slate-500">
+                No data available
+              </div>
             )}
           </div>
 
+          {/* Badges */}
           <div className="page-surface p-6">
-            <h3 className="text-base font-semibold text-slate-900 mb-4">Badges</h3>
+            <h3 className="text-base font-semibold text-slate-900 mb-4">
+              Badges
+            </h3>
+
             <BadgeShowcase userId={user?._id} />
           </div>
         </div>
