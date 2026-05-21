@@ -90,6 +90,13 @@
     box-shadow: 0 20px 48px rgba(var(--shadow-color), 0.07);
   }
 
+  /* Ensure accent surface remains readable in light theme (e.g., credit balance card) */
+  .surface-accent {
+    background: linear-gradient(135deg, rgba(29,78,216,0.08) 0%, rgba(96,165,250,0.06) 100%);
+    border-color: rgba(29,78,216,0.12);
+    color: var(--text-strong);
+  }
+
   .card-surface {
     background: linear-gradient(180deg, rgba(255, 255, 255, 0.99), rgba(249, 250, 251, 0.96));
     border: 1px solid rgba(226, 232, 240, 0.95);
@@ -198,6 +205,75 @@
   /* Stronger contrast for header/subtitle */
   .page-surface .text-strong { color: var(--text-strong) !important; }
   .page-surface .text-muted { color: var(--text-muted) !important; }
+
+  /* Dark-mode adjustments for the surrounding page shell and top navbar */
+  .section-shell {
+    background: linear-gradient(180deg, rgba(10,14,20,0.55), rgba(8,12,18,0.65));
+  }
+
+  /* Mobile header uses lg:hidden class; target header elements used as mobile header */
+  header[class*="lg:hidden"] {
+    background: linear-gradient(180deg, rgba(9,12,18,0.9), rgba(12,16,22,0.94));
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+    color: var(--text-strong);
+  }
+
+  /* Ensure any top-level hero/header titles inside section-shell are visible */
+  .section-shell .app-section-title,
+  .section-shell h1,
+  .section-shell h2,
+  .section-shell p {
+    color: var(--text-strong);
+  }
+
+  /* Theme toggle button adjustments when in dark mode */
+  .section-shell button[aria-label*="theme"],
+  .section-shell button[title*="theme"] {
+    border: 1px solid rgba(255,255,255,0.06);
+    box-shadow: 0 6px 18px rgba(2,6,23,0.28);
+  }
+
+  /* Make table rows and transaction items readable on dark backgrounds */
+  .page-surface table tr,
+  .page-surface .transaction-row,
+  .page-surface .card-surface {
+    background: transparent !important;
+    color: var(--text-strong) !important;
+    border-color: rgba(255,255,255,0.04) !important;
+  }
+
+  .page-surface table tr:hover,
+  .hover\:bg-white\/70:hover {
+    background: rgba(255,255,255,0.03) !important;
+  }
+
+  .page-surface table td,
+  .page-surface table th {
+    color: var(--text-strong) !important;
+  }
+
+  /* Keep secondary text slightly softer but still legible */
+  .page-surface table td.text-muted,
+  .page-surface .text-soft {
+    color: rgba(255,255,255,0.72) !important;
+  }
+
+  /* If a white card (light surface) is present in dark mode, ensure its text is dark for legibility */
+  .card-surface,
+  .glass-panel,
+  .page-surface .card-surface,
+  .transaction-row,
+  .transaction-item,
+  .white-panel {
+    color: #07111f !important;
+  }
+
+  .card-surface .text-muted,
+  .card-surface .text-soft,
+  .card-surface p,
+  .transaction-item .text-muted {
+    color: rgba(7,17,31,0.65) !important;
+  }
 }
 
 html {
